@@ -8,7 +8,7 @@ export const breakpointMap: { [key: string]: number } = {
     xxl: 1200,
   };
   
-const breakpoints = Object.values(breakpointMap).map((breakpoint) => `${breakpoint}px`);
+// const breakpoints = Object.values(breakpointMap).map((breakpoint) => `${breakpoint}px`);
 
 const mediaQueries = {
 xs: `@media screen and (min-width: ${breakpointMap.xs}px)`,
@@ -30,4 +30,6 @@ const colors: {[key: string]:string} = {
   yellow: "#ffd51e",
 }
 
-export default { mediaQueries, colors };
+const theme = { mediaQueries, colors }
+
+export default theme;

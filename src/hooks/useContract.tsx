@@ -1,7 +1,6 @@
 import { useContext } from "react"
 import { ethers } from "ethers"
 import { TIDEPOOL_ABI, UNISWAPPOOL_ABI, ERC20_ABI } from "../info/abi"
-import useWeb3Modal from "./useWeb3Modal"
 import { Global } from "../context/GlobalContext"
 
 const useContract = (address: string, abi: any): ethers.Contract => {

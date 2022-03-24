@@ -1,7 +1,7 @@
-import { useCallback, useState, useContext } from "react"
+import { useCallback, useContext } from "react"
 import { ethers } from "ethers"
 import Web3Modal from "web3modal"
-import { networks } from "../info/networks";
+import { networks, Arbitrum } from "../info/networks";
 import { Global } from "../context/GlobalContext"
 
 const providerOptions = {
@@ -16,7 +16,7 @@ const providerOptions = {
 
 const web3Modal = new Web3Modal({
   network: "mainnet",
-  cacheProvider: true,
+  cacheProvider: false,
   providerOptions
 });
 
@@ -28,17 +28,8 @@ interface Web3 {
 const useWeb3Modal = (): Web3 => {
   const g = useContext(Global)
 
-  const connect = useCallback(async () => {
-    const p = new ethers.providers.Web3Provider(await web3Modal.connect());
-    await p.send("eth_requestAccounts", []);
-    g?.setProvider(p)
-    g?.setSigner(p.getSigner())
-    
-  },[])
-
-  const switchChains = async (chainId: number): Promise<void> => {
-    console.log(chainId)
-    if(g?.signer) {
+  const switchChains = useCallback(async (chainId: number): Promise<void> => {
+    if(g && g.signer && await g.signer.getChainId() !== chainId) {
       try {
           await g.provider.send('wallet_switchEthereumChain', [{chainId:`0x${chainId.toString(16)}`}]);
       } catch (switchError: any) {
@@ -54,9 +45,20 @@ const useWeb3Modal = (): Web3 => {
       }
     }
     g?.setNetwork(networks.find(n=>n.chainId === chainId) || g?.network)
-  }
+  },[g])
+
+  const connect = useCallback(async () => {
+    const p = new ethers.providers.Web3Provider(await web3Modal.connect());
+    await p.send("eth_requestAccounts", []);
+    await switchChains(Arbitrum.chainId)
+    g?.setProvider(p)
+    g?.setSigner(p.getSigner())
+    
+  },[g, switchChains])
+
+
   
-  return { connect, switchChains}
+  return { connect, switchChains }
 
 }
 

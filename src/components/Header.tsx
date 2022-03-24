@@ -7,7 +7,12 @@ import { Global } from "../context/GlobalContext"
 
 const Connect = styled(Button)`
     border-radius: 0.5rem;
-    padding: 5px 5px;
+    padding: 5px 15px;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: none;
 `
 const Logo = styled.img`
     height:1rem;
@@ -74,7 +79,7 @@ export const Header = () => {
                         {networks.map((n: Network)=><Flex key={n.chainId} alignItems="center" p="2px" onClick={()=>web3.switchChains(n.chainId)}><Logo src={n.image}/>{n.name}</Flex>)}
                     </NetworkSelectOptions>
                 </NetworkSelect>
-                <Connect onClick={()=>web3.connect()}>{!account ? "Connect Wallet" : account}</Connect>
+                <Connect onClick={()=>web3.connect()}>{!account ? "Connect" : account}</Connect>
             </Flex>
         </Flex>
     )

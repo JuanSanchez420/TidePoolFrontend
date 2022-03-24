@@ -15,5 +15,4 @@ export const NFPM_ABI = ["function positions(uint256 tokenId) external view over
   "function balanceOf(address owner) external view returns (uint256 balance)"
 ]
 
-// export const INFURA = "https://mainnet.infura.io/v3/8c8620ccdccd4d10a4ce8b5786d4659f"
-export const INFURA = "http://localhost:8545"
+export const MAX_UINT256 = "115792089237316195423570985008687907853269984665640564039457584007913129639935"

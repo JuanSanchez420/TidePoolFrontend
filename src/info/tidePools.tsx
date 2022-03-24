@@ -16,7 +16,7 @@ const tidePoolsEthereum: TidePool[] = [
 ]
 const tidePoolsArbitrum: TidePool[] = [
     {
-        address: "0x123456789",
+        address: "0x20E21a4B605a3Bf2b59FF69e144Bdd2aD77c972f",
         pool: ensure(pools.find(t=>t.address === "0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443")),
         chain: Arbitrum
     },

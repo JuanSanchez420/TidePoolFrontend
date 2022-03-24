@@ -1,7 +1,6 @@
 import { ethers } from "ethers"
 import { createContext, useState } from "react"
-import { Network, networks } from "../info/networks"
-import { INFURA } from "../info/constants"
+import { Network, Arbitrum } from "../info/networks"
 
 interface IGlobalContext {
     network: Network
@@ -15,8 +14,8 @@ interface IGlobalContext {
 export const Global = createContext<IGlobalContext | null>(null)
 
 export const GlobalContext: React.FC = ({children}) => {
-    const [network, setNetwork] = useState<Network>(networks[0])
-    const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>(new ethers.providers.JsonRpcProvider(INFURA))
+    const [network, setNetwork] = useState<Network>(Arbitrum)
+    const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>(new ethers.providers.JsonRpcProvider(network.rpc))
     const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner | undefined>()
 
     return (

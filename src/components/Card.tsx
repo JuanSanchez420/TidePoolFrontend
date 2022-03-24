@@ -1,14 +1,9 @@
-import { Box, Flex, Text, Button, Input, External, StyledLink } from "./index"
+import { Box, Flex, Text, Button, External, StyledLink } from "./index"
 import { TidePool } from "../info/tidePools"
 import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
 
-const EthAmount = styled(Input)`
-    text-align:center;
-    margin-bottom: 0.5rem;
-`
 const DepositButton = styled(Button)`
-    
     padding: 10px;
 `
 
@@ -32,7 +27,7 @@ const IconRight = styled.img`
     z-index: 2;
 `
 
-const Container = styled(Box)`
+export const Container = styled(Box)`
     margin: auto;
     border-radius: 0.5rem;
     border: 1px solid ${props => props.theme.colors.border};
@@ -40,7 +35,7 @@ const Container = styled(Box)`
     padding: 5px;
 `
 
-const Info = (props: { tidePool: TidePool }) => {
+export const Info = (props: { tidePool: TidePool }) => {
     return (
         <>
             <Flex borderBottom="1px solid black" pb="10px" alignItems="center" justifyContent="center">
@@ -60,37 +55,12 @@ const Info = (props: { tidePool: TidePool }) => {
     )
 }
 
-const Actions = (props: { tidePool: TidePool }): JSX.Element => {
-    return (
-        <>
-            <Box mx="auto"><EthAmount placeholder={props.tidePool.pool.token0?.symbol}/></Box>
-            <Box mx="auto"><EthAmount placeholder={props.tidePool.pool.token1?.symbol}/></Box>
-            <Box mx="auto"><DepositButton>Deposit</DepositButton></Box>
-        </>
-    )
-}
-
-const Join = (props: { tidePool: TidePool }): JSX.Element => {
-    return (
-        <Box mx="auto"><DepositButton onClick={()=>window.location.href=`/${props.tidePool.chain.name}/${props.tidePool.address}`}>View</DepositButton></Box>
-    )
-}
-
 export const Card = (props: { tidePool: TidePool }): JSX.Element => {
 
     return (
         <Container>
             <Info {...props}/>
-            <Join {...props}/>
-        </Container>
-    )
-}
-
-export const ActionCard = (props: { tidePool: TidePool }): JSX.Element => {
-    return (
-        <Container>
-            <Info {...props}/>
-            <Actions {...props}/>
+            <Box mx="auto"><DepositButton onClick={()=>window.location.href=`/${props.tidePool.chain.name}/${props.tidePool.address}`}>View</DepositButton></Box>
         </Container>
     )
 }
