@@ -26,35 +26,37 @@ interface Web3 {
 }
 
 const useWeb3Modal = (): Web3 => {
-  const g = useContext(Global)
+  const { provider, setProvider, setAccount, network, setNetwork } = useContext(Global)
 
   const switchChains = useCallback(async (chainId: number): Promise<void> => {
-    if(g && g.signer && await g.signer.getChainId() !== chainId) {
+    if(await provider.getSigner().getChainId() !== chainId) {
       try {
-          await g.provider.send('wallet_switchEthereumChain', [{chainId:`0x${chainId.toString(16)}`}]);
+          await provider.send('wallet_switchEthereumChain', [{chainId:`0x${chainId.toString(16)}`}]);
       } catch (switchError: any) {
         console.log(switchError);
         // This error code indicates that the chain has not been added to MetaMask.
         if (switchError.code === 4902) {
           try {
-            await g.provider.send('wallet_addEthereumChain',[{chainId:`0x${chainId.toString(16)}`}]);
+            await provider.send('wallet_addEthereumChain',[{chainId:`0x${chainId.toString(16)}`}]);
           } catch (e) {
             console.log("switchChains: " + e);
           }
         }
       }
     }
-    g?.setNetwork(networks.find(n=>n.chainId === chainId) || g?.network)
-  },[g])
+    setNetwork(networks.find(n=>n.chainId === chainId) || network)
+  },[provider, network, setNetwork])
 
   const connect = useCallback(async () => {
+
     const p = new ethers.providers.Web3Provider(await web3Modal.connect());
-    await p.send("eth_requestAccounts", []);
+    const accounts = await p.send("eth_requestAccounts", []);
+    if(accounts.length > 0)
+      setAccount(accounts[0])
     await switchChains(Arbitrum.chainId)
-    g?.setProvider(p)
-    g?.setSigner(p.getSigner())
+    setProvider(p)
     
-  },[g, switchChains])
+  },[setProvider, setAccount, switchChains])
 
 
   

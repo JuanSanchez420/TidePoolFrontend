@@ -13,7 +13,8 @@ import { MAX_UINT256 } from "../info/constants"
 interface Approvals {
     token0Approved: boolean
     token1Approved: boolean
-    checked: boolean
+    checkedApprovals: boolean
+    checkedBalances: boolean
 }
 
 const EthAmount = styled(Input)`
@@ -29,12 +30,12 @@ const TidePool = () => {
     const address = useParams().address
     const networkName = useParams().network
 
-    const blank = {token0Approved: false, token1Approved: false, checked: false}
+    const blank = {token0Approved: false, token1Approved: false, checkedApprovals: false, checkedBalances: false}
 
     const tidePool = ensure(tidePools.find(p=>p.chain.name === networkName && p.address === address))
     const [isApproved, setIsApproved] = useState<Approvals>(blank)
 
-    const g = useContext(Global)
+    const { account, provider }= useContext(Global)
 
     const token0Contract = useTokenContract(tidePool.pool.token0.address)
     const token1Contract = useTokenContract(tidePool.pool.token1.address)
@@ -45,49 +46,57 @@ const TidePool = () => {
 
     useEffect(()=>{
         const getBalances = async () => {
-            const z = await token0Contract.balanceOf(await g!.signer!.getAddress())
-            const o = await token1Contract.balanceOf(await g!.signer!.getAddress())
+            const z = await token0Contract.balanceOf(account)
+            const o = await token1Contract.balanceOf(account)
             console.log(`balances: z: ${z}, o: ${o}`)
             setZero(z)
             setOne(o)
+            setIsApproved({...isApproved, checkedBalances: true})
         }
-        if(zero === undefined && one === undefined && token0Contract && token1Contract && g?.signer) {
+        if(account && !isApproved.checkedBalances && isApproved.checkedApprovals && zero === undefined && one === undefined && token0Contract && token1Contract) {
             getBalances()
         }
-    },[token0Contract, token1Contract, g?.signer])
+    },[account, isApproved, token0Contract, token1Contract, provider])
 
     useEffect(()=>{
         const check = async() => {
-            console.log("checking approvals")
-            const a = await g!.signer!.getAddress()
-            console.log(`Owner: ${a}, Spender: ${tidePool.address}`)
-            token0Contract.connect(g!.signer!)
-            token1Contract.connect(g!.signer!)
-            const zero = await token0Contract.allowance(a, tidePool.address)
-            const one = await token1Contract.allowance(a, tidePool.address)
-            console.log(`USDC: ${zero}, WETH: ${one}`)
-            setIsApproved({token0Approved: zero > BigNumber.from(0), token1Approved: one > BigNumber.from(0), checked: true})
+
+            const zero = await token0Contract.allowance(account, tidePool.address)
+            const one = await token1Contract.allowance(account, tidePool.address)
+
+            setIsApproved({token0Approved: zero > BigNumber.from(0), token1Approved: one > BigNumber.from(0), checkedApprovals: true, checkedBalances: false})
         }
 
-        if(!isApproved.checked && g && g.signer) check()
-    },[isApproved, g, g?.signer, tidePool?.address, token0Contract, token1Contract])
+        if(!isApproved.checkedApprovals && account) check()
+    },[account, isApproved, provider, tidePool?.address, token0Contract, token1Contract])
 
     const approve = async (z: number) => {
-        
-        if(z === 0) {
-            token0Contract.connect(g!.signer!)
-            await token0Contract.approve(tidePool.address, MAX_UINT256)
-        } else {
-            token1Contract.connect(g!.signer!)
-            await token1Contract.approve(tidePool.address, MAX_UINT256)
+        try {
+            if(z === 0) {
+                await token0Contract.approve(tidePool.address, MAX_UINT256)
+            } else {
+                await token1Contract.approve(tidePool.address, MAX_UINT256)
+            }
+            setIsApproved(blank)
+        } catch(e) {
+            console.log(e)
         }
-        setIsApproved(blank)
     }
 
     const deposit = async () => {
-        
-        tp.connect(g!.signer!)
-        await tp.deposit(zero, one)
+        try{ 
+            await tp.deposit(zero, one)
+        } catch(e) {
+            console.log(e)
+        }
+    }
+
+    const withdraw = async () => {
+        try {
+            await tp.withdraw()
+        } catch(e) {
+            console.log(e)
+        }
     }
 
     return (
@@ -98,12 +107,12 @@ const TidePool = () => {
             <Container>
                 <Info tidePool={tidePool}/>
                 <Box mx="auto">
-                    {isApproved.token0Approved ? <EthAmount value={zero} onChange={(e)=>setZero(e.target.value)} placeholder={tidePool.pool.token0?.symbol}/> :
-                    <StyledButton disabled={!g?.signer} onClick={()=>approve(0)}>Approve {tidePool.pool.token0.symbol}</StyledButton>}
+                    {!isApproved.checkedApprovals ? <div>Checking...</div> : isApproved.token0Approved ? <EthAmount value={zero} onChange={(e)=>setZero(e.target.value)} placeholder={tidePool.pool.token0.symbol}/> :
+                    <StyledButton disabled={!account} onClick={()=>approve(0)}>Approve {tidePool.pool.token0.symbol}</StyledButton>}
                 </Box>
                 <Box mx="auto">
-                    {isApproved.token1Approved ? <EthAmount value={one} onChange={(e)=>setOne(e.target.value)}  placeholder={tidePool.pool.token1?.symbol}/> :
-                    <StyledButton disabled={!g?.signer} onClick={()=>approve(1)}>Approve {tidePool.pool.token1.symbol}</StyledButton>}
+                    {!isApproved.checkedApprovals ? <div>Checking...</div> : isApproved.token1Approved ? <EthAmount value={one} onChange={(e)=>setOne(e.target.value)}  placeholder={tidePool.pool.token1.symbol}/> :
+                    <StyledButton disabled={!account} onClick={()=>approve(1)}>Approve {tidePool.pool.token1.symbol}</StyledButton>}
                 </Box>
                 {isApproved.token1Approved && isApproved.token0Approved ? <Box mx="auto"><StyledButton onClick={()=>deposit()}>Deposit</StyledButton></Box> : null}
             </Container>

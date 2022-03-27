@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react"
+import { useContext } from "react"
 import styled from "styled-components"
 import { Flex, Button, Box } from "./index"
 import { networks, Network } from "../info/networks"
@@ -54,17 +54,8 @@ const NetworkSelectOptions = styled(Flex)`
 `
 
 export const Header = () => {
-    const g = useContext(Global)
+    const { account, network } = useContext(Global)
     const web3 = useWeb3Modal()
-    const [account, setAccount] = useState<String>()
-
-    useEffect(()=>{
-        const getSigner = async ()=> {
-            if(g && g.signer)
-            setAccount(await g.signer.getAddress())
-        }
-        if(!account) getSigner()
-    },[g, account])
 
     return (
         <Flex p="1rem" alignItems="center">
@@ -73,7 +64,7 @@ export const Header = () => {
             </Flex>
             <Flex alignItems="center">
                 <NetworkSelect>
-                    <Flex alignItems="center"><Logo src={g?.network.image}/>{g?.network.name}</Flex>
+                    <Flex alignItems="center"><Logo src={network.image}/>{network.name}</Flex>
                     <NetworkSelectOptions id="wut" flexDirection="column">
                         <Box>Select a Network</Box>
                         {networks.map((n: Network)=><Flex key={n.chainId} alignItems="center" p="2px" onClick={()=>web3.switchChains(n.chainId)}><Logo src={n.image}/>{n.name}</Flex>)}

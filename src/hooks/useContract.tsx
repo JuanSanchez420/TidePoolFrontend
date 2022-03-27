@@ -4,8 +4,8 @@ import { TIDEPOOL_ABI, UNISWAPPOOL_ABI, ERC20_ABI } from "../info/abi"
 import { Global } from "../context/GlobalContext"
 
 const useContract = (address: string, abi: any): ethers.Contract => {
-    const g = useContext(Global)
-    const c = new ethers.Contract(address, abi, g?.signer ? g.signer : g?.provider)
+    const { provider } = useContext(Global)
+    const c = new ethers.Contract(address, abi, provider)
     return c
 }
 
