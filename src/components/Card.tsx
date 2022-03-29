@@ -48,7 +48,7 @@ export const Info = (props: { tidePool: TidePool }) => {
             <Flex flexWrap="wrap">
                 <Box width={1/2} p="10px"><Text textAlign="center">200% APR</Text></Box>
                 <Box width={1/2} p="10px">
-                    <Text textAlign="center"><StyledLink to={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.pool.address}`} target="_blank">View Contract <External/></StyledLink></Text>
+                    <Text textAlign="center"><StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.pool.address}`} target="_blank">View Contract <External/></StyledLink></Text>
                 </Box>
             </Flex>
         </>

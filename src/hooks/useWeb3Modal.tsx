@@ -26,7 +26,7 @@ interface Web3 {
 }
 
 const useWeb3Modal = (): Web3 => {
-  const { provider, setProvider, setAccount, network, setNetwork } = useContext(Global)
+  const { provider, setProvider, network, setNetwork } = useContext(Global)
 
   const switchChains = useCallback(async (chainId: number): Promise<void> => {
     if(await provider.getSigner().getChainId() !== chainId) {
@@ -48,16 +48,12 @@ const useWeb3Modal = (): Web3 => {
   },[provider, network, setNetwork])
 
   const connect = useCallback(async () => {
-
     const p = new ethers.providers.Web3Provider(await web3Modal.connect());
-    const accounts = await p.send("eth_requestAccounts", []);
-    if(accounts.length > 0)
-      setAccount(accounts[0])
+
     await switchChains(Arbitrum.chainId)
     setProvider(p)
     
-  },[setProvider, setAccount, switchChains])
-
+  },[setProvider, switchChains])
 
   
   return { connect, switchChains }

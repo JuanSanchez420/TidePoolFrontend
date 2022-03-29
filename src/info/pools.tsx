@@ -23,8 +23,8 @@ const poolsEthereum: Pool[] = [
 const poolsArbitrum: Pool[] = [
     {
         address: "0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443",
-        token0: ensure(tokens.find(t=>t.symbol === "USDC" && t.chain.name === "Arbitrum")),
-        token1: ensure(tokens.find(t=>t.symbol === "WETH" && t.chain.name === "Arbitrum")),
+        token0: ensure(tokens.find(t=>t.symbol === "WETH" && t.chain.name === "Arbitrum")),
+        token1: ensure(tokens.find(t=>t.symbol === "USDC" && t.chain.name === "Arbitrum")),
     }
 ]
 

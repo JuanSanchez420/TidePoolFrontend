@@ -21,6 +21,7 @@ export const GlobalContext: React.FC = ({children}) => {
     useEffect(()=>{
         const s = async () => {
             const accounts = await provider.listAccounts()
+
             if(accounts.length > 0)
                 setAccount(accounts[0])
         }

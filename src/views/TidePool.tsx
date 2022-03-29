@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { Box, LeftArrow, StyledLink, Input, Button } from "../components/index"
 import { ensure } from "../info/pools"
@@ -11,9 +11,8 @@ import styled from "styled-components"
 import { MAX_UINT256 } from "../info/constants"
 
 interface Approvals {
-    token0Approved: boolean
-    token1Approved: boolean
-    checkedApprovals: boolean
+    token0Approved: boolean | null
+    token1Approved: boolean | null
     checkedBalances: boolean
 }
 
@@ -30,7 +29,7 @@ const TidePool = () => {
     const address = useParams().address
     const networkName = useParams().network
 
-    const blank = {token0Approved: false, token1Approved: false, checkedApprovals: false, checkedBalances: false}
+    const blank = {token0Approved: null, token1Approved: null, checkedBalances: false}
 
     const tidePool = ensure(tidePools.find(p=>p.chain.name === networkName && p.address === address))
     const [isApproved, setIsApproved] = useState<Approvals>(blank)
@@ -44,31 +43,34 @@ const TidePool = () => {
     const [zero, setZero] = useState<string | undefined>()
     const [one, setOne] = useState<string | undefined>()
 
+    const checkedApprovals = useRef(false)
+
     useEffect(()=>{
         const getBalances = async () => {
             const z = await token0Contract.balanceOf(account)
             const o = await token1Contract.balanceOf(account)
-            console.log(`balances: z: ${z}, o: ${o}`)
+            
             setZero(z)
             setOne(o)
             setIsApproved({...isApproved, checkedBalances: true})
         }
-        if(account && !isApproved.checkedBalances && isApproved.checkedApprovals && zero === undefined && one === undefined && token0Contract && token1Contract) {
+        if(account && !isApproved.checkedBalances && zero === undefined && one === undefined && token0Contract && token1Contract) {
             getBalances()
         }
-    },[account, isApproved, token0Contract, token1Contract, provider])
+    },[account, isApproved, token0Contract, token1Contract, provider, one, zero])
 
     useEffect(()=>{
         const check = async() => {
-
+            
+            checkedApprovals.current = true
             const zero = await token0Contract.allowance(account, tidePool.address)
             const one = await token1Contract.allowance(account, tidePool.address)
 
-            setIsApproved({token0Approved: zero > BigNumber.from(0), token1Approved: one > BigNumber.from(0), checkedApprovals: true, checkedBalances: false})
+            setIsApproved({token0Approved: zero > BigNumber.from(0), token1Approved: one > BigNumber.from(0), checkedBalances: false})
         }
 
-        if(!isApproved.checkedApprovals && account) check()
-    },[account, isApproved, provider, tidePool?.address, token0Contract, token1Contract])
+        if(!checkedApprovals.current && account) check()
+    },[account, isApproved, tidePool?.address, token0Contract, token1Contract])
 
     const approve = async (z: number) => {
         try {
@@ -84,7 +86,10 @@ const TidePool = () => {
     }
 
     const deposit = async () => {
-        try{ 
+        try{
+            console.log(`deposit(${zero}, ${one})`)
+            console.log(`${tp.address}`)
+            console.log(`${await tp.token0()},${await tp.token1()},${await tp.pool()}`)
             await tp.deposit(zero, one)
         } catch(e) {
             console.log(e)
@@ -101,18 +106,20 @@ const TidePool = () => {
 
     return (
         <Box>
-            <StyledLink to="/">
+            <StyledLink href="/">
                 <LeftArrow/> Return to list
             </StyledLink>
             <Container>
                 <Info tidePool={tidePool}/>
                 <Box mx="auto">
-                    {!isApproved.checkedApprovals ? <div>Checking...</div> : isApproved.token0Approved ? <EthAmount value={zero} onChange={(e)=>setZero(e.target.value)} placeholder={tidePool.pool.token0.symbol}/> :
-                    <StyledButton disabled={!account} onClick={()=>approve(0)}>Approve {tidePool.pool.token0.symbol}</StyledButton>}
+                    {!checkedApprovals.current ? <StyledButton disabled>Checking...</StyledButton> 
+                    : isApproved.token0Approved ? <EthAmount value={zero} onChange={(e)=>setZero(e.target.value)} placeholder={tidePool.pool.token0.symbol}/> 
+                    : <StyledButton disabled={!account} onClick={()=>approve(0)}>Approve {tidePool.pool.token0.symbol}</StyledButton>}
                 </Box>
                 <Box mx="auto">
-                    {!isApproved.checkedApprovals ? <div>Checking...</div> : isApproved.token1Approved ? <EthAmount value={one} onChange={(e)=>setOne(e.target.value)}  placeholder={tidePool.pool.token1.symbol}/> :
-                    <StyledButton disabled={!account} onClick={()=>approve(1)}>Approve {tidePool.pool.token1.symbol}</StyledButton>}
+                    {!checkedApprovals.current ? <StyledButton disabled>Checking...</StyledButton>
+                    : isApproved.token1Approved ? <EthAmount value={one} onChange={(e)=>setOne(e.target.value)}  placeholder={tidePool.pool.token1.symbol}/>
+                    : <StyledButton disabled={!account} onClick={()=>approve(1)}>Approve {tidePool.pool.token1.symbol}</StyledButton>}
                 </Box>
                 {isApproved.token1Approved && isApproved.token0Approved ? <Box mx="auto"><StyledButton onClick={()=>deposit()}>Deposit</StyledButton></Box> : null}
             </Container>
