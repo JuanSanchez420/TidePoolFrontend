@@ -14,7 +14,7 @@ const Layout = () => {
     <ThemeProvider theme={theme}>
       <GlobalContext>
       <Wrapper>
-        <Box maxWidth="500px" m="auto">
+        <Box maxWidth="1000px" m="auto">
           <Suspense fallback={<div>Loading</div>}>
             <Header/>
             <Outlet/>

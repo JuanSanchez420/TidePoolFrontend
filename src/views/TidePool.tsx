@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, useRef } from "react"
 import { useParams } from "react-router-dom"
-import { Box, LeftArrow, StyledLink, Input, Button } from "../components/index"
+import { Box, StyledLink, Button } from "../components/index"
+import { LeftArrow } from "../components/Icons"
 import { ensure } from "../info/pools"
 import { tidePools } from "../info/tidePools"
 import { Container, Info } from "../components/Card"
@@ -9,6 +10,7 @@ import { BigNumber } from "ethers"
 import { Global } from "../context/GlobalContext"
 import styled from "styled-components"
 import { MAX_UINT256 } from "../info/constants"
+import Input from "../components/Input"
 
 interface Approvals {
     token0Approved: boolean | null
@@ -34,7 +36,7 @@ const TidePool = () => {
     const tidePool = ensure(tidePools.find(p=>p.chain.name === networkName && p.address === address))
     const [isApproved, setIsApproved] = useState<Approvals>(blank)
 
-    const { account, provider }= useContext(Global)
+    const { account, provider } = useContext(Global)
 
     const token0Contract = useTokenContract(tidePool.pool.token0.address)
     const token1Contract = useTokenContract(tidePool.pool.token1.address)
@@ -43,21 +45,28 @@ const TidePool = () => {
     const [zero, setZero] = useState<string | undefined>()
     const [one, setOne] = useState<string | undefined>()
 
+    const [zeroIn, setZeroIn] = useState<string>("0")
+    const [oneIn, setOneIn] = useState<string>("0")
+
+    const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0))
+
     const checkedApprovals = useRef(false)
 
     useEffect(()=>{
         const getBalances = async () => {
             const z = await token0Contract.balanceOf(account)
             const o = await token1Contract.balanceOf(account)
+            const b = await tp.balanceOf(account)
             
             setZero(z)
             setOne(o)
+            setBalance(b)
             setIsApproved({...isApproved, checkedBalances: true})
         }
         if(account && !isApproved.checkedBalances && zero === undefined && one === undefined && token0Contract && token1Contract) {
             getBalances()
         }
-    },[account, isApproved, token0Contract, token1Contract, provider, one, zero])
+    },[account, isApproved, token0Contract, token1Contract, tp, provider, one, zero])
 
     useEffect(()=>{
         const check = async() => {
@@ -113,15 +122,16 @@ const TidePool = () => {
                 <Info tidePool={tidePool}/>
                 <Box mx="auto">
                     {!checkedApprovals.current ? <StyledButton disabled>Checking...</StyledButton> 
-                    : isApproved.token0Approved ? <EthAmount value={zero} onChange={(e)=>setZero(e.target.value)} placeholder={tidePool.pool.token0.symbol}/> 
+                    : isApproved.token0Approved ? <EthAmount token={tidePool.pool.token0} balance={zero ? zero : "0"} value={zeroIn} setValue={setZeroIn}/> 
                     : <StyledButton disabled={!account} onClick={()=>approve(0)}>Approve {tidePool.pool.token0.symbol}</StyledButton>}
                 </Box>
                 <Box mx="auto">
                     {!checkedApprovals.current ? <StyledButton disabled>Checking...</StyledButton>
-                    : isApproved.token1Approved ? <EthAmount value={one} onChange={(e)=>setOne(e.target.value)}  placeholder={tidePool.pool.token1.symbol}/>
+                    : isApproved.token1Approved ? <EthAmount token={tidePool.pool.token1} balance={one ? one : "0"} value={oneIn} setValue={setOneIn}/>
                     : <StyledButton disabled={!account} onClick={()=>approve(1)}>Approve {tidePool.pool.token1.symbol}</StyledButton>}
                 </Box>
                 {isApproved.token1Approved && isApproved.token0Approved ? <Box mx="auto"><StyledButton onClick={()=>deposit()}>Deposit</StyledButton></Box> : null}
+                {balance.gt(0) ? <Box mx="auto"><StyledButton onClick={()=>withdraw()}>Withdraw</StyledButton></Box> : null}
             </Container>
         </Box>
     )

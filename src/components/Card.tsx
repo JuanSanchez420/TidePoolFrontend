@@ -1,4 +1,5 @@
-import { Box, Flex, Text, Button, External, StyledLink } from "./index"
+import { Box, Flex, Text, Button, StyledLink } from "./index"
+import { External } from "./Icons"
 import { TidePool } from "../info/tidePools"
 import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
@@ -28,11 +29,10 @@ const IconRight = styled.img`
 `
 
 export const Container = styled(Box)`
-    margin: auto;
     border-radius: 0.5rem;
     border: 1px solid ${props => props.theme.colors.border};
-    max-width: 500px;
-    padding: 5px;
+    padding: 10px; 
+
 `
 
 export const Info = (props: { tidePool: TidePool }) => {
@@ -58,9 +58,9 @@ export const Info = (props: { tidePool: TidePool }) => {
 export const Card = (props: { tidePool: TidePool }): JSX.Element => {
 
     return (
-        <Container>
+        <Container mb={["2rem"]} mx="auto" maxWidth="400px" width="100%" p="5px">
             <Info {...props}/>
-            <Box mx="auto"><DepositButton onClick={()=>window.location.href=`/${props.tidePool.chain.name}/${props.tidePool.address}`}>View</DepositButton></Box>
+            <Box mx="auto"><DepositButton onClick={()=>window.location.href=`/${props.tidePool.chain.name}/${props.tidePool.address}`}>Enter Pool</DepositButton></Box>
         </Container>
     )
 }

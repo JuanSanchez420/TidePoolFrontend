@@ -54,7 +54,6 @@ const useWeb3Modal = (): Web3 => {
     setProvider(p)
     
   },[setProvider, switchChains])
-
   
   return { connect, switchChains }
 

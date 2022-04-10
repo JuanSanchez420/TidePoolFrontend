@@ -20,6 +20,21 @@ const tidePoolsArbitrum: TidePool[] = [
         pool: ensure(pools.find(t=>t.address === "0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443")),
         chain: Arbitrum
     },
+    {
+        address: "0x1e2F34ac2Aa5Ec7aF68921F937232b7fAAc9508f",
+        pool: ensure(pools.find(t=>t.address === "0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443")),
+        chain: Arbitrum
+    },
+    {
+        address: "0x1e2F34ac2Aa5Ec7aF68921F937232b7fAAc9508f",
+        pool: ensure(pools.find(t=>t.address === "0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443")),
+        chain: Arbitrum
+    },
+    {
+        address: "0x1e2F34ac2Aa5Ec7aF68921F937232b7fAAc9508f",
+        pool: ensure(pools.find(t=>t.address === "0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443")),
+        chain: Arbitrum
+    },
 ]
 const tidePoolsOptimism: TidePool[] = [
     {
