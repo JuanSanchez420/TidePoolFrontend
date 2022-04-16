@@ -75,6 +75,24 @@ const tokensPolygon: Token[] = [
     symbol: "USDC",
     decimals: 6,
     chain: Polygon
+  },
+  {
+    address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+    symbol: "WETH",
+    decimals: 18,
+    chain: Polygon
+  },
+  {
+    address: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
+    symbol: "WBTC",
+    decimals: 8,
+    chain: Polygon
+  },
+  {
+    address: "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+    symbol: "DAI",
+    decimals: 18,
+    chain: Polygon
   }
 ]
 

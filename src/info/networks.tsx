@@ -34,7 +34,7 @@ export const Polygon: Network = {
     rpc: "https://polygon-mainnet.infura.io/v3/8c8620ccdccd4d10a4ce8b5786d4659f",
     chainId: 137,
     image:"/images/polygon.svg",
-    blockExplorer: "https://polygonscan.io/"
+    blockExplorer: "https://polygonscan.com/"
   }
   
 export const networks: Network[] = [
