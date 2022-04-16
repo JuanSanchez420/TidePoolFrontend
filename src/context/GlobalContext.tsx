@@ -1,6 +1,6 @@
 import { ethers } from "ethers"
-import { createContext, useEffect, useState } from "react"
-import { Network, Arbitrum } from "../info/networks"
+import { createContext, useEffect, useState, useRef } from "react"
+import { Network, Ethereum } from "../info/networks"
 
 interface IGlobalContext {
     account: string
@@ -14,19 +14,9 @@ interface IGlobalContext {
 export const Global = createContext<IGlobalContext>({} as IGlobalContext)
 
 export const GlobalContext: React.FC = ({children}) => {
-    const [network, setNetwork] = useState<Network>(Arbitrum)
-    const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>(new ethers.providers.JsonRpcProvider(Arbitrum.rpc))
+    const [network, setNetwork] = useState<Network>(Ethereum)
+    const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>(new ethers.providers.JsonRpcProvider(Ethereum.rpc))
     const [account, setAccount] = useState<string>("")
-
-    useEffect(()=>{
-        const s = async () => {
-            const accounts = await provider.listAccounts()
-
-            if(accounts.length > 0)
-                setAccount(accounts[0])
-        }
-        if(!account && provider) s()
-    },[provider, account])
 
     return (
         <Global.Provider value={{account, setAccount, network, setNetwork, provider, setProvider}}>

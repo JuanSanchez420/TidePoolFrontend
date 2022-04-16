@@ -12,7 +12,7 @@ function Home() {
     return (
         <Box mx="auto">
             <Flex width="100%" flexWrap="wrap" flexDirection="row">
-                {tidePools.map(tp=>tp.chain.chainId === g?.network.chainId ? <Card key={tp.address} tidePool={tp}/> : null)}
+                {tidePools.map((tp,i)=>tp.chain.chainId === g?.network.chainId ? <Card key={`${tp.address}-${i}`} tidePool={tp}/> : null)}
             </Flex>
         </Box>
     );

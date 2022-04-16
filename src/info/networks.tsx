@@ -11,7 +11,7 @@ export const Ethereum: Network = {
     rpc: "https://mainnet.infura.io/v3/8c8620ccdccd4d10a4ce8b5786d4659f",
     chainId: 1,
     image:"/images/ethereum.png",
-    blockExplorer: "https://etherscan.com/",
+    blockExplorer: "https://etherscan.io/",
   }
   
 export const Arbitrum: Network = {
@@ -19,7 +19,7 @@ export const Arbitrum: Network = {
     rpc: "https://arbitrum-mainnet.infura.io/v3/8c8620ccdccd4d10a4ce8b5786d4659f",
     chainId: 42161,
     image:"/images/arbitrum.svg",
-    blockExplorer: "https://arbiscan.com/"
+    blockExplorer: "https://arbiscan.io/"
   }
   
 export const Optimism: Network = {
@@ -34,7 +34,7 @@ export const Polygon: Network = {
     rpc: "https://polygon-mainnet.infura.io/v3/8c8620ccdccd4d10a4ce8b5786d4659f",
     chainId: 137,
     image:"/images/polygon.svg",
-    blockExplorer: "https://polygonscan.com/"
+    blockExplorer: "https://polygonscan.io/"
   }
   
 export const networks: Network[] = [
