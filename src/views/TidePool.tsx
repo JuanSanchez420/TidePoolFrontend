@@ -10,7 +10,7 @@ import { BigNumber } from "ethers"
 import { Global } from "../context/GlobalContext"
 import styled from "styled-components"
 import { MAX_UINT256 } from "../info/constants"
-import Input from "../components/Input"
+import { TokenInput } from "../components/Input"
 
 interface Approvals {
     token0Approved: boolean | null
@@ -18,7 +18,7 @@ interface Approvals {
     checkedBalances: boolean
 }
 
-const EthAmount = styled(Input)`
+const EthAmount = styled(TokenInput)`
     text-align:center;
     margin-bottom: 0.5rem;
 `
@@ -27,7 +27,14 @@ const StyledButton = styled(Button)`
     margin-bottom: 0.5rem;
 `
 
+const Console = ({error}: any) => {
+    return (
+        <Box>{error}</Box>
+    )
+}
+
 const TidePool = () => {
+    const [error, setError] = useState<any>("")
     const address = useParams().address
     const networkName = useParams().network
 
@@ -91,17 +98,16 @@ const TidePool = () => {
             setIsApproved(blank)
         } catch(e) {
             console.log(e)
+            setError(e)
         }
     }
 
     const deposit = async () => {
         try{
-            console.log(`deposit(${zero}, ${one})`)
-            console.log(`${tp.address}`)
-            console.log(`${await tp.token0()},${await tp.token1()},${await tp.pool()}`)
             await tp.deposit(zero, one)
         } catch(e) {
             console.log(e)
+            setError(e)
         }
     }
 
@@ -110,13 +116,14 @@ const TidePool = () => {
             await tp.withdraw()
         } catch(e) {
             console.log(e)
+            setError(e)
         }
     }
 
     return (
         <Box>
             <StyledLink href="/">
-                <LeftArrow/> Return to list
+                <LeftArrow height="1rem" width="1rem"/> Return to list
             </StyledLink>
             <Container>
                 <Info tidePool={tidePool}/>
@@ -133,6 +140,7 @@ const TidePool = () => {
                 {isApproved.token1Approved && isApproved.token0Approved ? <Box mx="auto"><StyledButton onClick={()=>deposit()}>Deposit</StyledButton></Box> : null}
                 {balance.gt(0) ? <Box mx="auto"><StyledButton onClick={()=>withdraw()}>Withdraw</StyledButton></Box> : null}
             </Container>
+            <Console error={error}/>
         </Box>
     )
 }

@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from "react"
+import React, { useMemo } from "react"
 import styled from "styled-components"
-import { Box, Flex, Text, Button } from "./index"
+import { Flex, Text, Button } from "./index"
 import { imageUrls, Token } from "../info/tokens"
 import { ethers, BigNumber } from "ethers"
 
@@ -33,14 +33,14 @@ const MaxButton = styled(Button)`
     padding: 5px;
 `
 
-interface InputProps {
+interface TokenInputProps {
     token: Token
     balance: string
     value: string
     setValue: (e: string) => void
 }
 
-const Input = ({ token, balance, value = "", setValue = ()=>null }: InputProps): JSX.Element => {
+export const TokenInput = ({ token, balance, value = "", setValue = ()=>null }: TokenInputProps): JSX.Element => {
 
     const formattedBalance = useMemo(()=>{
         if(!balance && !token) return "0.0"
@@ -61,4 +61,20 @@ const Input = ({ token, balance, value = "", setValue = ()=>null }: InputProps):
     )
 }
 
-export default Input
+interface TextInputProps {
+    value: string
+    setValue: (e: string) => void
+    placeholder?: string
+    icon?: JSX.Element | null
+}
+
+export const TextInput = ({ value = "", setValue = ()=>null, placeholder = "", icon = null }: TextInputProps): JSX.Element => {
+
+    return (
+        <Wrapper p="5px" alignItems="center">
+            {icon}
+            <InputBox value={value} onChange={(e)=>setValue(e.target.value)} placeholder={placeholder}/>
+            <MaxButton onClick={()=>setValue("")}>Clear</MaxButton>
+        </Wrapper>
+    )
+}

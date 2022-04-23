@@ -1,5 +1,6 @@
+import { useState } from "react"
 import { Box, Flex, Text, Button, StyledLink } from "./index"
-import { External } from "./Icons"
+import { Chevron, External } from "./Icons"
 import { TidePool } from "../info/tidePools"
 import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
@@ -36,26 +37,40 @@ export const Container = styled(Box)`
 `
 
 export const Info = (props: { tidePool: TidePool }) => {
+    const [open, setOpen] = useState(false)
+
     return (
         <>
-            <Flex borderBottom="1px solid black" pb="10px" alignItems="center" justifyContent="center">
+            <Flex borderBottom="1px solid black" pb="10px" alignItems="center" justifyContent="space-around">
+                <Flex>
                 <IconBox width="35px" height="40px" marginRight="1rem">
                     <IconLeft src={imageUrls[props.tidePool.pool.token0.symbol]}/>
                     <IconRight src={imageUrls[props.tidePool.pool.token1.symbol]}/>
                 </IconBox>
-                <Text fontWeight="black" fontSize="2rem" textAlign="center">{props.tidePool.pool.token0?.symbol} / {props.tidePool.pool.token1?.symbol}</Text>
+                <Text fontWeight="black" fontSize="1.5rem" textAlign="center">{props.tidePool.pool.token0?.symbol} / {props.tidePool.pool.token1?.symbol}</Text>
+                </Flex>
             </Flex>
-            <Flex flexWrap="wrap">
-                <Box width={1/2} p="10px"><Text textAlign="center">200% APR</Text></Box>
-                <Box width={1/2} p="10px">
-                    <Text textAlign="center"><StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.pool.address}`} target="_blank">View Contract <External/></StyledLink></Text>
-                </Box>
+            <Flex flexWrap="wrap" p="10px" justifyContent="space-around">
+                <Text textAlign="center">200% APR</Text>
+                <StyledLink onClick={()=>setOpen(!open)}><Flex>Details<Box width="10px" ml="5px"><Chevron open={open}/></Box></Flex></StyledLink>
             </Flex>
+            {open && 
+                <Flex>
+                    <Flex flexDirection="column">
+                        <Box borderBottom="1px solid black"><Text textAlign="center">Contracts</Text></Box>
+                        <StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.pool.address}`} target="_blank">Uniswap pool <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.address}`} target="_blank">TidePool <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.pool.token0.address}`} target="_blank">{props.tidePool.pool.token0.symbol} <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.pool.token1.address}`} target="_blank">{props.tidePool.pool.token1.symbol} <External height="1rem" width="1rem"/></StyledLink>
+                    </Flex>
+                </Flex>
+            }
         </>
     )
 }
 
 export const Card = (props: { tidePool: TidePool }): JSX.Element => {
+    
 
     return (
         <Container mb={["2rem"]} mx="auto" maxWidth="400px" width="100%" p="5px">

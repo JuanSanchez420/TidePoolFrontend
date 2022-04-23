@@ -93,7 +93,13 @@ const tokensPolygon: Token[] = [
     symbol: "DAI",
     decimals: 18,
     chain: Polygon
-  }
+  },
+  {
+    address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    symbol: "USDT",
+    decimals: 6,
+    chain: Polygon
+  },
 ]
 
 export const tokens: Token[] = tokensEthereum.concat(tokensArbitrum).concat(tokensOptimism).concat(tokensPolygon)

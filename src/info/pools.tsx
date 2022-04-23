@@ -56,6 +56,11 @@ const poolsPolygon: Pool[] = [
         address: "0x5f69C2ec01c22843f8273838d570243fd1963014",
         token0: ensure(tokens.find(t=>t.symbol === "USDC" && t.chain.name === "Polygon")),
         token1: ensure(tokens.find(t=>t.symbol === "DAI" && t.chain.name === "Polygon")),
+    },
+    {
+        address: "0xDaC8A8E6DBf8c690ec6815e0fF03491B2770255D",
+        token0: ensure(tokens.find(t=>t.symbol === "USDC" && t.chain.name === "Polygon")),
+        token1: ensure(tokens.find(t=>t.symbol === "USDT" && t.chain.name === "Polygon")),
     }
 ]
 
