@@ -29,7 +29,7 @@ const StyledButton = styled(Button)`
 
 const Console = ({error}: any) => {
     return (
-        <Box>{error}</Box>
+        <Box>{error?.data ? error.data : null}</Box>
     )
 }
 
