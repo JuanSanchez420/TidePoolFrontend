@@ -49,11 +49,11 @@ const TidePool = () => {
     const token1Contract = useTokenContract(tidePool.pool.token1.address)
     const tp = useTidePoolContract(tidePool.address)
 
-    const [zero, setZero] = useState<string | undefined>()
-    const [one, setOne] = useState<string | undefined>()
+    const [zero, setZero] = useState<BigNumber>(BigNumber.from(0))
+    const [one, setOne] = useState<BigNumber>(BigNumber.from(0))
 
-    const [zeroIn, setZeroIn] = useState<string>("0")
-    const [oneIn, setOneIn] = useState<string>("0")
+    const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
+    const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))
 
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0))
 
@@ -104,7 +104,7 @@ const TidePool = () => {
 
     const deposit = async () => {
         try{
-            await tp.deposit(zero, one)
+            await tp.deposit(zeroIn, oneIn)
         } catch(e) {
             console.log(e)
             setError(e)
@@ -129,12 +129,12 @@ const TidePool = () => {
                 <Info tidePool={tidePool}/>
                 <Box mx="auto">
                     {!checkedApprovals.current ? <StyledButton disabled>Checking...</StyledButton> 
-                    : isApproved.token0Approved ? <EthAmount token={tidePool.pool.token0} balance={zero ? zero : "0"} value={zeroIn} setValue={setZeroIn}/> 
+                    : isApproved.token0Approved ? <EthAmount token={tidePool.pool.token0} balance={zero} value={zeroIn} setValue={setZeroIn}/> 
                     : <StyledButton disabled={!account} onClick={()=>approve(0)}>Approve {tidePool.pool.token0.symbol}</StyledButton>}
                 </Box>
                 <Box mx="auto">
                     {!checkedApprovals.current ? <StyledButton disabled>Checking...</StyledButton>
-                    : isApproved.token1Approved ? <EthAmount token={tidePool.pool.token1} balance={one ? one : "0"} value={oneIn} setValue={setOneIn}/>
+                    : isApproved.token1Approved ? <EthAmount token={tidePool.pool.token1} balance={zero} value={oneIn} setValue={setOneIn}/>
                     : <StyledButton disabled={!account} onClick={()=>approve(1)}>Approve {tidePool.pool.token1.symbol}</StyledButton>}
                 </Box>
                 {isApproved.token1Approved && isApproved.token0Approved ? <Box mx="auto"><StyledButton onClick={()=>deposit()}>Deposit</StyledButton></Box> : null}
