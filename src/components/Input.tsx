@@ -42,6 +42,10 @@ interface TokenInputProps {
 
 export const TokenInput = ({ token, balance = BigNumber.from(0), value = BigNumber.from(0), setValue = ()=>null }: TokenInputProps): JSX.Element => {
 
+    const significantDigits = (v: string): string => {
+        return v.substring(0, v.indexOf(".")+6)
+    }
+
     return (
         <Wrapper p="10px" alignItems="center">
             <Icon src={imageUrls[token.symbol]}/>
@@ -49,7 +53,7 @@ export const TokenInput = ({ token, balance = BigNumber.from(0), value = BigNumb
             <InputBox value={ethers.utils.formatUnits(value, token.decimals)} onChange={(e)=>setValue(ethers.utils.parseUnits(e.target.value, token.decimals))} placeholder="0.0"/>
             <Flex flexDirection="column">
                 <MaxButton onClick={()=>setValue(balance)}>MAX</MaxButton>
-                <Text fontSize="0.75rem">Balance: {ethers.utils.formatUnits(balance, token.decimals)}</Text>
+                <Text fontSize="0.75rem">Balance: {significantDigits(ethers.utils.formatUnits(balance, token.decimals))}</Text>
             </Flex>
         </Wrapper>
     )
