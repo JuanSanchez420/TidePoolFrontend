@@ -46,10 +46,10 @@ export const TokenInput = ({ token, balance = BigNumber.from(0), value = BigNumb
         <Wrapper p="10px" alignItems="center">
             <Icon src={imageUrls[token.symbol]}/>
             <Text>{token.symbol}</Text>
-            <InputBox value={ethers.utils.formatUnits(value, token.decimals)} onChange={(e)=>setValue(ethers.utils.parseEther(e.target.value))} placeholder="0.0"/>
+            <InputBox value={ethers.utils.formatUnits(value, token.decimals)} onChange={(e)=>setValue(ethers.utils.parseUnits(e.target.value, token.decimals))} placeholder="0.0"/>
             <Flex flexDirection="column">
                 <MaxButton onClick={()=>setValue(balance)}>MAX</MaxButton>
-                <Text fontSize="0.75rem">Balance: {balance.toString()}</Text>
+                <Text fontSize="0.75rem">Balance: {ethers.utils.formatUnits(balance, token.decimals)}</Text>
             </Flex>
         </Wrapper>
     )

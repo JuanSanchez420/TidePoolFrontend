@@ -48,11 +48,6 @@ const tidePoolsPolygon: TidePool[] = [
         address: "0x9683504E896D4F9d18bfdcC9a4FB8FE10a23e45d",
         pool: ensure(pools.find(t=>t.address === "0xDaC8A8E6DBf8c690ec6815e0fF03491B2770255D")),
         chain: Polygon
-    },
-    {
-        address: "0x58E073f91a03035C302E473d39f1540983007e42",
-        pool: ensure(pools.find(t=>t.address === "0x50eaEDB835021E4A108B7290636d62E9765cc6d7")),
-        chain: Polygon
     }
 ]
 

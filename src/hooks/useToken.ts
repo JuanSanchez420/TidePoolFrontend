@@ -16,14 +16,16 @@ const useToken = (tokenAddress: string, owner: string, spender: string): TokenUt
 
     const approve = async () => {
         await contract.approve(spender, MAX_UINT256)
+        await checkAllowance()
+    }
+
+    const checkAllowance = async () => {
+        const allowance = await contract.allowance(owner, spender)
+        setIsApproved(allowance.gt(0))
     }
 
     useEffect(()=>{
-        const check = async ()=> {
-            const allowance = await contract.allowance(owner, spender)
-            setIsApproved(allowance.gt(0))
-        }
-        check()
+        checkAllowance()
     },[isApproved, contract])
 
     useEffect(()=>{
