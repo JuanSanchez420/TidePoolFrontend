@@ -44,20 +44,6 @@ const TidePool = () => {
     const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
     const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))
 
-
-    const approve = async (z: number) => {
-        try {
-            if(z === 0) {
-                await approveT0()
-            } else {
-                await approveT1()
-            }
-        } catch(e) {
-            console.log(e)
-            setError(e)
-        }
-    }
-
     const doDeposit = async () => {
         try{
             await deposit(zeroIn, oneIn)
@@ -83,13 +69,13 @@ const TidePool = () => {
                 <Info tidePool={tidePool}/>
                 <Box mx="auto">
                     { t0Approved ? <EthAmount token={tidePool.pool.token0} balance={t0Balance} value={zeroIn} setValue={setZeroIn}/> 
-                    : <StyledButton disabled={!account} onClick={()=>approve(0)}>Approve {tidePool.pool.token0.symbol}</StyledButton>}
+                    : <StyledButton disabled={!account} onClick={()=>approveT0()}>Approve {tidePool.pool.token0.symbol}</StyledButton>}
                 </Box>
                 <Box mx="auto">
                     { t1Approved ? <EthAmount token={tidePool.pool.token1} balance={t1Balance} value={oneIn} setValue={setOneIn}/>
-                    : <StyledButton disabled={!account} onClick={()=>approve(1)}>Approve {tidePool.pool.token1.symbol}</StyledButton>}
+                    : <StyledButton disabled={!account} onClick={()=>approveT1()}>Approve {tidePool.pool.token1.symbol}</StyledButton>}
                 </Box>
-                {t0Approved && t1Approved ? <Box mx="auto"><StyledButton onClick={()=>doDeposit()}>Deposit</StyledButton></Box> : null}
+                {t0Approved || t1Approved ? <Box mx="auto"><StyledButton onClick={()=>doDeposit()}>Deposit</StyledButton></Box> : null}
                 {balance.gt(0) ? <Box mx="auto"><StyledButton onClick={()=>doWithdraw()}>Withdraw</StyledButton></Box> : null}
             </Container>
             <Console error={error}/>
