@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { useTokenContract } from "./useContract"
 import { MAX_UINT256 } from "../info/constants"
 import { BigNumber } from "ethers"
@@ -14,34 +14,35 @@ const useToken = (tokenAddress: string, owner: string, spender: string): TokenUt
     const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0))
     const contract = useTokenContract(tokenAddress)
 
-    const approve = async () => {
-        await contract.approve(spender, MAX_UINT256)
-        await checkAllowance()
-    }
-
-    const checkAllowance = async () => {
+    const checkAllowance = useCallback(async () => {
         const allowance = await contract.allowance(owner, spender)
         setIsApproved(allowance.gt(0))
-    }
+    },[contract, owner, spender])
 
     useEffect(()=>{
-        checkAllowance()
-    },[isApproved, contract])
+        if(owner) checkAllowance()
+    },[isApproved, contract, checkAllowance, owner])
 
     useEffect(()=>{
         const getBalance = async () => {
             setBalance(await contract.balanceOf(owner))
         }
-        getBalance()
-    },[balance, contract])
+        if(owner) getBalance()
+    },[balance, contract, owner])
 
     return useMemo(()=>{
+
+        const approve = async () => {
+            await contract.approve(spender, MAX_UINT256)
+            await checkAllowance()
+        }
+
         return {
             isApproved,
             balance,
             approve
         }
-    },[isApproved, balance, approve])
+    },[isApproved, balance, checkAllowance, contract, spender])
 }
 
 export default useToken

@@ -11,16 +11,6 @@ const CreateTidePool = () => {
     const [selected, setSelected] = useState("")
     const pools = [{address: 0x0, token0: 0x0, token1: 0x0, fee: 500}]
 
-    const deployer = useFactoryContract()
-
-    const submit = () => {
-        try {
-
-        } catch(e) {
-            console.log(e)
-        }
-    }
-
     return (
         <Box>
             <Text>Want to use TidePools for a UniswapV3 pool you don't see listed? Create one!</Text>

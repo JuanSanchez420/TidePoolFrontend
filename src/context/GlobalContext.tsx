@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import { createContext, useEffect, useState, useRef } from "react"
+import { createContext, useState } from "react"
 import { Network, Ethereum } from "../info/networks"
 
 interface IGlobalContext {

@@ -9,7 +9,7 @@ const useContract = (address: string, abi: any): ethers.Contract => {
     
     const contract = useMemo(()=>{
         return new ethers.Contract(address, abi, account ? provider.getSigner() : provider)
-    },[provider, account, address])
+    },[provider, account, abi, address])
 
     return contract
 }

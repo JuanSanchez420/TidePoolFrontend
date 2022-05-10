@@ -1,5 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react"
-import ethers from "ethers"
+import { useState, useMemo, useEffect } from "react"
 
 const useUniswapPools = (token0: string, token1: string, fee: number) => {
     const [pools, setPools] = useState([])

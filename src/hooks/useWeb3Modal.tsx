@@ -27,7 +27,7 @@ interface Web3 {
 
 const useWeb3Modal = (): Web3 => {
   const firstLoad = useRef(true)
-  const { provider, setProvider, network, setNetwork, account, setAccount } = useContext(Global)
+  const { provider, setProvider, network, setNetwork, setAccount } = useContext(Global)
 
   const switchChains = useCallback(async (chainId: number): Promise<void> => {
     if(await provider.getSigner().getChainId() !== chainId) {
@@ -55,6 +55,8 @@ const useWeb3Modal = (): Web3 => {
     const network = await p.getNetwork()
     setNetwork(networks.find(n=>n.chainId === network.chainId) || Ethereum)
 
+    setProvider(p)
+
     setAccount(await p.getSigner().getAddress())
     
   },[setProvider, switchChains])
@@ -65,10 +67,8 @@ const useWeb3Modal = (): Web3 => {
         firstLoad.current = false
         connect()
     }
-
-    if(firstLoad.current && provider)  eager()
-
-  },[provider])
+    if(firstLoad.current && provider) eager()
+  },[connect, provider])
   
   return { connect, switchChains }
 
