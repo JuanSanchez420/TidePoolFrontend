@@ -6,7 +6,7 @@ const useUniswapPools = (token0: string, token1: string, fee: number) => {
 
     useEffect(()=>{
         const f = async () => {
-            setPools(await )
+            // setPools(await )
         }
         f();
     },[token0, token1, fee])
