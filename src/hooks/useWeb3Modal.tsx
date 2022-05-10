@@ -50,15 +50,15 @@ const useWeb3Modal = (): Web3 => {
   },[provider, network, setNetwork])
 
   const connect = useCallback(async () => {
-    const p = new ethers.providers.Web3Provider(await web3Modal.connect());
+    let p = new ethers.providers.Web3Provider(await web3Modal.connect());
 
     const network = await p.getNetwork()
     setNetwork(networks.find(n=>n.chainId === network.chainId) || Ethereum)
-    
-    setProvider(p)
+
     setAccount(await p.getSigner().getAddress())
     
   },[setProvider, switchChains])
+
 
   useEffect(()=>{
     const eager = async () => {

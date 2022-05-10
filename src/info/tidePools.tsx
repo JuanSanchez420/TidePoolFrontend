@@ -7,6 +7,21 @@ export interface TidePool {
     chain: Network
 }
 
+export const getFactoryAddress = (chainId: number) => {
+    switch(chainId) {
+        case 1:
+            return "0x0"
+        case 10:
+            return "0x0"
+        case 137:
+            return "0x0"
+        case 42161:
+            return "0x0"
+        default:
+            return "0x0"
+    }
+}
+
 const tidePoolsEthereum: TidePool[] = [
     {
         address: "0x123456789",
@@ -16,7 +31,7 @@ const tidePoolsEthereum: TidePool[] = [
 ]
 const tidePoolsArbitrum: TidePool[] = [
     {
-        address: "0x1e2F34ac2Aa5Ec7aF68921F937232b7fAAc9508f",
+        address: "0x310bFf02729a5e0Ab0e622E6CB8467EEEdbc84f5",
         pool: ensure(pools.find(t=>t.address === "0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443")),
         chain: Arbitrum
     }
