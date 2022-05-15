@@ -59,4 +59,6 @@ const poolsPolygon: Pool[] = [
     }
 ]
 
+export const UNISWAP_FACTORY = "0x1F98431c8aD98523631AE4a59f267346ea31F984"
+
 export const pools: Pool[] = poolsEthereum.concat(poolsArbitrum).concat(poolsOptimism).concat(poolsPolygon)

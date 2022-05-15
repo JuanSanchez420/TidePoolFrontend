@@ -14,7 +14,7 @@ export const getFactoryAddress = (chainId: number) => {
         case 10:
             return "0x0"
         case 137:
-            return "0x0"
+            return "0xc9e0849FC215e0298AD71791DC71c066C403ED99"
         case 42161:
             return "0x0"
         default:
@@ -45,23 +45,8 @@ const tidePoolsOptimism: TidePool[] = [
 ]
 const tidePoolsPolygon: TidePool[] = [
     {
-        address: "0xDd4FD87F714ab19924D52AB4208C5665C3784449",
+        address: "0x99feac4f067b2bac4dcb6a0b49bdf6105ca2c9fb",
         pool: ensure(pools.find(t=>t.address === "0xa374094527e1673a86de625aa59517c5de346d32")),
-        chain: Polygon
-    },
-    {
-        address: "0xA8CB6266f293FA59D18717a35312A58C78406203",
-        pool: ensure(pools.find(t=>t.address === "0x86f1d8390222A3691C28938eC7404A1661E618e0")),
-        chain: Polygon
-    },
-    {
-        address: "0x3395c4503acEc1CA99E1340a80c0E6620689D592",
-        pool: ensure(pools.find(t=>t.address === "0x50eaEDB835021E4A108B7290636d62E9765cc6d7")),
-        chain: Polygon
-    },
-    {
-        address: "0x9683504E896D4F9d18bfdcC9a4FB8FE10a23e45d",
-        pool: ensure(pools.find(t=>t.address === "0xDaC8A8E6DBf8c690ec6815e0fF03491B2770255D")),
         chain: Polygon
     }
 ]
