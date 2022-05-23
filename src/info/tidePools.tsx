@@ -50,7 +50,7 @@ const tidePoolsPolygon: TidePool[] = [
         chain: Polygon
     }
     ,{
-        address: "0xA374094527e1673A86dE625aa59517c5dE346d32",
+        address: "0x8F6B1b787b9449AD02945De01af415290F85ae3b",
         pool: ensure(pools.find(t=>t.address === "0xa374094527e1673a86de625aa59517c5de346d32")),
         chain: Polygon
     }
