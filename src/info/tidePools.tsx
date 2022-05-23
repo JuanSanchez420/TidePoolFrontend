@@ -45,8 +45,8 @@ const tidePoolsOptimism: TidePool[] = [
 ]
 const tidePoolsPolygon: TidePool[] = [
     {
-        address: "0x99feac4f067b2bac4dcb6a0b49bdf6105ca2c9fb",
-        pool: ensure(pools.find(t=>t.address === "0xa374094527e1673a86de625aa59517c5de346d32")),
+        address: "0xc038dB1A40f3b611AbC81Be0a24Fab27563d54af",
+        pool: ensure(pools.find(t=>t.address === "0xDaC8A8E6DBf8c690ec6815e0fF03491B2770255D")),
         chain: Polygon
     }
 ]
