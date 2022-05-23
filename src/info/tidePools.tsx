@@ -49,6 +49,11 @@ const tidePoolsPolygon: TidePool[] = [
         pool: ensure(pools.find(t=>t.address === "0xDaC8A8E6DBf8c690ec6815e0fF03491B2770255D")),
         chain: Polygon
     }
+    ,{
+        address: "0x99Feac4f067b2Bac4DCB6A0B49BDF6105ca2c9Fb",
+        pool: ensure(pools.find(t=>t.address === "0x86f1d8390222A3691C28938eC7404A1661E618e0")),
+        chain: Polygon
+    }
 ]
 
 export const tidePools = tidePoolsEthereum.concat(tidePoolsArbitrum).concat(tidePoolsOptimism).concat(tidePoolsPolygon)
