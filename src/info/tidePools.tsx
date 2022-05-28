@@ -16,7 +16,7 @@ export const getFactoryAddress = (chainId: number) => {
         case 137:
             return "0x51233465F2D1D51DEbd4eB055efc848d74d8905d"
         case 42161:
-            return "0x680B60e3957C8E6b7d93b70B8e70BCE20d17f4f4"
+            return "0x3395c4503acEc1CA99E1340a80c0E6620689D592"
         default:
             return "0x0"
     }
