@@ -40,7 +40,7 @@ export const Optimism: Network = {
     chainId: 137,
     image:"/images/polygon.svg",
     blockExplorer: "https://polygonscan.com/",
-    factory: "0x0"
+    factory: "0x59b81A9B35d94000F40C3e0e7894D7762A526a36"
   }
   
 export const networks: Network[] = [
