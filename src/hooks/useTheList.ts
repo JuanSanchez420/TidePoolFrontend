@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { Network } from "../info/networks"
 import { TheList } from "../info/types"
 
@@ -11,15 +11,13 @@ const useTheList = (network: Network) => {
     }
 
     const [theList, setTheList] = useState<TheList>(INITIAL_LIST)
-    const loaded = useRef(false)
 
     useEffect(()=>{
         const f = async () => {
-            loaded.current = true
             const response = await fetch(`/${network.chainId}.json`)
             if(response.ok) setTheList(await response.json())
         }
-        if(!loaded.current) f()
+        f()
     },[network])
 
     return theList
