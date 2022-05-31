@@ -2,7 +2,6 @@ import { useContext, useMemo } from "react"
 import { ethers } from "ethers"
 import { TIDEPOOL_ABI, UNISWAPPOOL_ABI, ERC20_ABI, FACTORY_ABI } from "../info/abi"
 import { Global } from "../context/GlobalContext"
-import { getFactory } from "../info/factory"
 
 const useContract = (address: string, abi: any): ethers.Contract => {
     const { account, provider } = useContext(Global)
@@ -29,5 +28,5 @@ export const useTokenContract = (address: string): ethers.Contract => {
 export const useFactoryContract = (): ethers.Contract => {
     const { network } = useContext(Global)
 
-    return useContract(getFactory(network.chainId).address, FACTORY_ABI)
+    return useContract(network.factory, FACTORY_ABI)
 }
