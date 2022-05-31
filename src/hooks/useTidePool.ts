@@ -5,6 +5,18 @@ import { BigNumber } from "ethers"
 const useTidePool = (address: string, user?: string) => {
     const contract = useTidePoolContract(address)
     const [balance, setBalance] = useState(BigNumber.from(0))
+    const [pool, setPool] = useState<string | null>(null)
+    const [token0, setToken0] = useState<string | null>(null)
+    const [token1, setToken1] = useState<string | null>(null)
+
+    useEffect(()=>{
+        const fetch = async ()=> {
+            setPool(await contract.pool())
+            setToken0(await contract.token0())
+            setToken1(await contract.token1())
+        }
+        fetch()
+    },[contract])
 
     useEffect(()=>{
         const getBalance = async ()=> {
@@ -30,6 +42,7 @@ const useTidePool = (address: string, user?: string) => {
     }
 
     return {
+        pool,
         balance,
         deposit,
         withdraw,

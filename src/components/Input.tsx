@@ -1,8 +1,9 @@
-import React, { useMemo } from "react"
+import React from "react"
 import styled from "styled-components"
 import { Flex, Text, Button } from "./index"
-import { imageUrls, Token } from "../info/tokens"
+import { imageUrls } from "../info/tokens"
 import { ethers, BigNumber } from "ethers"
+import { Token } from "../info/types"
 
 const InputBox = styled.input`
     all: unset;

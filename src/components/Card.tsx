@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Box, Flex, Text, Button, StyledLink } from "./index"
 import { Chevron, External } from "./Icons"
-import { TidePool } from "../info/tidePools"
 import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
+import { TidePool } from "../info/types"
+import { Global } from "../context/GlobalContext"
 
 const DepositButton = styled(Button)`
     padding: 10px;
@@ -37,6 +38,7 @@ export const Container = styled(Box)`
 `
 
 export const Info = (props: { tidePool: TidePool }) => {
+    const { network } = useContext(Global)
     const [open, setOpen] = useState(false)
 
     return (
@@ -58,10 +60,10 @@ export const Info = (props: { tidePool: TidePool }) => {
                 <Flex>
                     <Flex flexDirection="column">
                         <Box borderBottom="1px solid black"><Text textAlign="center">Contracts</Text></Box>
-                        <StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.pool.address}`} target="_blank">Uniswap pool <External height="1rem" width="1rem"/></StyledLink>
-                        <StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.address}`} target="_blank">TidePool <External height="1rem" width="1rem"/></StyledLink>
-                        <StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.pool.token0.address}`} target="_blank">{props.tidePool.pool.token0.symbol} <External height="1rem" width="1rem"/></StyledLink>
-                        <StyledLink href={`${props.tidePool.chain.blockExplorer}address/${props.tidePool.pool.token1.address}`} target="_blank">{props.tidePool.pool.token1.symbol} <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool.pool.address}`} target="_blank">Uniswap pool <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool.address}`} target="_blank">TidePool <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool.pool.token0.address}`} target="_blank">{props.tidePool.pool.token0.symbol} <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool.pool.token1.address}`} target="_blank">{props.tidePool.pool.token1.symbol} <External height="1rem" width="1rem"/></StyledLink>
                     </Flex>
                 </Flex>
             }
@@ -70,12 +72,12 @@ export const Info = (props: { tidePool: TidePool }) => {
 }
 
 export const Card = (props: { tidePool: TidePool }): JSX.Element => {
-    
+    const { network } = useContext(Global)
 
     return (
         <Container mb={["2rem"]} mx="auto" maxWidth="400px" width="100%" p="5px">
             <Info {...props}/>
-            <Box mx="auto"><DepositButton onClick={()=>window.location.href=`/${props.tidePool.chain.name}/${props.tidePool.address}`}>Enter Pool</DepositButton></Box>
+            <Box mx="auto"><DepositButton onClick={()=>window.location.href=`/${network.name}/${props.tidePool.address}`}>Enter Pool</DepositButton></Box>
         </Container>
     )
 }

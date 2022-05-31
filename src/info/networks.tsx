@@ -3,7 +3,8 @@ export interface Network {
     rpc: string,
     chainId: number,
     image: string,
-    blockExplorer: string
+    blockExplorer: string,
+    factory: string
 }
 
 export const Ethereum: Network = {
@@ -12,6 +13,7 @@ export const Ethereum: Network = {
     chainId: 1,
     image:"/images/ethereum.png",
     blockExplorer: "https://etherscan.io/",
+    factory: "0x0"
   }
   
 export const Arbitrum: Network = {
@@ -19,7 +21,8 @@ export const Arbitrum: Network = {
     rpc: "https://arbitrum-mainnet.infura.io/v3/8c8620ccdccd4d10a4ce8b5786d4659f",
     chainId: 42161,
     image:"/images/arbitrum.svg",
-    blockExplorer: "https://arbiscan.io/"
+    blockExplorer: "https://arbiscan.io/",
+    factory: "0x0"
   }
   
 export const Optimism: Network = {
@@ -27,7 +30,8 @@ export const Optimism: Network = {
     rpc: "https://optimism-mainnet.infura.io/v3/8c8620ccdccd4d10a4ce8b5786d4659f",
     chainId: 10,
     image:"/images/optimism.svg",
-    blockExplorer: "https://optimistic.etherscan.io/"
+    blockExplorer: "https://optimistic.etherscan.io/",
+    factory: "0x0"
   }
 
   export const Polygon: Network = {
@@ -35,17 +39,10 @@ export const Optimism: Network = {
     rpc: "https://polygon-mainnet.infura.io/v3/8c8620ccdccd4d10a4ce8b5786d4659f",
     chainId: 137,
     image:"/images/polygon.svg",
-    blockExplorer: "https://polygonscan.com/"
-  }
-
-  export const Localhost: Network = {
-    name: "Localhost",
-    rpc: "http://localhost:8545",
-    chainId: 1337,
-    image:"/images/crab.png",
-    blockExplorer: "https://polygonscan.com/"
+    blockExplorer: "https://polygonscan.com/",
+    factory: "0x0"
   }
   
 export const networks: Network[] = [
-    Ethereum, Arbitrum, Optimism, Polygon, Localhost
+    Ethereum, Arbitrum, Optimism, Polygon
 ]

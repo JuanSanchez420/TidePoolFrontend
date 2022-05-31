@@ -4,15 +4,12 @@ export const ROUTER = "0xE592427A0AEce92De3Edee1F18E0157C05861564"
 export const FACTORY = "0x1F98431c8aD98523631AE4a59f267346ea31F984"
 export const NONFUNGIBLEPOSITIONMANAGER = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
 
-export const ABI = ["function deposit(uint amount) public payable",
-  "function getPosition(uint id) public returns (uint)",
-  "function swapExactInputSingle() external payable returns (uint256 amountOut)",
-  "function mint() external payable returns (uint256 tokenId, uint128 liquidity, uint256 amount0, uint256 amount1)",
-  "event Deposit(address owner, uint128 liquidity)"
-]
-
 export const NFPM_ABI = ["function positions(uint256 tokenId) external view override returns (uint96 nonce, address operator, address token0, address token1, uint24 fee, int24 tickLower, int24 tickUpper, uint128 liquidity, uint256 feeGrowthInside0LastX128, uint256 feeGrowthInside1LastX128, uint128 tokensOwed0, uint128 tokensOwed1)",
   "function balanceOf(address owner) external view returns (uint256 balance)"
 ]
 
 export const MAX_UINT256 = "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+
+export const NULL_ADDRESS = "0x0000000000000000000000000000000000000000"
+
+export const UNISWAP_FACTORY = "0x1F98431c8aD98523631AE4a59f267346ea31F984"

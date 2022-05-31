@@ -2,8 +2,6 @@ import { useState, useContext } from "react"
 import { useParams } from "react-router-dom"
 import { Box, StyledLink, Button } from "../components/index"
 import { LeftArrow } from "../components/Icons"
-import { ensure } from "../info/pools"
-import { tidePools } from "../info/tidePools"
 import { Container, Info } from "../components/Card"
 import { BigNumber } from "ethers"
 import { Global } from "../context/GlobalContext"
@@ -11,6 +9,7 @@ import styled from "styled-components"
 import { TokenInput } from "../components/Input"
 import useToken from "../hooks/useToken"
 import useTidePool from "../hooks/useTidePool"
+import { dummyTidePool } from "../info/types"
 
 const EthAmount = styled(TokenInput)`
     text-align:center;
@@ -30,11 +29,10 @@ const Console = ({error}: any) => {
 const TidePool = () => {
     const [error, setError] = useState<any>("")
     const address = useParams().address
-    const networkName = useParams().network
 
-    const tidePool = ensure(tidePools.find(p=>p.chain.name === networkName && p.address === address))
+    const { account, theList } = useContext(Global)
 
-    const { account } = useContext(Global)
+    const tidePool = theList.tidePools.find(p=>p.address === address) || dummyTidePool
 
     const { isApproved: t0Approved, balance: t0Balance, approve: approveT0 } = useToken(tidePool.pool.token0.address, account, tidePool.address)
     const { isApproved: t1Approved, balance: t1Balance, approve: approveT1 } = useToken(tidePool.pool.token1.address, account, tidePool.address)

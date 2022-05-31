@@ -1,12 +1,7 @@
 import React, { useState } from "react"
-import { Flex, Box, Text, Select, Button } from '../components'
+import { Flex, Box, Text, Button } from '../components'
 import { TextInput } from "../components/Input"
 import useFactory from "../hooks/useFactory"
-
-// get list of Uniswap pools. Where? Subgraph, moralis, cached
-// get list of tidePools
-// set tickWindow? No, give a value based on recent volatility
-// token token fee
 
 const CreateTidePool = () => {
     const [selected, setSelected] = useState("")

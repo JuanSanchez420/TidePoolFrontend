@@ -1,6 +1,6 @@
 import React from "react"
 import { useTokenContract, useUniswapPoolContract } from "../hooks/useContract"
-import { Flex, Box, Text } from '../components'
+import { Box, Text } from '../components'
 
 const PoolCard = (address: string) => {
     const pool = useUniswapPoolContract(address)
