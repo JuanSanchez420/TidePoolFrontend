@@ -11,6 +11,12 @@
 # production
 /build
 
+# generated
+137.json
+1.json
+10.json
+42161.json
+
 # misc
 .DS_Store
 .env.local

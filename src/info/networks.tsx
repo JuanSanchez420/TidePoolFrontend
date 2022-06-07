@@ -22,7 +22,7 @@ export const Arbitrum: Network = {
     chainId: 42161,
     image:"/images/arbitrum.svg",
     blockExplorer: "https://arbiscan.io/",
-    factory: "0x0"
+    factory: "0xc28EaA5051C0cfB8A493749990787d0190e8300F"
   }
   
 export const Optimism: Network = {
@@ -31,7 +31,7 @@ export const Optimism: Network = {
     chainId: 10,
     image:"/images/optimism.svg",
     blockExplorer: "https://optimistic.etherscan.io/",
-    factory: "0x0"
+    factory: "0xA2D974Be6Aa43D38c087E9De221801BACCAB252B"
   }
 
   export const Polygon: Network = {
