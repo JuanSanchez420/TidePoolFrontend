@@ -17,7 +17,8 @@ export const Wrapper = styled(Box)`
   height: 100vh;
   width: 100%;
   padding:5px;
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.colors.lightBlue};
+  background-image: linear-gradient(210deg, ${props => props.theme.colors.darkBlue} 0%, ${props => props.theme.colors.lightBlue} 50%, ${props => props.theme.colors.white} 100%);
 `
 
 export interface BoxProps extends SpaceProps, BorderProps, LayoutProps {}

@@ -32,9 +32,9 @@ const IconRight = styled.img`
 
 export const Container = styled(Box)`
     border-radius: 0.5rem;
-    border: 1px solid ${props => props.theme.colors.border};
     padding: 10px; 
-
+    background-color: ${props => props.theme.colors.white};
+    filter: ${props => props.theme.utils.dropShadow};
 `
 
 export const Info = (props: { tidePool: TidePool }) => {
@@ -43,7 +43,7 @@ export const Info = (props: { tidePool: TidePool }) => {
 
     return (
         <>
-            <Flex borderBottom="1px solid black" pb="10px" alignItems="center" justifyContent="space-around">
+            <Flex pb="10px" alignItems="center" justifyContent="space-around">
                 <Flex>
                 <IconBox width="35px" height="40px" marginRight="1rem">
                     <IconLeft src={imageUrls[props.tidePool.pool.token0.symbol]}/>

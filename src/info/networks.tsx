@@ -13,7 +13,7 @@ export const Ethereum: Network = {
     chainId: 1,
     image:"/images/ethereum.png",
     blockExplorer: "https://etherscan.io/",
-    factory: "0x0"
+    factory: "0xA2D974Be6Aa43D38c087E9De221801BACCAB252B"
   }
   
 export const Arbitrum: Network = {

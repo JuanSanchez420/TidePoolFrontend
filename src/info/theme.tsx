@@ -30,6 +30,10 @@ const colors: {[key: string]:string} = {
   yellow: "#ffd51e",
 }
 
-const theme = { mediaQueries, colors }
+const utils: {[key: string]: string} ={
+  dropShadow: "drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))",
+}
+
+const theme = { mediaQueries, colors, utils }
 
 export default theme;

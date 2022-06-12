@@ -60,10 +60,10 @@ const TidePool = () => {
 
     return (
         <Box>
-            <StyledLink href="/">
-                <LeftArrow height="1rem" width="1rem"/> Return to list
-            </StyledLink>
-            <Container>
+            <Box maxWidth="400px" width="100%" mx="auto" py="1rem" mb="1rem">
+                <Button onClick={()=>window.location.href="/"}>Back to all pools</Button>
+            </Box>
+            <Container maxWidth="400px" width="100%" mx="auto">
                 <Info tidePool={tidePool}/>
                 <Box mx="auto">
                     { t0Approved ? <EthAmount token={tidePool.pool.token0} balance={t0Balance} value={zeroIn} setValue={setZeroIn}/> 

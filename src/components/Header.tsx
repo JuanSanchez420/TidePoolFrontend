@@ -26,33 +26,38 @@ const TidePoolLogo = styled.img`
 const NetworkSelect = styled(Flex)`
     padding: 5px 10px;
     align-items: center;
-    border: 1px solid ${props => props.theme.colors.black};
     border-radius: 0.5rem;
     position: relative;
     width: 2rem;
     justify-content:center;
     cursor: pointer;
-
-    :hover #wut {
-        display: block;
-        width:150px;
-    }
+    z-index:11;
+    background-color: ${props => props.theme.colors.white};
+    filter: ${props => props.theme.utils.dropShadow};
 
     ${({theme})=> theme.mediaQueries.sm} {
         width: 7rem;
     }
+
+    :hover #wut {
+        visibility: visible;
+        transition-delay: 0s;
+    }
 `
 
 const NetworkSelectOptions = styled(Flex)`
-    display: none;
+    visibility: hidden;
+    transition: 0.2s 1s;
+    width:150px;
     position: absolute;
     left: 0;
     right: 0;
-    top: 1.5rem;
+    top: 3rem;
     padding: 0.5rem;
-    background-color: white;
     border-radius: 1rem;
-    border: 1px solid black;
+    background-color: ${props => props.theme.colors.white};
+    filter: ${props => props.theme.utils.dropShadow};
+    z-index:11;
 `
 
 const NetworkName = styled(Box)`
@@ -69,6 +74,14 @@ const Highlight = styled(Text)`
     }
 `
 
+const Menu = styled(Button)`
+    border-radius: 0.5rem;
+    padding: 5px 15px;
+    width: 5rem;
+    text-transform: none;
+    margin-right: 1rem;
+`
+
 export const Header = () => {
     const { account, network } = useContext(Global)
     const web3 = useWeb3Modal()
@@ -81,11 +94,12 @@ export const Header = () => {
             <Flex alignItems="center">
                 <NetworkSelect mr="1rem">
                     <Flex alignItems="center"><Logo src={network.image}/><NetworkName>{network.name}</NetworkName></Flex>
-                    <NetworkSelectOptions id="wut" flexDirection="column">
-                        <Box mb="1rem">Select a Network</Box>
-                        {networks.map((n: Network)=><Flex key={n.chainId} alignItems="center" p="2px" onClick={()=>web3.switchChains(n.chainId)}><Logo src={n.image}/><Highlight>{n.name}</Highlight></Flex>)}
-                    </NetworkSelectOptions>
+                        <NetworkSelectOptions id="wut" flexDirection="column">
+                            <Box mb="1rem">Select a Network</Box>
+                            {networks.map((n: Network)=><Flex key={n.chainId} alignItems="center" p="2px" onClick={()=>web3.switchChains(n.chainId)}><Logo src={n.image}/><Highlight>{n.name}</Highlight></Flex>)}
+                        </NetworkSelectOptions>
                 </NetworkSelect>
+                <Menu>Menu</Menu>
                 <Connect onClick={()=>web3.connect()}>{!account ? "Connect" : account}</Connect>
             </Flex>
         </Flex>

@@ -4,6 +4,7 @@ import { Search } from "../components/Icons"
 import { TextInput } from "../components/Input";
 import { Card } from "../components/Card"
 import { Global } from "../context/GlobalContext"
+import Welcome from '../components/Welcome';
 
 function Home() {
     const g = useContext(Global)
@@ -24,6 +25,9 @@ function Home() {
 
     return (
         <Box mx="auto">
+            <Flex justifyContent="center" alignItems="center" mb="1rem">
+                <Welcome/>
+            </Flex>
             <Flex justifyContent="center" alignItems="center">
                 <TextInput value={search} setValue={setSearch} placeholder="Search" icon={<Search height="2rem" width="2rem"/>}/>
             </Flex>
