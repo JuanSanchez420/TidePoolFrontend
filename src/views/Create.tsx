@@ -74,6 +74,7 @@ const CreateTidePool = () => {
                     <li>Optimism: 0.000118097067 ETH ($0.20)</li>
                     <li>Polygon: 0.129863760073589464 MATIC ($0.08)</li>
                 </ul>
+                <Text>There are no more costs after creation. We take care of the rest!</Text>
             </Answer>
             <Question>"Do I control the TidePool if I create it?"</Question>
             <Answer>No. There are no special permissions with any TidePool, even for the owner or creator.</Answer>

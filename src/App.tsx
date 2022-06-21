@@ -9,6 +9,7 @@ import { GlobalContext } from "./context/GlobalContext"
 const Home = lazy(()=>import("./views/Home"))
 const TidePool = lazy(()=>import("./views/TidePool"))
 const Create = lazy(()=>import("./views/Create"))
+const FAQ = lazy(()=>import("./views/FAQ"))
 
 const Layout = () => {
   return (
@@ -35,6 +36,7 @@ function FrenMoney() {
         <Route index element={<Home />}/>
         <Route path="/:network/:address" element={<TidePool />}/>
         <Route path="/create" element={<Create />}/>
+        <Route path="/faq" element={<FAQ />}/>
       </Route>
     </Routes>
   );

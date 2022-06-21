@@ -32,7 +32,7 @@ const WelcomeMessage = ({callback}: { callback: ()=>void }) => {
             </Box>
             <Text my="0.5rem">Basically, TidePools.io turns a V3 liqudity pool into a hassle-free V2 liquidity pool.</Text>
             <Text my="0.5rem">Don't see a pool you want? <ExternalLink href="/create">Create it!</ExternalLink> We allow users to create their own TidePools for any Uniswap V3 pool they want.</Text> 
-            <Text my="0.5rem">Have questions? Check out our <ExternalLink href="/faq">FAQ</ExternalLink>, or <ExternalLink href="https://twitter.com/juansanchez420">talk to me on Twitter <External height="1rem" width="1rem"/></ExternalLink>.</Text>
+            <Text my="0.5rem">Have questions? Check out our <ExternalLink href="/faq">FAQ</ExternalLink>, or <ExternalLink href="https://twitter.com/juansanchez0x0">talk to me on Twitter <External height="1rem" width="1rem"/></ExternalLink>.</Text>
             <Text my="0.5rem" fontWeight="800">THIS PRODUCT IS IN BETA!</Text>
             <Text my="0.5rem">While the contracts have been finalized, tested, and security checked, the website is still a work in progress.</Text>
             <Text my="0.5rem">All of this information can be found in the menu above.</Text>

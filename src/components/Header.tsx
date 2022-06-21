@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import styled from "styled-components"
-import { Flex, Button, Box, Text } from "./index"
+import { Flex, Button, Box, Text, StyledLink } from "./index"
 import { networks, Network } from "../info/networks"
 import useWeb3Modal from "../hooks/useWeb3Modal"
 import { Global } from "../context/GlobalContext"
@@ -80,6 +80,27 @@ const Menu = styled(Button)`
     width: 5rem;
     text-transform: none;
     margin-right: 1rem;
+    position: relative;
+
+    :hover #menu {
+        visibility: visible;
+        transition-delay: 0s;
+    }
+`
+
+const MenuOptions = styled(Flex)`
+    visibility: hidden;
+    transition: 0.2s 1s;
+    width:150px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 3rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    background-color: ${props => props.theme.colors.darkBlue};
+    filter: ${props => props.theme.utils.dropShadow};
+    z-index:11;
 `
 
 export const Header = () => {
@@ -99,7 +120,14 @@ export const Header = () => {
                             {networks.map((n: Network)=><Flex key={n.chainId} alignItems="center" p="2px" onClick={()=>web3.switchChains(n.chainId)}><Logo src={n.image}/><Highlight>{n.name}</Highlight></Flex>)}
                         </NetworkSelectOptions>
                 </NetworkSelect>
-                <Menu>Menu</Menu>
+                <Menu>
+                    <Box>Menu</Box>
+                    <MenuOptions id="menu" flexDirection="column" alignItems="start">
+                        <StyledLink href="/">Home</StyledLink>
+                        <StyledLink href="/create">Create</StyledLink>
+                        <StyledLink href="/faq">FAQ</StyledLink>
+                    </MenuOptions>
+                </Menu>
                 <Connect onClick={()=>web3.connect()}>{!account ? "Connect" : account}</Connect>
             </Flex>
         </Flex>

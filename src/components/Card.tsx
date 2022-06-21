@@ -51,9 +51,6 @@ export const Info = (props: { tidePool: TidePool }) => {
                 </IconBox>
                 <Text fontWeight="black" fontSize="1.5rem" textAlign="center">{props.tidePool.pool.token0?.symbol} / {props.tidePool.pool.token1?.symbol}</Text>
                 </Flex>
-            </Flex>
-            <Flex flexWrap="wrap" p="10px" justifyContent="space-around">
-                <Text textAlign="center">200% APR</Text>
                 <StyledLink onClick={()=>setOpen(!open)}><Flex>Details<Box width="10px" ml="5px"><Chevron open={open}/></Box></Flex></StyledLink>
             </Flex>
             {open && 

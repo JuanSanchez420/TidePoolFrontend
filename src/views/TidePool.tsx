@@ -1,7 +1,6 @@
 import { useState, useContext } from "react"
 import { useParams } from "react-router-dom"
-import { Box, StyledLink, Button } from "../components/index"
-import { LeftArrow } from "../components/Icons"
+import { Box, Button } from "../components/index"
 import { Container, Info } from "../components/Card"
 import { BigNumber } from "ethers"
 import { Global } from "../context/GlobalContext"
