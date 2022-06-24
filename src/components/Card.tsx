@@ -3,8 +3,9 @@ import { Box, Flex, Text, Button, StyledLink } from "./index"
 import { Chevron, External } from "./Icons"
 import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
-import { TidePool } from "../info/types"
+import { Slot0, TidePool } from "../info/types"
 import { Global } from "../context/GlobalContext"
+import { getToken0Price, getToken1Price } from "../utils/price"
 
 const DepositButton = styled(Button)`
     padding: 10px;
@@ -37,7 +38,7 @@ export const Container = styled(Box)`
     filter: ${props => props.theme.utils.dropShadow};
 `
 
-export const Info = (props: { tidePool: TidePool }) => {
+export const Info = (props: { tidePool?: TidePool, slot0?: Slot0 | null}) => {
     const { network } = useContext(Global)
     const [open, setOpen] = useState(false)
 
@@ -46,21 +47,25 @@ export const Info = (props: { tidePool: TidePool }) => {
             <Flex pb="10px" alignItems="center" justifyContent="space-around">
                 <Flex>
                 <IconBox width="35px" height="40px" marginRight="1rem">
-                    <IconLeft src={imageUrls[props.tidePool.pool.token0.symbol]}/>
-                    <IconRight src={imageUrls[props.tidePool.pool.token1.symbol]}/>
+                    <IconLeft src={props.tidePool ? imageUrls[props.tidePool.pool.token0.symbol] : ""}/>
+                    <IconRight src={props.tidePool ? imageUrls[props.tidePool.pool.token1.symbol] : ""}/>
                 </IconBox>
-                <Text fontWeight="black" fontSize="1.5rem" textAlign="center">{props.tidePool.pool.token0?.symbol} / {props.tidePool.pool.token1?.symbol}</Text>
+                <Text fontWeight="black" fontSize="1.5rem" textAlign="center">{props.tidePool?.pool.token0?.symbol} / {props.tidePool?.pool.token1?.symbol}</Text>
                 </Flex>
                 <StyledLink onClick={()=>setOpen(!open)}><Flex>Details<Box width="10px" ml="5px"><Chevron open={open}/></Box></Flex></StyledLink>
             </Flex>
+            {props.slot0 && props.tidePool ? 
+                <Flex>{getToken0Price(props.slot0.sqrtPriceX96).toString()}, {getToken1Price(props.slot0.sqrtPriceX96).toString()}</Flex>
+            : null
+            }
             {open && 
                 <Flex>
                     <Flex flexDirection="column">
                         <Box borderBottom="1px solid black"><Text textAlign="center">Contracts</Text></Box>
-                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool.pool.address}`} target="_blank">Uniswap pool <External height="1rem" width="1rem"/></StyledLink>
-                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool.address}`} target="_blank">TidePool <External height="1rem" width="1rem"/></StyledLink>
-                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool.pool.token0.address}`} target="_blank">{props.tidePool.pool.token0.symbol} <External height="1rem" width="1rem"/></StyledLink>
-                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool.pool.token1.address}`} target="_blank">{props.tidePool.pool.token1.symbol} <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool?.pool.address}`} target="_blank">Uniswap pool <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool?.address}`} target="_blank">TidePool <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool?.pool.token0.address}`} target="_blank">{props.tidePool?.pool.token0.symbol} <External height="1rem" width="1rem"/></StyledLink>
+                        <StyledLink href={`${network.blockExplorer}address/${props.tidePool?.pool.token1.address}`} target="_blank">{props.tidePool?.pool.token1.symbol} <External height="1rem" width="1rem"/></StyledLink>
                     </Flex>
                 </Flex>
             }
@@ -68,7 +73,7 @@ export const Info = (props: { tidePool: TidePool }) => {
     )
 }
 
-export const Card = (props: { tidePool: TidePool }): JSX.Element => {
+export const Card = (props: { tidePool: TidePool, slot0: Slot0 | null }): JSX.Element => {
     const { network } = useContext(Global)
 
     return (

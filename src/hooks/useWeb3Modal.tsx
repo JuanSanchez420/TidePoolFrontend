@@ -65,7 +65,7 @@ const useWeb3Modal = (): Web3 => {
 
     setAccount(await p.getSigner().getAddress())
     
-  },[setProvider, switchChains])
+  },[setProvider, setAccount, setNetwork])
 
 
   useEffect(()=>{

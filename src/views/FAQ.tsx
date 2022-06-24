@@ -1,6 +1,5 @@
 import React from "react"
-import { Flex, Box, Text, StyledLink } from '../components'
-import { External } from "../components/Icons"
+import { Box, Text, StyledLink } from '../components'
 import styled from "styled-components"
 
 const ContentContainer = styled(Box)`
@@ -21,6 +20,7 @@ const Question = styled(Text)`
     margin-bottom:0.5rem;
     font-weight: 600;
     font-style: italic;
+    font-size: large;
 `
 const Answer = styled(Text)`
     margin-bottom:1rem;
@@ -59,12 +59,18 @@ const FAQ = () => {
                 </ul>
                 These are the official factory addresses. All TidePools can be found in this contract.
             </Answer>
-            <Question>"What is the 'Create' TidePool page do?"</Question>
+            <Question>"What does the 'Create' TidePool page do?"</Question>
             <Answer>All users are able to create their own TidePools for any Uniswap V3 pool. If you see a juicy APR but don't want to manage the V3 pool, just create a TidePool and let us manage the pool for you!</Answer>
             <Question>"What is the fee?"</Question>
             <Answer>TidePools.io will take 10% of the profit generated from liquidity provisions. Other liquidity pool optimizers take 20-30%.</Answer>
             <Question>"What is the APR?"</Question>
-            <Answer>We're working on automating this.</Answer>
+            <Answer>We're working on automating this. Soon(TM). APR will be higher then traditional liquidity pools, but varies day to day.</Answer>
+            <Question>"Does TidePools.io have a token?"</Question>
+            <Answer>No. Other liquidity pool optimizers have a token so you can get revenue sharing, but we give you the best rate up front without the need for a token.</Answer>
+            <Question>"What is the "TPOOL" token?"</Question>
+            <Answer>The TPOOL token is a receipt for your position in the liquidity pool. It's how TidePools.io tracks your deposit.</Answer>
+            <Question>"What networks does TidePools.io support?"</Question>
+            <Answer>TidePools.io works on networks where Uniswap V3 is deployed: Ethereum, Arbitrum, Optimism, and Polygon. If Uniswap expands to other chains, we'll also deploy there as well.</Answer>
         </ContentContainer>
         </>
     )

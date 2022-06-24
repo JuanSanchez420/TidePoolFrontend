@@ -22,12 +22,13 @@ const WelcomeMessage = ({callback}: { callback: ()=>void }) => {
     return (
         <Box width="100%">
             <Text fontWeight="700" fontSize="x-large" my="1rem" textAlign="center">Welcome to TidePools.io!</Text>
-            <Text>TidePools.io generates the largest returns on Uniswap V3 liquidity pools, passively! Just deposit in a TidePool, and we take care of the rest.</Text>
+            <Text mb="1rem">TidePools.io generates the largest returns on Uniswap V3 liquidity pools, passively! Just deposit in a TidePool, and we take care of the rest.</Text>
+            <Text mb="1rem">TidePools.io:</Text>
             <Box>
                 <ul>
-                    <li>If price moves out of range, TidePools.io rebalances it</li>
-                    <li>TidePools.io increases/decreases the range with volatility for max fee generation</li>
-                    <li>TidePools.io pays all the gas costs</li>
+                    <li>Manages your pools for you</li>
+                    <li>Maximizes fee generation</li>
+                    <li>Pays all the gas costs</li>
                 </ul>
             </Box>
             <Text my="0.5rem">Basically, TidePools.io turns a V3 liqudity pool into a hassle-free V2 liquidity pool.</Text>

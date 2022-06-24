@@ -32,7 +32,7 @@ function Home() {
                 <TextInput value={search} setValue={setSearch} placeholder="Search" icon={<Search height="2rem" width="2rem"/>}/>
             </Flex>
             <Flex width="100%" flexWrap="wrap" flexDirection="row">
-                {view.map((tp,i)=><Card key={`${tp.address}-${i}`} tidePool={tp}/>)}
+                {view.map((tp,i)=><Card key={`${tp.address}-${i}`} tidePool={tp} slot0={null}/>)}
             </Flex>
         </Box>
     );

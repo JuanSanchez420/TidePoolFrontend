@@ -1,3 +1,5 @@
+import { BigNumber } from "ethers"
+
 export interface Chain {
     id: number
     rpc: string
@@ -30,23 +32,26 @@ export interface TheList {
     tidePools: TidePool[]
 }
 
-export const dummyTidePool: TidePool = {
-    chainId: 1,
-    address: "0x0",
-    pool: {
-        chainId: 1,
-        address: "0x0",
-        token0: {
-            chainId: 1,
-            address: "0x0",
-            symbol: "N/A",
-            decimals: 18
-        },
-        token1: {
-            chainId: 1,
-            address: "0x0",
-            symbol: "N/A",
-            decimals: 18
-        }
-    }
+export enum CreateState {
+    DOESNT_EXIST,
+    PENDING,
+    ERROR,
+    DONE
+}
+
+export enum ApprovalState {
+    NOT_APPROVED,
+    PENDING,
+    APPROVED,
+    ERROR
+}
+
+export interface Slot0 {
+    sqrtPriceX96: BigNumber
+    tick: number
+    observationIndex: number
+    observationCardinality: number
+    observationCardinalityNext: number
+    feeProtocol: number
+    unlocked: boolean
 }

@@ -1,9 +1,11 @@
-import React, { useState } from "react"
-import { Flex, Box, Text, Button, StyledLink } from '../components'
+import React, { useState, useMemo, useContext } from "react"
+import { Flex, Box, Text, Button, StyledLink, Dots } from '../components'
 import { External } from "../components/Icons"
 import { TextInput } from "../components/Input"
 import useFactory from "../hooks/useFactory"
 import styled from "styled-components"
+import { CreateState } from "../info/types"
+import { Global } from "../context/GlobalContext"
 
 const ActionsContainer = styled(Box)`
     max-width: 400px;
@@ -31,6 +33,7 @@ const Question = styled(Text)`
     margin-bottom:0.5rem;
     font-weight: 600;
     font-style: italic;
+    font-size: 20px;
 `
 const Answer = styled(Text)`
     margin-bottom:1rem;
@@ -41,25 +44,39 @@ const CreateButton = styled(Button)`
 `
 
 const CreateTidePool = () => {
+    const { network } = useContext(Global)
     const [selected, setSelected] = useState("")
-    const { deploy } = useFactory()
+    const [address, setAddress] = useState(null)
+    const { state, deploy } = useFactory()
 
     const createPool = async () => {
-        await deploy(selected)
+        const r = await deploy(selected)
+        console.log(r)
+        if(r) setAddress(r)
     }
+
+    const Actions = ({ state, pool }: { state: CreateState, pool: string}) => useMemo(()=>{
+        if(state === CreateState.PENDING)
+            return <CreateButton disabled><Dots>Creating Pool</Dots></CreateButton>
+        if(state === CreateState.DONE)
+            return <CreateButton onClick={()=>window.location.href = `/${network.name}/${address}`}>Click to go to your pool</CreateButton>
+
+        return <CreateButton disabled={pool===""} onClick={()=>createPool()}>Create Pool</CreateButton>
+    },[state, pool])
 
     return (
         <>
         <ActionsContainer>
             <Flex flexDirection="column">
                 <TextInput value={selected} setValue={setSelected} placeholder="UniswapV3 Pool address"/>
-                <CreateButton disabled={selected===""} onClick={()=>createPool()}>Create Pool</CreateButton>
+                <Actions state={state} pool={selected}/>
             </Flex>
         </ActionsContainer>
         <ContentContainer>
             <Text>Want to use TidePools for a UniswapV3 pool you don't see listed? Create one!</Text>
             <ol>
-                <li>Find a <ExternalLink href="https://info.uniswap.org/#/pools">Uniswap V3 Pool <External height="1rem" width="1rem"/></ExternalLink></li>
+                <li>Choose your chain</li>
+                <li>Find a <ExternalLink href="https://info.uniswap.org/#/pools">Uniswap V3 Pool address<External height="1rem" width="1rem"/></ExternalLink></li>
                 <li>Paste the address of the pool into the box above</li>
                 <li>Click "Create Pool" and run the transaction</li>
             </ol>

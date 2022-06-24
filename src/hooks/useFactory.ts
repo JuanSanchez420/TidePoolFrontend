@@ -1,22 +1,29 @@
-import React, { useEffect, useMemo, useCallback, useState, useContext } from "react"
+import { useCallback, useState } from "react"
+import { CreateState } from "../info/types"
 import { useFactoryContract } from "./useContract"
-import ethers from "ethers"
-import { Global } from "../context/GlobalContext"
 
 const useFactory = () => {
-    const { network } = useContext(Global)
     const contract = useFactoryContract()
+    const [state, setState] = useState<CreateState>(CreateState.PENDING)
 
     const deploy = useCallback(async (address: string)=>{
+        let r = null
         try {
-            const tx = await contract.deploy(address)
-            await tx.wait()
+            setState(CreateState.PENDING)
+            const tx = await contract?.deploy(address)
+            const receipt = await tx.wait()
+            console.log(receipt)
+            r = receipt.events[2].args.TidePoolCreated
+            setState(r ? CreateState.DONE : CreateState.ERROR)
         } catch(e) {
             console.log(e)
+            setState(CreateState.ERROR)
         }
+        return r
     },[contract])
 
     return {
+        state,
         deploy
     }
 }
