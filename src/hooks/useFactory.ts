@@ -4,7 +4,7 @@ import { useFactoryContract } from "./useContract"
 
 const useFactory = () => {
     const contract = useFactoryContract()
-    const [state, setState] = useState<CreateState>(CreateState.PENDING)
+    const [state, setState] = useState<CreateState>(CreateState.DOESNT_EXIST)
 
     const deploy = useCallback(async (address: string)=>{
         let r = null
