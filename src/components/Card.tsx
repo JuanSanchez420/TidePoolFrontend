@@ -54,10 +54,6 @@ export const Info = (props: { tidePool?: TidePool, slot0?: Slot0 | null}) => {
                 </Flex>
                 <StyledLink onClick={()=>setOpen(!open)}><Flex>Details<Box width="10px" ml="5px"><Chevron open={open}/></Box></Flex></StyledLink>
             </Flex>
-            {props.slot0 && props.tidePool ? 
-                <Flex>{getToken0Price(props.slot0.sqrtPriceX96).toString()}, {getToken1Price(props.slot0.sqrtPriceX96).toString()}</Flex>
-            : null
-            }
             {open && 
                 <Flex>
                     <Flex flexDirection="column">
