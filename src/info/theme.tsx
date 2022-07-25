@@ -1,39 +1,41 @@
-
 export const breakpointMap: { [key: string]: number } = {
-    xs: 370,
-    sm: 576,
-    md: 852,
-    lg: 968,
-    xl: 1080,
-    xxl: 1200,
-  };
-  
+  xs: 370,
+  sm: 576,
+  md: 852,
+  lg: 968,
+  xl: 1080,
+  xxl: 1200,
+};
+
 // const breakpoints = Object.values(breakpointMap).map((breakpoint) => `${breakpoint}px`);
 
 const mediaQueries = {
-xs: `@media screen and (min-width: ${breakpointMap.xs}px)`,
-sm: `@media screen and (min-width: ${breakpointMap.sm}px)`,
-md: `@media screen and (min-width: ${breakpointMap.md}px)`,
-lg: `@media screen and (min-width: ${breakpointMap.lg}px)`,
-xl: `@media screen and (min-width: ${breakpointMap.xl}px)`,
-xxl: `@media screen and (min-width: ${breakpointMap.xxl}px)`,
-nav: `@media screen and (min-width: ${breakpointMap.lg}px)`,
+  xs: `@media screen and (min-width: ${breakpointMap.xs}px)`,
+  sm: `@media screen and (min-width: ${breakpointMap.sm}px)`,
+  md: `@media screen and (min-width: ${breakpointMap.md}px)`,
+  lg: `@media screen and (min-width: ${breakpointMap.lg}px)`,
+  xl: `@media screen and (min-width: ${breakpointMap.xl}px)`,
+  xxl: `@media screen and (min-width: ${breakpointMap.xxl}px)`,
+  nav: `@media screen and (min-width: ${breakpointMap.lg}px)`,
 };
 
-
-const colors: {[key: string]:string} = {
+const colors: { [key: string]: string } = {
   black: "#000000",
-  darkBlue: "#055C9D",
-  lightBlue: "#91CCFF",
+  darkBlue: "#072E4F",
+  lightBlue: "#033E6B",
+  babyBlue: "#BDE9FF",
+  buttonText: "#055C9D",
   red: "#da1f3d",
   white: "#FFFFFF",
-  yellow: "#ffd51e",
-}
+  yellow: "#FFD51E",
+  darkYellow: "#B89A17",
+};
 
-const utils: {[key: string]: string} ={
-  dropShadow: "drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))",
-}
+const utils: { [key: string]: string } = {
+  dropShadow:
+    "drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))",
+};
 
-const theme = { mediaQueries, colors, utils }
+const theme = { mediaQueries, colors, utils };
 
 export default theme;

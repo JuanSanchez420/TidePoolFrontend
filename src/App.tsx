@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Outlet } from "react-router-dom";
 import { ThemeProvider } from 'styled-components'
 import theme from "./info/theme"
-import { Wrapper, Box } from "./components/index"
+import { Wrapper, Box, Flex, LoadingLogo, DarkWrapper } from "./components/index"
 import { Header } from "./components/Header"
 import { GlobalContext } from "./context/GlobalContext"
 
@@ -11,24 +11,36 @@ const TidePool = lazy(()=>import("./views/TidePool"))
 const Create = lazy(()=>import("./views/Create"))
 const FAQ = lazy(()=>import("./views/FAQ"))
 
+const Loading = () => {
+  return (
+    <Flex height="100%" width="100%" justifyContent="center" alignItems="center">
+      <LoadingLogo/>
+    </Flex>
+  )
+}
+
 const Layout = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalContext>
       <Wrapper>
-        <Box maxWidth="1000px" m="auto">
-          <Suspense fallback={<div>Loading</div>}>
-            <Header/>
+        <Suspense fallback={<Loading/>}>
+          <DarkWrapper>
+            <Box maxWidth="1000px" m="auto">
+              <Header/>
+            </Box>
+          </DarkWrapper>
+          <Box maxWidth="1000px" m="auto">
             <Outlet/>
-          </Suspense>
-        </Box>
+          </Box>
+        </Suspense>
       </Wrapper>
       </GlobalContext>
     </ThemeProvider>
   )
 }
 
-function FrenMoney() {
+function TidePools() {
   
   return (
     <Routes>
@@ -42,4 +54,4 @@ function FrenMoney() {
   );
 }
 
-export default FrenMoney;
+export default TidePools;
