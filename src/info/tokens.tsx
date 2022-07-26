@@ -1,5 +1,5 @@
 interface ImageUrls {
-  [key: string]: string;
+  [key: string]: string
 }
 
 export const imageUrls: ImageUrls = {
@@ -8,4 +8,4 @@ export const imageUrls: ImageUrls = {
   DAI: "https://assets.trustwalletapp.com/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
   WMATIC:
     "https://assets.trustwalletapp.com/blockchains/polygon/assets/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270/logo.png",
-};
+}

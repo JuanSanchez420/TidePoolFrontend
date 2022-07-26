@@ -5,7 +5,7 @@ export const breakpointMap: { [key: string]: number } = {
   lg: 968,
   xl: 1080,
   xxl: 1200,
-};
+}
 
 // const breakpoints = Object.values(breakpointMap).map((breakpoint) => `${breakpoint}px`);
 
@@ -17,7 +17,7 @@ const mediaQueries = {
   xl: `@media screen and (min-width: ${breakpointMap.xl}px)`,
   xxl: `@media screen and (min-width: ${breakpointMap.xxl}px)`,
   nav: `@media screen and (min-width: ${breakpointMap.lg}px)`,
-};
+}
 
 const colors: { [key: string]: string } = {
   black: "#000000",
@@ -29,13 +29,13 @@ const colors: { [key: string]: string } = {
   white: "#FFFFFF",
   yellow: "#FFD51E",
   darkYellow: "#B89A17",
-};
+}
 
 const utils: { [key: string]: string } = {
   dropShadow:
     "drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))",
-};
+}
 
-const theme = { mediaQueries, colors, utils };
+const theme = { mediaQueries, colors, utils }
 
-export default theme;
+export default theme

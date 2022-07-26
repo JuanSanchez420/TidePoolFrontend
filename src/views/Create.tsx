@@ -1,11 +1,11 @@
-import React, { useState, useMemo, useContext } from "react";
-import { Flex, Box, Text, Button, StyledLink, Dots } from "../components";
-import { External } from "../components/Icons";
-import { TextInput } from "../components/Input";
-import useFactory from "../hooks/useFactory";
-import styled from "styled-components";
-import { CreateState } from "../info/types";
-import { Global } from "../context/GlobalContext";
+import React, { useState, useMemo, useContext } from "react"
+import { Flex, Box, Text, Button, StyledLink, Dots } from "../components"
+import { External } from "../components/Icons"
+import { TextInput } from "../components/Input"
+import useFactory from "../hooks/useFactory"
+import styled from "styled-components"
+import { CreateState } from "../info/types"
+import { Global } from "../context/GlobalContext"
 
 const ActionsContainer = styled(Box)`
   max-width: 400px;
@@ -13,7 +13,7 @@ const ActionsContainer = styled(Box)`
   background-color: ${(props) => props.theme.colors.white};
   border-radius: 0.5rem;
   padding: 10px;
-`;
+`
 
 const ContentContainer = styled(Box)`
   margin-top: 1rem;
@@ -22,38 +22,38 @@ const ContentContainer = styled(Box)`
   background-color: ${(props) => props.theme.colors.white};
   border-radius: 0.5rem;
   padding: 10px;
-`;
+`
 
 const ExternalLink = styled(StyledLink)`
   background-color: ${(props) => props.theme.colors.lightBlue};
   padding: 0.1rem;
-`;
+`
 
 const Question = styled(Text)`
   margin-bottom: 0.5rem;
   font-weight: 600;
   font-style: italic;
   font-size: 20px;
-`;
+`
 const Answer = styled(Text)`
   margin-bottom: 1rem;
-`;
+`
 
 const CreateButton = styled(Button)`
   padding: 10px;
-`;
+`
 
 const CreateTidePool = () => {
-  const { network } = useContext(Global);
-  const [selected, setSelected] = useState("");
-  const [address, setAddress] = useState(null);
-  const { state, deploy } = useFactory();
+  const { network } = useContext(Global)
+  const [selected, setSelected] = useState("")
+  const [address, setAddress] = useState(null)
+  const { state, deploy } = useFactory()
 
   const createPool = async () => {
-    const r = await deploy(selected);
-    console.log(r);
-    if (r) setAddress(r);
-  };
+    const r = await deploy(selected)
+    console.log(r)
+    if (r) setAddress(r)
+  }
 
   const Actions = ({ state, pool }: { state: CreateState; pool: string }) =>
     useMemo(() => {
@@ -62,7 +62,7 @@ const CreateTidePool = () => {
           <CreateButton disabled>
             <Dots>Creating Pool</Dots>
           </CreateButton>
-        );
+        )
       if (state === CreateState.DONE)
         return (
           <CreateButton
@@ -72,14 +72,14 @@ const CreateTidePool = () => {
           >
             Click to go to your pool
           </CreateButton>
-        );
+        )
 
       return (
         <CreateButton disabled={pool === ""} onClick={() => createPool()}>
           Create Pool
         </CreateButton>
-      );
-    }, [state, pool]);
+      )
+    }, [state, pool])
 
   return (
     <>
@@ -144,7 +144,7 @@ const CreateTidePool = () => {
         </Answer>
       </ContentContainer>
     </>
-  );
-};
+  )
+}
 
-export default CreateTidePool;
+export default CreateTidePool

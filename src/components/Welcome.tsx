@@ -1,8 +1,8 @@
-import React from "react";
-import { Box, Button, Text, StyledLink } from "../components";
-import useLocalStorage from "../hooks/useLocalStorage";
-import styled from "styled-components";
-import { External } from "../components/Icons";
+import React from "react"
+import { Box, Button, Text, StyledLink } from "../components"
+import useLocalStorage from "../hooks/useLocalStorage"
+import styled from "styled-components"
+import { External } from "../components/Icons"
 
 const Container = styled(Box)`
   margin-bottom: 1rem;
@@ -11,12 +11,12 @@ const Container = styled(Box)`
   border-radius: 0.5rem;
   width: fit-content;
   max-width: 1000px;
-`;
+`
 
 const ExternalLink = styled(StyledLink)`
   background-color: ${(props) => props.theme.colors.lightBlue};
   padding: 0.1rem;
-`;
+`
 
 const WelcomeMessage = ({ callback }: { callback: () => void }) => {
   return (
@@ -66,25 +66,25 @@ const WelcomeMessage = ({ callback }: { callback: () => void }) => {
       </Text>
       <ShowHideButton onClick={() => callback()}>Got it!</ShowHideButton>
     </Box>
-  );
-};
+  )
+}
 
 const ShowHideButton = styled(Button)`
   padding: 10px;
-`;
+`
 
 const Welcome = () => {
-  const [hideWelcome, setHideWelcome] = useLocalStorage("hideWelcome");
+  const [hideWelcome, setHideWelcome] = useLocalStorage("hideWelcome")
 
   const toggle = () => {
-    setHideWelcome(!hideWelcome);
-  };
+    setHideWelcome(!hideWelcome)
+  }
 
   return !hideWelcome ? (
     <Container>
       <WelcomeMessage callback={() => toggle()} />
     </Container>
-  ) : null;
-};
+  ) : null
+}
 
-export default Welcome;
+export default Welcome

@@ -1,13 +1,13 @@
-import React, { useContext, useState, useMemo } from "react";
-import { Flex, Box, BlobWrapper, Heading, Text } from "../components";
-import { Search } from "../components/Icons";
-import { TextInput } from "../components/Input";
-import { Card } from "../components/Card";
-import { Global } from "../context/GlobalContext";
-import Welcome from "../components/Welcome";
-import styled from "styled-components";
+import React, { useContext, useState, useMemo } from "react"
+import { Flex, Box, BlobWrapper, Heading, Text } from "../components"
+import { Search } from "../components/Icons"
+import { TextInput } from "../components/Input"
+import { Card } from "../components/Card"
+import { Global } from "../context/GlobalContext"
+import Welcome from "../components/Welcome"
+import styled from "styled-components"
 
-const HeroBox = styled(Flex)``;
+const HeroBox = styled(Flex)``
 
 const Crab = styled.img`
   max-height: 150px;
@@ -16,14 +16,14 @@ const Crab = styled.img`
   ${(props) => props.theme.mediaQueries.sm} {
     max-height: 300px;
   }
-`;
+`
 
 function Home() {
-  const g = useContext(Global);
-  const [search, setSearch] = useState("");
+  const g = useContext(Global)
+  const [search, setSearch] = useState("")
 
   const view = useMemo(() => {
-    if (search === "") return g.theList.tidePools;
+    if (search === "") return g.theList.tidePools
 
     return (
       g.theList.tidePools.filter(
@@ -36,8 +36,8 @@ function Home() {
           tp.pool.token1.address === search ||
           tp.address === search
       ) || []
-    );
-  }, [search, g.theList.tidePools]);
+    )
+  }, [search, g.theList.tidePools])
 
   return (
     <Box mx="auto" p="1rem">
@@ -83,7 +83,7 @@ function Home() {
         ))}
       </Flex>
     </Box>
-  );
+  )
 }
 
-export default Home;
+export default Home

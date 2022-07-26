@@ -1,72 +1,69 @@
-import { useState, useContext } from "react";
-import { useParams } from "react-router-dom";
-import { Box, Button } from "../components/index";
-import { Container, Info } from "../components/Card";
-import { BigNumber } from "ethers";
-import { Global } from "../context/GlobalContext";
-import styled from "styled-components";
-import { TokenInput } from "../components/Input";
-import useToken from "../hooks/useToken";
-import useTidePool from "../hooks/useTidePool";
-import { ApprovalState } from "../info/types";
-import usePool from "../hooks/usePool";
+import { useState, useContext } from "react"
+import { useParams } from "react-router-dom"
+import { Box, Button } from "../components/index"
+import { Container, Info } from "../components/Card"
+import { BigNumber } from "ethers"
+import { Global } from "../context/GlobalContext"
+import styled from "styled-components"
+import { TokenInput } from "../components/Input"
+import useToken from "../hooks/useToken"
+import useTidePool from "../hooks/useTidePool"
+import { ApprovalState } from "../info/types"
+import usePool from "../hooks/usePool"
 
 const EthAmount = styled(TokenInput)`
   text-align: center;
   margin-bottom: 0.5rem;
-`;
+`
 const StyledButton = styled(Button)`
   padding: 10px;
   margin-bottom: 0.5rem;
-`;
+`
 
 const Console = ({ error }: any) => {
-  return <Box>{error?.data ? error.data : null}</Box>;
-};
+  return <Box>{error?.data ? error.data : null}</Box>
+}
 
 const TidePool = () => {
-  const [error, setError] = useState<any>("");
-  const address = useParams().address;
+  const [error, setError] = useState<any>("")
+  const address = useParams().address
 
-  const { account, theList } = useContext(Global);
+  const { account, theList } = useContext(Global)
 
-  const tidePool = theList.tidePools.find((p) => p.address === address);
+  const tidePool = theList.tidePools.find((p) => p.address === address)
 
   const {
     state: t0State,
     balance: t0Balance,
     approve: approveT0,
-  } = useToken(tidePool?.pool.token0.address, account, tidePool?.address);
+  } = useToken(tidePool?.pool.token0.address, account, tidePool?.address)
   const {
     state: t1State,
     balance: t1Balance,
     approve: approveT1,
-  } = useToken(tidePool?.pool.token1.address, account, tidePool?.address);
+  } = useToken(tidePool?.pool.token1.address, account, tidePool?.address)
 
-  const { deposit, withdraw, balance } = useTidePool(
-    tidePool?.address,
-    account
-  );
-  const { slot0 } = usePool(tidePool?.pool.address);
+  const { deposit, withdraw, balance } = useTidePool(tidePool?.address, account)
+  const { slot0 } = usePool(tidePool?.pool.address)
 
-  const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0));
-  const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0));
+  const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
+  const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))
 
   const doDeposit = async () => {
     try {
-      await deposit(zeroIn, oneIn);
+      await deposit(zeroIn, oneIn)
     } catch (e) {
-      setError(e);
+      setError(e)
     }
-  };
+  }
 
   const doWithdraw = async () => {
     try {
-      await withdraw();
+      await withdraw()
     } catch (e) {
-      setError(e);
+      setError(e)
     }
-  };
+  }
 
   return (
     <Box>
@@ -119,7 +116,7 @@ const TidePool = () => {
       </Container>
       <Console error={error} />
     </Box>
-  );
-};
+  )
+}
 
-export default TidePool;
+export default TidePool

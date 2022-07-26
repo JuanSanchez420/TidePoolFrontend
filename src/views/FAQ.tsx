@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, Text, StyledLink } from "../components";
-import styled from "styled-components";
+import React from "react"
+import { Box, Text, StyledLink } from "../components"
+import styled from "styled-components"
 
 const ContentContainer = styled(Box)`
   margin-top: 1rem;
@@ -9,22 +9,22 @@ const ContentContainer = styled(Box)`
   background-color: ${(props) => props.theme.colors.white};
   border-radius: 0.5rem;
   padding: 10px;
-`;
+`
 
 const ExternalLink = styled(StyledLink)`
   background-color: ${(props) => props.theme.colors.lightBlue};
   padding: 0.1rem;
-`;
+`
 
 const Question = styled(Text)`
   margin-bottom: 0.5rem;
   font-weight: 600;
   font-style: italic;
   font-size: large;
-`;
+`
 const Answer = styled(Text)`
   margin-bottom: 1rem;
-`;
+`
 
 const FAQ = () => {
   return (
@@ -125,7 +125,7 @@ const FAQ = () => {
         </Answer>
       </ContentContainer>
     </>
-  );
-};
+  )
+}
 
-export default FAQ;
+export default FAQ

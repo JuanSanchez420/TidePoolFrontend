@@ -1,10 +1,10 @@
 export interface Network {
-  name: string;
-  rpc: string;
-  chainId: number;
-  image: string;
-  blockExplorer: string;
-  factory: string;
+  name: string
+  rpc: string
+  chainId: number
+  image: string
+  blockExplorer: string
+  factory: string
 }
 
 export const Ethereum: Network = {
@@ -14,7 +14,7 @@ export const Ethereum: Network = {
   image: "/images/ethereum.png",
   blockExplorer: "https://etherscan.io/",
   factory: "0xA2D974Be6Aa43D38c087E9De221801BACCAB252B",
-};
+}
 
 export const Arbitrum: Network = {
   name: "Arbitrum",
@@ -23,7 +23,7 @@ export const Arbitrum: Network = {
   image: "/images/arbitrum.svg",
   blockExplorer: "https://arbiscan.io/",
   factory: "0xc28EaA5051C0cfB8A493749990787d0190e8300F",
-};
+}
 
 export const Optimism: Network = {
   name: "Optimism",
@@ -32,7 +32,7 @@ export const Optimism: Network = {
   image: "/images/optimism.svg",
   blockExplorer: "https://optimistic.etherscan.io/",
   factory: "0xA2D974Be6Aa43D38c087E9De221801BACCAB252B",
-};
+}
 
 export const Polygon: Network = {
   name: "Polygon",
@@ -41,6 +41,6 @@ export const Polygon: Network = {
   image: "/images/polygon.svg",
   blockExplorer: "https://polygonscan.com/",
   factory: "0x59b81A9B35d94000F40C3e0e7894D7762A526a36",
-};
+}
 
-export const networks: Network[] = [Ethereum, Arbitrum, Optimism, Polygon];
+export const networks: Network[] = [Ethereum, Arbitrum, Optimism, Polygon]

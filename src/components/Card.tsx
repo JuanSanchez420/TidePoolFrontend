@@ -1,19 +1,19 @@
-import { useState, useContext } from "react";
-import { Box, Flex, Text, Button, StyledLink } from "./index";
-import { Chevron, External } from "./Icons";
-import styled from "styled-components";
-import { imageUrls } from "../info/tokens";
-import { Slot0, TidePool } from "../info/types";
-import { Global } from "../context/GlobalContext";
-import { getToken0Price, getToken1Price } from "../utils/price";
+import { useState, useContext } from "react"
+import { Box, Flex, Text, Button, StyledLink } from "./index"
+import { Chevron, External } from "./Icons"
+import styled from "styled-components"
+import { imageUrls } from "../info/tokens"
+import { Slot0, TidePool } from "../info/types"
+import { Global } from "../context/GlobalContext"
+import { getToken0Price, getToken1Price } from "../utils/price"
 
 const DepositButton = styled(Button)`
   padding: 10px;
-`;
+`
 
 const IconBox = styled(Box)`
   position: relative;
-`;
+`
 
 const IconLeft = styled.img`
   height: 25px;
@@ -21,7 +21,7 @@ const IconLeft = styled.img`
   top: 0;
   left: 0;
   z-index: 1;
-`;
+`
 
 const IconRight = styled.img`
   height: 25px;
@@ -29,18 +29,18 @@ const IconRight = styled.img`
   bottom: 0;
   right: 0;
   z-index: 2;
-`;
+`
 
 export const Container = styled(Box)`
   border-radius: 0.5rem;
   padding: 10px;
   background-color: ${(props) => props.theme.colors.white};
   filter: ${(props) => props.theme.utils.dropShadow};
-`;
+`
 
 export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
-  const { network } = useContext(Global);
-  const [open, setOpen] = useState(false);
+  const { network } = useContext(Global)
+  const [open, setOpen] = useState(false)
 
   return (
     <>
@@ -112,14 +112,14 @@ export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
         </Flex>
       )}
     </>
-  );
-};
+  )
+}
 
 export const Card = (props: {
-  tidePool: TidePool;
-  slot0: Slot0 | null;
+  tidePool: TidePool
+  slot0: Slot0 | null
 }): JSX.Element => {
-  const { network } = useContext(Global);
+  const { network } = useContext(Global)
 
   return (
     <Container mb={["2rem"]} mx="auto" maxWidth="400px" width="100%" p="5px">
@@ -134,5 +134,5 @@ export const Card = (props: {
         </DepositButton>
       </Box>
     </Container>
-  );
-};
+  )
+}

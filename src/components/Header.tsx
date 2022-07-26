@@ -1,10 +1,11 @@
-import { useContext } from "react";
-import styled from "styled-components";
-import { Flex, Button, Box, Text, StyledLink } from "./index";
-import { networks, Network } from "../info/networks";
-import useWeb3Modal from "../hooks/useWeb3Modal";
-import { Global } from "../context/GlobalContext";
-import { Hamburger, Wallet } from "./Icons";
+import { useContext } from "react"
+import styled from "styled-components"
+import { Flex, Button, Box, Text, StyledLink } from "./index"
+import { networks, Network } from "../info/networks"
+import useWeb3Modal from "../hooks/useWeb3Modal"
+import { Global } from "../context/GlobalContext"
+import { Hamburger, Wallet } from "./Icons"
+import theme from "../info/theme"
 
 const Connect = styled(Button)`
     border-radius: 0.5rem;
@@ -16,15 +17,15 @@ const Connect = styled(Button)`
     :hover {
         background-color: ${(props) => props.theme.colors.darkYellow}
     }
-`;
+`
 const Logo = styled.img`
   height: 1rem;
   margin-right: 2px;
-`;
+`
 
 const TidePoolLogo = styled.img`
   height: 3rem;
-`;
+`
 
 const NetworkSelect = styled(Flex)`
   padding: 5px 10px;
@@ -46,7 +47,7 @@ const NetworkSelect = styled(Flex)`
     visibility: visible;
     transition-delay: 0s;
   }
-`;
+`
 
 const NetworkSelectOptions = styled(Flex)`
   visibility: hidden;
@@ -61,21 +62,21 @@ const NetworkSelectOptions = styled(Flex)`
   background-color: ${(props) => props.theme.colors.white};
   filter: ${(props) => props.theme.utils.dropShadow};
   z-index: 11;
-`;
+`
 
 const NetworkName = styled(Box)`
   display: none;
   ${({ theme }) => theme.mediaQueries.sm} {
     display: block;
   }
-`;
+`
 
 const Highlight = styled(Text)`
   margin-left: 0.5rem;
   :hover {
     text-decoration: underline;
   }
-`;
+`
 
 const Menu = styled(Box)`
   border-radius: 0.5rem;
@@ -88,7 +89,7 @@ const Menu = styled(Box)`
     visibility: visible;
     transition-delay: 0s;
   }
-`;
+`
 
 const MenuOptions = styled(Flex)`
   visibility: hidden;
@@ -103,11 +104,11 @@ const MenuOptions = styled(Flex)`
   background-color: ${(props) => props.theme.colors.white};
   filter: ${(props) => props.theme.utils.dropShadow};
   z-index: 11;
-`;
+`
 
 export const Header = () => {
-  const { account, network } = useContext(Global);
-  const web3 = useWeb3Modal();
+  const { account, network } = useContext(Global)
+  const web3 = useWeb3Modal()
 
   return (
     <Flex py="1rem" px="0.5rem" alignItems="center">
@@ -138,7 +139,7 @@ export const Header = () => {
           </NetworkSelectOptions>
         </NetworkSelect>
         {account ? (
-          <Wallet height={"3rem"} color={"#FFF"} />
+          <Wallet height={"3rem"} color={theme.colors.yellow} />
         ) : (
           <Connect onClick={() => web3.connect()}>Connect</Connect>
         )}
@@ -152,5 +153,5 @@ export const Header = () => {
         </Menu>
       </Flex>
     </Flex>
-  );
-};
+  )
+}

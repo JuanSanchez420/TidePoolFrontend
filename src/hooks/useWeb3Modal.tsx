@@ -1,8 +1,8 @@
-import { useCallback, useContext, useEffect, useRef } from "react";
-import { ethers } from "ethers";
-import Web3Modal from "web3modal";
-import { networks, Ethereum } from "../info/networks";
-import { Global } from "../context/GlobalContext";
+import { useCallback, useContext, useEffect, useRef } from "react"
+import { ethers } from "ethers"
+import Web3Modal from "web3modal"
+import { networks, Ethereum } from "../info/networks"
+import { Global } from "../context/GlobalContext"
 
 const providerOptions = {
   injected: {
@@ -12,23 +12,23 @@ const providerOptions = {
     },
     package: null,
   },
-};
+}
 
 const web3Modal = new Web3Modal({
   network: "mainnet",
   cacheProvider: false,
   providerOptions,
-});
+})
 
 interface Web3 {
-  connect: () => void;
-  switchChains: (chainId: number) => void;
+  connect: () => void
+  switchChains: (chainId: number) => void
 }
 
 const useWeb3Modal = (): Web3 => {
-  const firstLoad = useRef(true);
+  const firstLoad = useRef(true)
   const { provider, setProvider, network, setNetwork, setAccount } =
-    useContext(Global);
+    useContext(Global)
 
   const switchChains = useCallback(
     async (chainId: number): Promise<void> => {
@@ -36,56 +36,54 @@ const useWeb3Modal = (): Web3 => {
         try {
           await provider.send("wallet_switchEthereumChain", [
             { chainId: `0x${chainId.toString(16)}` },
-          ]);
-          window.location.reload();
+          ])
+          window.location.reload()
         } catch (switchError: any) {
-          console.log(switchError);
+          console.log(switchError)
           // This error code indicates that the chain has not been added to MetaMask.
           if (switchError.code === 4902) {
             try {
               await provider.send("wallet_addEthereumChain", [
                 { chainId: `0x${chainId.toString(1)}` },
-              ]);
+              ])
             } catch (e) {
-              console.log("switchChains: " + e);
+              console.log("switchChains: " + e)
             }
           }
         }
       }
-      setNetwork(networks.find((n) => n.chainId === chainId) || network);
+      setNetwork(networks.find((n) => n.chainId === chainId) || network)
     },
     [provider, network, setNetwork]
-  );
+  )
 
   const connect = useCallback(async () => {
-    const web3 = await web3Modal.connect();
+    const web3 = await web3Modal.connect()
 
     web3.on("accountsChanged", async (accounts: string[]) =>
       setAccount(accounts[0])
-    );
-    web3.on("chainChanged", async (chainId: number) =>
-      window.location.reload()
-    );
+    )
+    web3.on("chainChanged", async (chainId: number) => window.location.reload())
 
-    let p = new ethers.providers.Web3Provider(web3);
+    let p = new ethers.providers.Web3Provider(web3)
 
-    const network = await p.getNetwork();
-    setNetwork(networks.find((n) => n.chainId === network.chainId) || Ethereum);
+    const network = await p.getNetwork()
+    setNetwork(networks.find((n) => n.chainId === network.chainId) || Ethereum)
 
-    setProvider(p);
+    setProvider(p)
 
-    setAccount(await p.getSigner().getAddress());
-  }, [setProvider, setAccount, setNetwork]);
+    setAccount(await p.getSigner().getAddress())
+  }, [setProvider, setAccount, setNetwork])
 
   useEffect(() => {
     const eager = async () => {
-      firstLoad.current = false;
-      connect();
-    };
-    if (firstLoad.current && provider) eager();
-  }, [connect, provider]);
+      firstLoad.current = false
+      connect()
+    }
+    if (firstLoad.current && provider) eager()
+  }, [connect, provider])
 
-  return { connect, switchChains };
-};
+  return { connect, switchChains }
+}
 
-export default useWeb3Modal;
+export default useWeb3Modal
