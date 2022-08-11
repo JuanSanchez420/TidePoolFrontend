@@ -10,6 +10,7 @@ const ChevronDown = (props: React.SVGAttributes<HTMLOrSVGElement>) => {
       y="0px"
       {...props}
       viewBox="0 0 1792 1792"
+      fill="currentColor"
     >
       <path
         d="M996,1314.5c-55.2,55.2-139.5,55.2-194.8,0c-2.4-2.8-2.4-2.8-2.4-2.8L154.4,670.1c-52.4-55.2-52.4-139.2,0-194.4
@@ -28,6 +29,7 @@ const ChevronUp = (props: React.SVGAttributes<HTMLOrSVGElement>) => {
       y="0px"
       {...props}
       viewBox="0 0 1792 1792"
+      fill="currentColor"
     >
       <path
         d="M796,477.5c55.2-55.2,139.5-55.2,194.8,0c2.4,2.8,2.4,2.8,2.4,2.8l644.4,641.6c52.4,55.2,52.4,139.2,0,194.4

@@ -1,6 +1,6 @@
 import { useState, useContext } from "react"
 import { useParams } from "react-router-dom"
-import { Box, Button } from "../components/index"
+import { Box, Button, Flex } from "../components/index"
 import { Container, Info } from "../components/Card"
 import { BigNumber } from "ethers"
 import { Global } from "../context/GlobalContext"
@@ -10,22 +10,77 @@ import useToken from "../hooks/useToken"
 import useTidePool from "../hooks/useTidePool"
 import { ApprovalState } from "../info/types"
 import usePool from "../hooks/usePool"
+import { Link} from "react-router-dom"
 
 const EthAmount = styled(TokenInput)`
   text-align: center;
   margin-bottom: 0.5rem;
 `
-const StyledButton = styled(Button)`
-  padding: 10px;
-  margin-bottom: 0.5rem;
+
+const BackLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  :hover {
+    text-decoration: underline;
+  }
 `
 
-const Console = ({ error }: any) => {
-  return <Box>{error?.data ? error.data : null}</Box>
+/*
+
+interface TabProps extends FlexProps {
+  selected: boolean
 }
 
+const Tab = styled(Box)<TabProps>`
+  width: 100%;
+  background-color: ${(props) =>
+    props.selected
+      ? props.theme.colors.lighterBlue
+      : props.theme.colors.darkishBlue};
+  color: white;
+  text-align: center;
+  padding: 1rem;
+
+  :hover {
+    cursor: pointer;
+  }
+`
+
+const ActionBox = styled(Flex)<TabProps>`
+  margin-top: 1rem;
+  border-radius: 1rem;
+  background-color: ${(props) =>
+    props.selected
+      ? props.theme.colors.lighterBlue
+      : props.theme.colors.darkishBlue};
+`
+
+          <ActionBox flexDirection="column" selected={index === 0}>
+            <Flex>
+              <Tab selected={true} borderRadius="1rem 0 0 0" onClick={()=>setIndex(0)}>
+                Deposit
+              </Tab>
+              <Tab selected={false} borderRadius="0 1rem 0 0" onClick={()=>setIndex(1)}>
+                Withdraw
+              </Tab>
+            </Flex>
+            <Flex flexDirection="column" p="1rem">
+              <Box mb="1rem">
+                <Text color="white">misc notes</Text>
+              </Box>
+              <Box mb="1rem">
+                <TextInput value={t0} setValue={setT0} />
+              </Box>
+              <Box mb="1rem">
+                <TextInput value={t1} setValue={setT1} />
+              </Box>
+              <Box>Button</Box>
+            </Flex>
+          </ActionBox>
+
+*/
+
 const TidePool = () => {
-  const [error, setError] = useState<any>("")
   const address = useParams().address
 
   const { account, theList } = useContext(Global)
@@ -53,7 +108,7 @@ const TidePool = () => {
     try {
       await deposit(zeroIn, oneIn)
     } catch (e) {
-      setError(e)
+      console.log(e)
     }
   }
 
@@ -61,20 +116,15 @@ const TidePool = () => {
     try {
       await withdraw()
     } catch (e) {
-      setError(e)
+      console.log(e)
     }
   }
 
   return (
     <Box>
-      <Box maxWidth="400px" width="100%" mx="auto" py="rem" mb="1rem">
-        <StyledButton onClick={() => (window.location.href = "/")}>
-          Back to all pools
-        </StyledButton>
-      </Box>
-      <Container maxWidth="400px" width="100%" mx="auto">
+      <Container maxWidth="400px" width="100%" mx="auto" my="1rem">
         <Info tidePool={tidePool} slot0={slot0} />
-        <Box mx="auto">
+        <Flex justifyContent="center" my="1rem">
           {t0State === ApprovalState.APPROVED ? (
             <EthAmount
               token={tidePool?.pool.token0}
@@ -83,12 +133,12 @@ const TidePool = () => {
               setValue={setZeroIn}
             />
           ) : (
-            <StyledButton disabled={!account} onClick={() => approveT0()}>
+            <Button disabled={!account} onClick={() => approveT0()}>
               Approve {tidePool?.pool.token0.symbol}
-            </StyledButton>
+            </Button>
           )}
-        </Box>
-        <Box mx="auto">
+        </Flex>
+        <Flex justifyContent="center">
           {t1State === ApprovalState.APPROVED ? (
             <EthAmount
               token={tidePool?.pool.token1}
@@ -97,24 +147,28 @@ const TidePool = () => {
               setValue={setOneIn}
             />
           ) : (
-            <StyledButton disabled={!account} onClick={() => approveT1()}>
+            <Button disabled={!account} onClick={() => approveT1()}>
               Approve {tidePool?.pool.token1.symbol}
-            </StyledButton>
+            </Button>
           )}
-        </Box>
+        </Flex>
         {t0State === ApprovalState.APPROVED ||
         t1State === ApprovalState.APPROVED ? (
-          <Box mx="auto">
-            <StyledButton onClick={() => doDeposit()}>Deposit</StyledButton>
-          </Box>
+          <Flex justifyContent="center">
+            <Button onClick={() => doDeposit()}>Deposit</Button>
+          </Flex>
         ) : null}
         {balance.gt(0) ? (
-          <Box mx="auto">
-            <StyledButton onClick={() => doWithdraw()}>Withdraw</StyledButton>
-          </Box>
+          <Flex justifyContent="center">
+            <Button onClick={() => doWithdraw()}>Withdraw</Button>
+          </Flex>
         ) : null}
       </Container>
-      <Console error={error} />
+      <Flex justifyContent="center" my="1rem">
+        <BackLink to="/list">
+          Back to all pools
+        </BackLink>
+      </Flex>
     </Box>
   )
 }

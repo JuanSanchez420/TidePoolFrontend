@@ -1,11 +1,12 @@
 import React, { useState, useMemo, useContext } from "react"
-import { Flex, Box, Text, Button, StyledLink, Dots } from "../components"
+import { Flex, Box, Text, Button, Dots } from "../components"
 import { External } from "../components/Icons"
 import { TextInput } from "../components/Input"
 import useFactory from "../hooks/useFactory"
 import styled from "styled-components"
 import { CreateState } from "../info/types"
 import { Global } from "../context/GlobalContext"
+import { Link } from "react-router-dom"
 
 const ActionsContainer = styled(Box)`
   max-width: 400px;
@@ -24,7 +25,7 @@ const ContentContainer = styled(Box)`
   padding: 10px;
 `
 
-const ExternalLink = styled(StyledLink)`
+const ExternalLink = styled(Link)`
   background-color: ${(props) => props.theme.colors.lightBlue};
   padding: 0.1rem;
 `
@@ -37,10 +38,6 @@ const Question = styled(Text)`
 `
 const Answer = styled(Text)`
   margin-bottom: 1rem;
-`
-
-const CreateButton = styled(Button)`
-  padding: 10px;
 `
 
 const CreateTidePool = () => {
@@ -59,25 +56,25 @@ const CreateTidePool = () => {
     useMemo(() => {
       if (state === CreateState.PENDING)
         return (
-          <CreateButton disabled>
+          <Button disabled>
             <Dots>Creating Pool</Dots>
-          </CreateButton>
+          </Button>
         )
       if (state === CreateState.DONE)
         return (
-          <CreateButton
+          <Button
             onClick={() =>
               (window.location.href = `/${network.name}/${address}`)
             }
           >
             Click to go to your pool
-          </CreateButton>
+          </Button>
         )
 
       return (
-        <CreateButton disabled={pool === ""} onClick={() => createPool()}>
+        <Button disabled={pool === ""} onClick={() => createPool()}>
           Create Pool
-        </CreateButton>
+        </Button>
       )
     }, [state, pool])
 
@@ -102,7 +99,7 @@ const CreateTidePool = () => {
           <li>Choose your chain</li>
           <li>
             Find a{" "}
-            <ExternalLink href="https://info.uniswap.org/#/pools">
+            <ExternalLink to="https://info.uniswap.org/#/pools">
               Uniswap V3 Pool address
               <External height="1rem" width="1rem" />
             </ExternalLink>

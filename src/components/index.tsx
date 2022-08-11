@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import {
   border,
+  color,
   BorderProps,
   space,
   SpaceProps,
@@ -12,7 +13,6 @@ import {
   typography,
   TypographyProps,
 } from "styled-system"
-import theme from "../info/theme"
 
 export const Box = styled.div<BoxProps>`
   box-sizing: border-box;
@@ -23,7 +23,6 @@ export const Box = styled.div<BoxProps>`
 export const Wrapper = styled(Box)`
   font-size: normal;
   color: ${(props) => props.theme.colors.black};
-  height: 100vh;
   width: 100%;
   background-color: ${(props) => props.theme.colors.lightBlue};
 `
@@ -46,37 +45,37 @@ export const Button = styled.button`
   cursor: pointer;
   box-sizing: border-box;
   color: ${(props) => props.theme.colors.buttonText};
-  text-transform: uppercase;
   font-weight: bold;
   text-align: center;
-  border-radius: 0.5rem;
-  width: 100%;
+  border-radius: 1rem;
+  padding: 5px 15px;
+  text-decoration: none;
   background-color: ${(props) => props.theme.colors.yellow};
 
   :hover {
-    text-decoration: none;
+    background-color: ${(props) => props.theme.colors.darkYellow};
+  }
+`
+
+export const HollowButton = styled(Button)`
+  color: ${(props) => props.theme.colors.buttonText};
+  background-color: ${(props) => props.theme.colors.white};
+  border: 1px solid ${(props) => props.theme.colors.buttonText};
+
+  :hover {
     background-color: ${(props) => props.theme.colors.darkYellow};
   }
 `
 
 export const Text = styled(Box)<TypographyProps>`
-  color: ${(props) => props.theme.colors.white};
   ${typography}
+  ${color}
 `
 
 export const Select = styled.select<SpaceProps>`
   all: unset;
   cursor: pointer;
   ${space}
-`
-
-export const StyledLink = styled.a`
-  all: unset;
-  cursor: pointer;
-  box-sizing: border-box;
-  &:hover {
-    text-decoration: underline;
-  }
 `
 
 export const Dots = styled(Box)`
@@ -123,6 +122,10 @@ const BottomWave = styled(Box)`
 
 const MiddleWave = styled(Box)`
   background-color: ${(props) => props.theme.colors.darkBlue};
+`
+
+export const UnorderedList = styled.ul`
+  color: ${props => props.theme.colors.white}
 `
 
 export const BlobWrapper = ({

@@ -10,10 +10,12 @@ import {
   DarkWrapper,
 } from "./components/index"
 import { Header } from "./components/Header"
+import { Footer } from "./components/Footer"
 import { GlobalContext } from "./context/GlobalContext"
 
 const Home = lazy(() => import("./views/Home"))
 const TidePool = lazy(() => import("./views/TidePool"))
+const List = lazy(() => import("./views/List"))
 const Create = lazy(() => import("./views/Create"))
 const FAQ = lazy(() => import("./views/FAQ"))
 
@@ -44,6 +46,11 @@ const Layout = () => {
             <Box maxWidth="1000px" m="auto">
               <Outlet />
             </Box>
+            <DarkWrapper>
+              <Box maxWidth="1000px" m="auto">
+                <Footer />
+              </Box>
+            </DarkWrapper>
           </Suspense>
         </Wrapper>
       </GlobalContext>
@@ -56,6 +63,7 @@ function TidePools() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="/list" element={<List />} />
         <Route path="/:network/:address" element={<TidePool />} />
         <Route path="/create" element={<Create />} />
         <Route path="/faq" element={<FAQ />} />

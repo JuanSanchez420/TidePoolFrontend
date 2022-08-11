@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Flex, Text, Button } from "./index"
+import { Flex, Text, Button, Box } from "./index"
 import { imageUrls } from "../info/tokens"
 import { ethers, BigNumber } from "ethers"
 import { Token } from "../info/types"
@@ -8,11 +8,8 @@ import { Token } from "../info/types"
 const InputBox = styled.input`
   all: unset;
   cursor: pointer;
-  background-color: ${(props) => props.theme.colors.lightBlue};
-  border-radius: 0.5rem;
   width: 100%;
-  padding: 10px;
-  color: black;
+  color: ${(props) => props.theme.colors.white};
   display: inline-block;
   box-sizing: border-box;
   text-align: center;
@@ -24,21 +21,16 @@ const Icon = styled.img`
 `
 
 const Wrapper = styled(Flex)`
-  border-radius: 0.5rem;
-  background-color: ${({ theme }) => theme.colors.lightBlue};
-  margin-bottom: 1rem;
-`
-
-const MaxButton = styled(Button)`
-  width: 4rem;
-  padding: 5px;
+  border-radius: 1rem;
+  background-color: ${({ theme }) => theme.colors.darkBlue};
+  padding: 5px 15px;
 `
 
 interface TokenInputProps {
   token?: Token
-  balance: BigNumber
-  value: BigNumber
-  setValue: (e: BigNumber) => void
+  balance?: BigNumber
+  value?: BigNumber
+  setValue?: (e: BigNumber) => void
 }
 
 export const TokenInput = ({
@@ -63,7 +55,7 @@ export const TokenInput = ({
         placeholder="0.0"
       />
       <Flex flexDirection="column">
-        <MaxButton onClick={() => setValue(balance)}>MAX</MaxButton>
+        <Button onClick={() => setValue(balance)}>MAX</Button>
         <Text fontSize="0.75rem">
           Balance:{" "}
           {significantDigits(
@@ -90,13 +82,31 @@ export const TextInput = ({
 }: TextInputProps): JSX.Element => {
   return (
     <Wrapper p="5px" alignItems="center">
+      <InputBox
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder={placeholder}
+      />
+      {icon}
+    </Wrapper>
+  )
+}
+
+export const TextInputWithClear = ({
+  value = "",
+  setValue = () => null,
+  placeholder = "",
+  icon = null,
+}: TextInputProps): JSX.Element => {
+  return (
+    <Wrapper p="5px" alignItems="center">
       {icon}
       <InputBox
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
       />
-      <MaxButton onClick={() => setValue("")}>Clear</MaxButton>
+      <Box width="7rem"><Button onClick={() => setValue("")}>Clear</Button></Box>
     </Wrapper>
   )
 }

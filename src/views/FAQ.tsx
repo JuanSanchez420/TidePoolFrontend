@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Text, StyledLink } from "../components"
+import { Box, Text } from "../components"
 import styled from "styled-components"
 
 const ContentContainer = styled(Box)`
@@ -11,7 +11,8 @@ const ContentContainer = styled(Box)`
   padding: 10px;
 `
 
-const ExternalLink = styled(StyledLink)`
+const ExternalLink = styled.a`
+  color:white;
   background-color: ${(props) => props.theme.colors.lightBlue};
   padding: 0.1rem;
 `

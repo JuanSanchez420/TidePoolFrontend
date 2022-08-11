@@ -22,7 +22,9 @@ const mediaQueries = {
 const colors: { [key: string]: string } = {
   black: "#000000",
   darkBlue: "#072E4F",
+  darkishBlue: "#0B3E69",
   lightBlue: "#033E6B",
+  lighterBlue: "#155C9A",
   babyBlue: "#BDE9FF",
   buttonText: "#055C9D",
   red: "#da1f3d",
