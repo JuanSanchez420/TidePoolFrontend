@@ -79,14 +79,16 @@ const CreateTidePool = () => {
     }, [state, pool])
 
   return (
-    <>
+    <Flex flexDirection="column" p="1rem">
       <ActionsContainer>
-        <Flex flexDirection="column">
-          <TextInput
-            value={selected}
-            setValue={setSelected}
-            placeholder="UniswapV3 Pool address"
-          />
+        <Flex flexDirection="column" justifyContent="space-evenly">
+          <Box mb="1rem">
+            <TextInput
+              value={selected}
+              setValue={setSelected}
+              placeholder="UniswapV3 Pool address"
+            />
+          </Box>
           <Actions state={state} pool={selected} />
         </Flex>
       </ActionsContainer>
@@ -140,7 +142,7 @@ const CreateTidePool = () => {
           sure you can't screw this up or steal from someone.
         </Answer>
       </ContentContainer>
-    </>
+    </Flex>
   )
 }
 

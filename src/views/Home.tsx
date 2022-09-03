@@ -6,23 +6,38 @@ import {
   Text,
   HollowButton,
   UnorderedList,
+  BlobWrapper
 } from "../components"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import theme from "../info/theme"
 
-const HeroBox = styled(Flex)`
+const ContentBox = styled(Flex)`
   position: relative;
 `
 
 const Crab = styled.img`
-  right: 0;
+  right: 1rem;
   max-height: 100px;
   transform: scaleX(-1);
   position: absolute;
 
   ${(props) => props.theme.mediaQueries.md} {
     max-height: 150px;
+    right: -200px;
+  }
+`
+
+const Coins = styled.img`
+  right: 1rem;
+  max-height: 50px;
+  transform: scaleX(-1);
+  position: absolute;
+  top: 10%;
+
+  ${(props) => props.theme.mediaQueries.md} {
+    max-height: 75px;
+    right: -200px;
   }
 `
 
@@ -31,8 +46,9 @@ function Home() {
   const navigate = useNavigate()
 
   return (
-    <Box mx="auto" p="1rem">
-      <HeroBox justifyContent="center" mb="2rem">
+    <Box mx="auto">
+      <BlobWrapper height="100px">
+      <ContentBox justifyContent="center" p="1rem">
         <Flex flexDirection="column">
           <Box maxWidth={["12rem", "12rem", "30rem"]}>
             <Heading mb="1rem">Welcome to TIDEPOOLS.io</Heading>
@@ -46,14 +62,15 @@ function Home() {
           </Text>
           <Flex justifyContent="center">
             <Box width={"8rem"}>
-              <HollowButton onClick={()=>navigate("/list")}>View Pools</HollowButton>
+              <HollowButton onClick={()=>navigate("/pools")}>View Pools</HollowButton>
             </Box>
           </Flex>
         </Flex>
         <Crab src="/images/TidePoolsCrab.svg" />
-      </HeroBox>
-      <Flex justifyContent="center">
-        <Flex flexDirection="column">
+      </ContentBox>
+      </BlobWrapper>
+      <ContentBox justifyContent="center">
+        <Flex flexDirection="column" p="1rem">
           <Box maxWidth={["20rem", "20rem", "30rem"]}>
             <Heading mb="1rem">Generate Passive Income</Heading>
           </Box>
@@ -70,11 +87,12 @@ function Home() {
 
           <Flex justifyContent="center">
             <Box width={"8rem"}>
-              <HollowButton onClick={()=>navigate("/list")}>View Pools</HollowButton>
+              <HollowButton onClick={()=>navigate("/pools")}>View Pools</HollowButton>
             </Box>
           </Flex>
         </Flex>
-      </Flex>
+        <Coins src="/images/pile-of-coins.gif" />
+      </ContentBox>
       <Flex
         justifyContent="center"
         flexDirection="column"

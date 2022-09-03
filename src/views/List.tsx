@@ -122,7 +122,7 @@ const List = () => {
               Select a Network
             </Text>
             {networks.map((n: Network) => (
-              <Highlight>
+              <Highlight key={n.chainId}>
                 <Flex
                   key={n.chainId}
                   alignItems="center"
@@ -144,7 +144,7 @@ const List = () => {
           icon={<Search height="2rem" width="2rem" color="white" />}
         />
       </Flex>
-      {view.map(c=><Card tidePool={c} slot0={null}/>)}
+      {view.map(c=><Card key={c.address} tidePool={c} slot0={null}/>)}
     </Box>
   )
 }

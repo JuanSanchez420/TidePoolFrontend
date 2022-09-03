@@ -65,7 +65,7 @@ export const Header = () => {
   const web3 = useWeb3Modal()
 
   return (
-    <Flex py="1rem" px="0.5rem" alignItems="center">
+    <Flex py="1rem" px="0.5rem" alignItems="center" flexShrink="0">
       <Flex flex="1 1 auto">
         <Link to="/">
           <TidePoolLogo src="/images/DarkLogoWithTaglineHorizontal.png" />

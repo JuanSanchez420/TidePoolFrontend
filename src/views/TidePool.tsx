@@ -179,7 +179,7 @@ const TidePool = () => {
         </ActionBox>
       </Container>
       <Flex justifyContent="center" my="1rem">
-        <BackLink to="/list">Back to all pools</BackLink>
+        <BackLink to="/pools">Back to all pools</BackLink>
       </Flex>
     </Box>
   )

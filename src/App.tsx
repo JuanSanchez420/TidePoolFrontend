@@ -43,9 +43,9 @@ const Layout = () => {
                 <Header />
               </Box>
             </DarkWrapper>
-            <Box maxWidth="1000px" m="auto">
+            <Flex maxWidth="1000px" m="auto" flex="1 0 auto">
               <Outlet />
-            </Box>
+            </Flex>
             <DarkWrapper>
               <Box maxWidth="1000px" m="auto">
                 <Footer />
@@ -63,7 +63,7 @@ function TidePools() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="/list" element={<List />} />
+        <Route path="/pools" element={<List />} />
         <Route path="/:network/:address" element={<TidePool />} />
         <Route path="/create" element={<Create />} />
         <Route path="/faq" element={<FAQ />} />

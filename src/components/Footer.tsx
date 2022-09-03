@@ -18,7 +18,7 @@ const MenuLink = styled(Link)`
 
 export const Footer = () => {
   return (
-    <Flex py="1rem" px="0.5rem" alignItems="center">
+    <Flex py="1rem" px="0.5rem" alignItems="center" flexShrink="0">
       <Flex flex="1 1 auto">
         <a href="/">
           <TidePoolLogo src="/images/DarkLogoWithTaglineHorizontal.png" />
@@ -27,7 +27,7 @@ export const Footer = () => {
       <Flex justifyContent="center" flex="5">
         <UnorderedList>
           <li><MenuLink to="/">Home</MenuLink></li>
-          <li><MenuLink to="/list">TidePools</MenuLink></li>
+          <li><MenuLink to="/pools">TidePools</MenuLink></li>
         </UnorderedList>
         <UnorderedList>
           <li><MenuLink to="/create">Create</MenuLink></li>

@@ -67,11 +67,13 @@ const ContractLink = styled.a`
 export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
   const { network } = useContext(Global)
   const [open, setOpen] = useState(false)
-   const navigate = useNavigate()
+  const navigate = useNavigate()
+
+  const fee = props.tidePool ? props.tidePool?.pool.fee / 1e4 : 0
 
   return (
     <>
-      <Flex pb="10px" alignItems="center" justifyContent="space-around">
+      <Flex pb="10px" alignItems="center" justifyContent="space-around" minWidth="330px">
         <Flex alignItems="center">
           <IconBox width="40px" height="35px" marginRight="1rem">
             <IconLeft
@@ -94,7 +96,7 @@ export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
             {props.tidePool?.pool.token1?.symbol}
           </Title>
         </Flex>
-        <Fee>0.3% Fee</Fee>
+        <Fee>{fee}% Fee</Fee>
       </Flex>
       <Flex pb="10px" alignItems="center" justifyContent="space-around">
         <Text>&nbsp;</Text>

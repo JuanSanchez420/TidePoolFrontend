@@ -20,12 +20,6 @@ export const Box = styled.div<BoxProps>`
   ${border}
   ${layout}
 `
-export const Wrapper = styled(Box)`
-  font-size: normal;
-  color: ${(props) => props.theme.colors.black};
-  width: 100%;
-  background-color: ${(props) => props.theme.colors.lightBlue};
-`
 
 export const DarkWrapper = styled(Box)`
   background-color: ${(props) => props.theme.colors.darkBlue};
@@ -38,6 +32,15 @@ export interface FlexProps extends BoxProps, FlexboxProps {}
 export const Flex = styled(Box)<FlexProps>`
   display: flex;
   ${flexbox}
+`
+
+export const Wrapper = styled(Flex)`
+  font-size: normal;
+  color: ${(props) => props.theme.colors.black};
+  width: 100%;
+  min-height: 100%;
+  background-color: ${(props) => props.theme.colors.lightBlue};
+  flex-direction: column;
 `
 
 export const Button = styled.button`
@@ -110,14 +113,14 @@ const TopWave = styled(Box)`
   background: url("/images/topWave.svg");
   background-position: top left;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  width: 100%;
+  background-size: 100%;
 `
 
 const BottomWave = styled(Box)`
   background: url("/images/bottomWave.svg");
   background-position: top left;
   background-repeat: no-repeat;
+  background-size: 100%;
 `
 
 const MiddleWave = styled(Box)`
