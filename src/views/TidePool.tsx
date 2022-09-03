@@ -1,6 +1,6 @@
 import { useState, useContext } from "react"
 import { useParams } from "react-router-dom"
-import { Box, Button, Flex } from "../components/index"
+import { Box, Button, Flex, FlexProps } from "../components/index"
 import { Container, Info } from "../components/Card"
 import { BigNumber } from "ethers"
 import { Global } from "../context/GlobalContext"
@@ -10,7 +10,8 @@ import useToken from "../hooks/useToken"
 import useTidePool from "../hooks/useTidePool"
 import { ApprovalState } from "../info/types"
 import usePool from "../hooks/usePool"
-import { Link} from "react-router-dom"
+import { Link } from "react-router-dom"
+import theme from "../info/theme"
 
 const EthAmount = styled(TokenInput)`
   text-align: center;
@@ -24,8 +25,6 @@ const BackLink = styled(Link)`
     text-decoration: underline;
   }
 `
-
-/*
 
 interface TabProps extends FlexProps {
   selected: boolean
@@ -55,31 +54,6 @@ const ActionBox = styled(Flex)<TabProps>`
       : props.theme.colors.darkishBlue};
 `
 
-          <ActionBox flexDirection="column" selected={index === 0}>
-            <Flex>
-              <Tab selected={true} borderRadius="1rem 0 0 0" onClick={()=>setIndex(0)}>
-                Deposit
-              </Tab>
-              <Tab selected={false} borderRadius="0 1rem 0 0" onClick={()=>setIndex(1)}>
-                Withdraw
-              </Tab>
-            </Flex>
-            <Flex flexDirection="column" p="1rem">
-              <Box mb="1rem">
-                <Text color="white">misc notes</Text>
-              </Box>
-              <Box mb="1rem">
-                <TextInput value={t0} setValue={setT0} />
-              </Box>
-              <Box mb="1rem">
-                <TextInput value={t1} setValue={setT1} />
-              </Box>
-              <Box>Button</Box>
-            </Flex>
-          </ActionBox>
-
-*/
-
 const TidePool = () => {
   const address = useParams().address
 
@@ -101,8 +75,11 @@ const TidePool = () => {
   const { deposit, withdraw, balance } = useTidePool(tidePool?.address, account)
   const { slot0 } = usePool(tidePool?.pool.address)
 
+  const [index, setIndex] = useState(0)
+
   const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
   const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))
+  const [w, setW] = useState<BigNumber>(BigNumber.from(0))
 
   const doDeposit = async () => {
     try {
@@ -124,50 +101,85 @@ const TidePool = () => {
     <Box>
       <Container maxWidth="400px" width="100%" mx="auto" my="1rem">
         <Info tidePool={tidePool} slot0={slot0} />
-        <Flex justifyContent="center" my="1rem">
-          {t0State === ApprovalState.APPROVED ? (
-            <EthAmount
-              token={tidePool?.pool.token0}
-              balance={t0Balance}
-              value={zeroIn}
-              setValue={setZeroIn}
-            />
-          ) : (
-            <Button disabled={!account} onClick={() => approveT0()}>
-              Approve {tidePool?.pool.token0.symbol}
-            </Button>
-          )}
-        </Flex>
-        <Flex justifyContent="center">
-          {t1State === ApprovalState.APPROVED ? (
-            <EthAmount
-              token={tidePool?.pool.token1}
-              balance={t1Balance}
-              value={oneIn}
-              setValue={setOneIn}
-            />
-          ) : (
-            <Button disabled={!account} onClick={() => approveT1()}>
-              Approve {tidePool?.pool.token1.symbol}
-            </Button>
-          )}
-        </Flex>
-        {t0State === ApprovalState.APPROVED ||
-        t1State === ApprovalState.APPROVED ? (
-          <Flex justifyContent="center">
-            <Button onClick={() => doDeposit()}>Deposit</Button>
+
+        <ActionBox flexDirection="column" selected={index === 0}>
+          <Flex>
+            <Tab
+              selected={true}
+              borderRadius="1rem 0 0 0"
+              onClick={() => setIndex(0)}
+            >
+              Deposit
+            </Tab>
+            <Tab
+              selected={false}
+              borderRadius="0 1rem 0 0"
+              onClick={() => setIndex(1)}
+            >
+              Withdraw
+            </Tab>
           </Flex>
-        ) : null}
-        {balance.gt(0) ? (
-          <Flex justifyContent="center">
-            <Button onClick={() => doWithdraw()}>Withdraw</Button>
-          </Flex>
-        ) : null}
+          {index === 0 ? (
+            <Flex flexDirection="column" p="1rem" alignItems="center">
+              <Box mb="1rem">
+                {t0State === ApprovalState.APPROVED ? (
+                  <EthAmount
+                    token={tidePool?.pool.token0}
+                    balance={t0Balance}
+                    value={zeroIn}
+                    setValue={setZeroIn}
+                  />
+                ) : (
+                  <Button disabled={!account} onClick={() => approveT0()}>
+                    Approve {tidePool?.pool.token0.symbol}
+                  </Button>
+                )}
+              </Box>
+
+              <Box mb="1rem">
+                {t1State === ApprovalState.APPROVED ? (
+                  <EthAmount
+                    token={tidePool?.pool.token1}
+                    balance={t1Balance}
+                    value={oneIn}
+                    setValue={setOneIn}
+                  />
+                ) : (
+                  <Button disabled={!account} onClick={() => approveT1()}>
+                    Approve {tidePool?.pool.token1.symbol}
+                  </Button>
+                )}
+              </Box>
+              {t0State === ApprovalState.APPROVED ||
+              t1State === ApprovalState.APPROVED ? (
+                <Flex justifyContent="center">
+                  <Button onClick={() => doDeposit()}>Deposit</Button>
+                </Flex>
+              ) : null}
+            </Flex>
+          ) : (
+            <Flex flexDirection="column" p="1rem" alignItems="center">
+              <Box mb="1rem">
+                <EthAmount
+                  balance={balance}
+                  value={w}
+                  setValue={setW}
+                  color={theme.colors.lighterBlue}
+                />
+              </Box>
+
+              {t0State === ApprovalState.APPROVED ||
+              t1State === ApprovalState.APPROVED ? (
+                <Flex justifyContent="center">
+                  <Button onClick={() => doWithdraw()}>Withdraw</Button>
+                </Flex>
+              ) : null}
+            </Flex>
+          )}
+        </ActionBox>
       </Container>
       <Flex justifyContent="center" my="1rem">
-        <BackLink to="/list">
-          Back to all pools
-        </BackLink>
+        <BackLink to="/list">Back to all pools</BackLink>
       </Flex>
     </Box>
   )

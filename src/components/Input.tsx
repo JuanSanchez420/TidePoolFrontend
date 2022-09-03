@@ -1,9 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import { Flex, Text, Button, Box } from "./index"
+import { Flex, Text, Button, Box, FlexProps } from "./index"
 import { imageUrls } from "../info/tokens"
 import { ethers, BigNumber } from "ethers"
 import { Token } from "../info/types"
+import theme from "../info/theme"
 
 const InputBox = styled.input`
   all: unset;
@@ -20,10 +21,14 @@ const Icon = styled.img`
   margin-right: 10px;
 `
 
-const Wrapper = styled(Flex)`
+export interface WrapperProps extends FlexProps {
+  color?: string
+}
+
+const Wrapper = styled(Flex)<WrapperProps>`
   border-radius: 1rem;
-  background-color: ${({ theme }) => theme.colors.darkBlue};
-  padding: 5px 15px;
+  background-color: ${({theme, color = theme.colors.darkBlue}) => color};
+  padding: 3px 13px;
 `
 
 interface TokenInputProps {
@@ -31,6 +36,7 @@ interface TokenInputProps {
   balance?: BigNumber
   value?: BigNumber
   setValue?: (e: BigNumber) => void
+  color?: string
 }
 
 export const TokenInput = ({
@@ -38,15 +44,16 @@ export const TokenInput = ({
   balance = BigNumber.from(0),
   value = BigNumber.from(0),
   setValue = () => null,
+  color = theme.colors.darkishBlue
 }: TokenInputProps): JSX.Element => {
   const significantDigits = (v: string): string => {
     return v.substring(0, v.indexOf(".") + 6)
   }
 
   return (
-    <Wrapper p="10px" alignItems="center">
+    <Wrapper p="10px" alignItems="center" color={color}>
       <Icon src={token ? imageUrls[token.symbol] : ""} />
-      <Text>{token?.symbol}</Text>
+      <Text color="white">{token?.symbol}</Text>
       <InputBox
         value={ethers.utils.formatUnits(value, token?.decimals)}
         onChange={(e) =>
@@ -56,7 +63,7 @@ export const TokenInput = ({
       />
       <Flex flexDirection="column">
         <Button onClick={() => setValue(balance)}>MAX</Button>
-        <Text fontSize="0.75rem">
+        <Text fontSize="0.75rem" color="white">
           Balance:{" "}
           {significantDigits(
             ethers.utils.formatUnits(balance, token?.decimals)

@@ -53,6 +53,9 @@ export const Container = styled(Box)`
 const DetailsLink = styled.a`
   color: ${(props) => props.theme.colors.yellow};
   font-weight: 700;
+  :hover {
+    cursor: pointer;
+  }
 `
 
 const ContractLink = styled.a`

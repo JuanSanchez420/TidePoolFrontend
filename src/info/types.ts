@@ -17,6 +17,7 @@ export interface Pool {
   address: string
   token0: Token
   token1: Token
+  fee: number
 }
 
 export interface Token {
