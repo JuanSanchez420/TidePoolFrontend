@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useTidePoolContract } from "./useContract"
 import { BigNumber } from "ethers"
 
-const useTidePool = (address?: string, user?: string) => {
+const useTidePool = (address?: string, user?: string | null) => {
   const contract = useTidePoolContract(address)
   const [balance, setBalance] = useState(BigNumber.from(0))
   const [pool, setPool] = useState<string | null>(null)

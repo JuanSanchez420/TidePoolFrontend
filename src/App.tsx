@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from "react"
+import { Web3ReactProvider } from "@web3-react/core"
 import { Routes, Route, Outlet } from "react-router-dom"
 import { ThemeProvider } from "styled-components"
 import theme from "./info/theme"
@@ -12,6 +13,7 @@ import {
 import { Header } from "./components/Header"
 import { Footer } from "./components/Footer"
 import { GlobalContext } from "./context/GlobalContext"
+import { getLibrary } from "./utils/web3React"
 
 const Home = lazy(() => import("./views/Home"))
 const TidePool = lazy(() => import("./views/TidePool"))
@@ -34,27 +36,29 @@ const Loading = () => {
 
 const Layout = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalContext>
-        <Wrapper>
-          <Suspense fallback={<Loading />}>
-            <DarkWrapper>
-              <Box maxWidth="1000px" m="auto">
-                <Header />
-              </Box>
-            </DarkWrapper>
-            <Flex maxWidth="1000px" m="auto" flex="1 0 auto">
-              <Outlet />
-            </Flex>
-            <DarkWrapper>
-              <Box maxWidth="1000px" m="auto">
-                <Footer />
-              </Box>
-            </DarkWrapper>
-          </Suspense>
-        </Wrapper>
-      </GlobalContext>
-    </ThemeProvider>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <ThemeProvider theme={theme}>
+        <GlobalContext>
+          <Wrapper>
+            <Suspense fallback={<Loading />}>
+              <DarkWrapper>
+                <Box maxWidth="1000px" m="auto">
+                  <Header />
+                </Box>
+              </DarkWrapper>
+              <Flex maxWidth="1000px" m="auto" flex="1 0 auto">
+                <Outlet />
+              </Flex>
+              <DarkWrapper>
+                <Box maxWidth="1000px" m="auto">
+                  <Footer />
+                </Box>
+              </DarkWrapper>
+            </Suspense>
+          </Wrapper>
+        </GlobalContext>
+      </ThemeProvider>
+    </Web3ReactProvider>
   )
 }
 

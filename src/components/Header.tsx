@@ -1,11 +1,10 @@
-import { useContext } from "react"
 import styled from "styled-components"
 import { Flex, Button, Box } from "./index"
-import useWeb3Modal from "../hooks/useWeb3Modal"
-import { Global } from "../context/GlobalContext"
 import { Hamburger, Wallet } from "./Icons"
 import theme from "../info/theme"
 import { Link } from "react-router-dom"
+import { useWeb3React } from "@web3-react/core"
+import { connectors } from "../utils/web3React"
 
 const Connect = styled(Button)`
     border-radius: 1rem;
@@ -61,8 +60,7 @@ const TidePoolLogo = styled.img`
 `
 
 export const Header = () => {
-  const { account } = useContext(Global)
-  const web3 = useWeb3Modal()
+  const { activate, account } = useWeb3React()
 
   return (
     <Flex py="1rem" px="0.5rem" alignItems="center" flexShrink="0">
@@ -75,7 +73,13 @@ export const Header = () => {
         {account ? (
           <Wallet height={"2.5rem"} color={theme.colors.yellow} />
         ) : (
-          <Connect onClick={() => web3.connect()}>Connect</Connect>
+          <Connect
+            onClick={() =>
+              activate(connectors.injected, (e) => console.log(e), true)
+            }
+          >
+            Connect
+          </Connect>
         )}
         <Menu>
           <Hamburger height={"3rem"} color={"#FFF"} />

@@ -128,7 +128,7 @@ const MiddleWave = styled(Box)`
 `
 
 export const UnorderedList = styled.ul`
-  color: ${props => props.theme.colors.white}
+  color: ${(props) => props.theme.colors.white};
 `
 
 export const BlobWrapper = ({

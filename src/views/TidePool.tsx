@@ -12,6 +12,7 @@ import { ApprovalState } from "../info/types"
 import usePool from "../hooks/usePool"
 import { Link } from "react-router-dom"
 import theme from "../info/theme"
+import { useWeb3React } from "@web3-react/core"
 
 const EthAmount = styled(TokenInput)`
   text-align: center;
@@ -57,7 +58,9 @@ const ActionBox = styled(Flex)<TabProps>`
 const TidePool = () => {
   const address = useParams().address
 
-  const { account, theList } = useContext(Global)
+  const { theList } = useContext(Global)
+
+  const { account } = useWeb3React()
 
   const tidePool = theList.tidePools.find((p) => p.address === address)
 

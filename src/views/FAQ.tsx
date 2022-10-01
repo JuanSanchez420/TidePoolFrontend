@@ -12,7 +12,7 @@ const ContentContainer = styled(Box)`
 `
 
 const ExternalLink = styled.a`
-  color:white;
+  color: white;
   background-color: ${(props) => props.theme.colors.lightBlue};
   padding: 0.1rem;
 `

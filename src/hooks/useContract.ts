@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react"
+import { useMemo } from "react"
 import { ethers } from "ethers"
 import {
   TIDEPOOL_ABI,
@@ -6,19 +6,20 @@ import {
   ERC20_ABI,
   FACTORY_ABI,
 } from "../info/abi"
-import { Global } from "../context/GlobalContext"
+import { useWeb3React } from "@web3-react/core"
+import useNetwork from "./useNetwork"
 
 const useContract = (address?: string, abi?: any): ethers.Contract | null => {
-  const { account, provider } = useContext(Global)
+  const { account, library } = useWeb3React()
 
   const contract = useMemo(() => {
     if (!address || !abi) return null
     return new ethers.Contract(
       address,
       abi,
-      account ? provider.getSigner() : provider
+      account ? library.getSigner() : library
     )
-  }, [provider, account, abi, address])
+  }, [library, account, abi, address])
 
   return contract
 }
@@ -40,7 +41,7 @@ export const useTokenContract = (address?: string): ethers.Contract | null => {
 }
 
 export const useFactoryContract = (): ethers.Contract | null => {
-  const { network } = useContext(Global)
+  const network = useNetwork()
 
   return useContract(network.factory, FACTORY_ABI)
 }

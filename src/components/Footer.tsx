@@ -26,12 +26,20 @@ export const Footer = () => {
       </Flex>
       <Flex justifyContent="center" flex="5">
         <UnorderedList>
-          <li><MenuLink to="/">Home</MenuLink></li>
-          <li><MenuLink to="/pools">TidePools</MenuLink></li>
+          <li>
+            <MenuLink to="/">Home</MenuLink>
+          </li>
+          <li>
+            <MenuLink to="/pools">TidePools</MenuLink>
+          </li>
         </UnorderedList>
         <UnorderedList>
-          <li><MenuLink to="/create">Create</MenuLink></li>
-          <li><MenuLink to="/faq">FAQ</MenuLink></li>
+          <li>
+            <MenuLink to="/create">Create</MenuLink>
+          </li>
+          <li>
+            <MenuLink to="/faq">FAQ</MenuLink>
+          </li>
         </UnorderedList>
       </Flex>
     </Flex>

@@ -6,7 +6,7 @@ import {
   Text,
   HollowButton,
   UnorderedList,
-  BlobWrapper
+  BlobWrapper,
 } from "../components"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
@@ -42,32 +42,33 @@ const Coins = styled.img`
 `
 
 function Home() {
-  
   const navigate = useNavigate()
 
   return (
     <Box mx="auto">
       <BlobWrapper height="100px">
-      <ContentBox justifyContent="center" p="1rem">
-        <Flex flexDirection="column">
-          <Box maxWidth={["12rem", "12rem", "30rem"]}>
-            <Heading mb="1rem">Welcome to TIDEPOOLS.io</Heading>
-          </Box>
-          <Text mb="1rem" color={theme.colors.white}>
-            We generate the largest returns on Uniswap V3 liquidity pools.
-          </Text>
-          <Text mb="1rem" color={theme.colors.white}>
-            Connect your wallet, deposit in a pool, and we take care of the
-            rest.
-          </Text>
-          <Flex justifyContent="center">
-            <Box width={"8rem"}>
-              <HollowButton onClick={()=>navigate("/pools")}>View Pools</HollowButton>
+        <ContentBox justifyContent="center" p="1rem">
+          <Flex flexDirection="column">
+            <Box maxWidth={["12rem", "12rem", "30rem"]}>
+              <Heading mb="1rem">Welcome to TIDEPOOLS.io</Heading>
             </Box>
+            <Text mb="1rem" color={theme.colors.white}>
+              We generate the largest returns on Uniswap V3 liquidity pools.
+            </Text>
+            <Text mb="1rem" color={theme.colors.white}>
+              Connect your wallet, deposit in a pool, and we take care of the
+              rest.
+            </Text>
+            <Flex justifyContent="center">
+              <Box width={"8rem"}>
+                <HollowButton onClick={() => navigate("/pools")}>
+                  View Pools
+                </HollowButton>
+              </Box>
+            </Flex>
           </Flex>
-        </Flex>
-        <Crab src="/images/TidePoolsCrab.svg" />
-      </ContentBox>
+          <Crab src="/images/TidePoolsCrab.svg" />
+        </ContentBox>
       </BlobWrapper>
       <ContentBox justifyContent="center">
         <Flex flexDirection="column" p="1rem">
@@ -87,7 +88,9 @@ function Home() {
 
           <Flex justifyContent="center">
             <Box width={"8rem"}>
-              <HollowButton onClick={()=>navigate("/pools")}>View Pools</HollowButton>
+              <HollowButton onClick={() => navigate("/pools")}>
+                View Pools
+              </HollowButton>
             </Box>
           </Flex>
         </Flex>

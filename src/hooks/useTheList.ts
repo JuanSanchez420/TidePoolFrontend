@@ -16,7 +16,7 @@ const useTheList = (network: Network) => {
       const response = await fetch(`/${network.chainId}.json`)
       if (response.ok) setTheList(await response.json())
     }
-    f()
+    if (network) f()
   }, [network])
 
   return theList

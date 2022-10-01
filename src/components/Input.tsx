@@ -27,7 +27,7 @@ export interface WrapperProps extends FlexProps {
 
 const Wrapper = styled(Flex)<WrapperProps>`
   border-radius: 1rem;
-  background-color: ${({theme, color = theme.colors.darkBlue}) => color};
+  background-color: ${({ theme, color = theme.colors.darkBlue }) => color};
   padding: 3px 13px;
 `
 
@@ -44,7 +44,7 @@ export const TokenInput = ({
   balance = BigNumber.from(0),
   value = BigNumber.from(0),
   setValue = () => null,
-  color = theme.colors.darkishBlue
+  color = theme.colors.darkishBlue,
 }: TokenInputProps): JSX.Element => {
   const significantDigits = (v: string): string => {
     return v.substring(0, v.indexOf(".") + 6)
@@ -113,7 +113,9 @@ export const TextInputWithClear = ({
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
       />
-      <Box width="7rem"><Button onClick={() => setValue("")}>Clear</Button></Box>
+      <Box width="7rem">
+        <Button onClick={() => setValue("")}>Clear</Button>
+      </Box>
     </Wrapper>
   )
 }

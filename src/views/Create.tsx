@@ -7,6 +7,7 @@ import styled from "styled-components"
 import { CreateState } from "../info/types"
 import { Global } from "../context/GlobalContext"
 import { Link } from "react-router-dom"
+import useNetwork from "../hooks/useNetwork"
 
 const ActionsContainer = styled(Box)`
   max-width: 400px;
@@ -41,7 +42,7 @@ const Answer = styled(Text)`
 `
 
 const CreateTidePool = () => {
-  const { network } = useContext(Global)
+  const network = useNetwork()
   const [selected, setSelected] = useState("")
   const [address, setAddress] = useState(null)
   const { state, deploy } = useFactory()

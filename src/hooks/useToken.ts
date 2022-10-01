@@ -12,7 +12,7 @@ interface TokenUtils {
 
 const useToken = (
   tokenAddress?: string,
-  owner?: string,
+  owner?: string | null,
   spender?: string
 ): TokenUtils => {
   const [state, setState] = useState<ApprovalState>(ApprovalState.NOT_APPROVED)

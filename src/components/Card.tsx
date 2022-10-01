@@ -1,12 +1,12 @@
-import { useState, useContext } from "react"
+import { useState } from "react"
 import { Box, Flex, Text, Button } from "./index"
 import { Chevron, External } from "./Icons"
 import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
 import { Slot0, TidePool } from "../info/types"
-import { Global } from "../context/GlobalContext"
 import theme from "../info/theme"
 import { useNavigate } from "react-router-dom"
+import useNetwork from "../hooks/useNetwork"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -63,9 +63,8 @@ const ContractLink = styled.a`
   font-size: 0.85rem;
 `
 
-
 export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
-  const { network } = useContext(Global)
+  const network = useNetwork()
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
@@ -73,7 +72,12 @@ export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
 
   return (
     <>
-      <Flex pb="10px" alignItems="center" justifyContent="space-around" minWidth="330px">
+      <Flex
+        pb="10px"
+        alignItems="center"
+        justifyContent="space-around"
+        minWidth="330px"
+      >
         <Flex alignItems="center">
           <IconBox width="40px" height="35px" marginRight="1rem">
             <IconLeft
@@ -161,7 +165,13 @@ export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
             </Flex>
           </Flex>
           <Flex justifyContent="center" mt="1rem">
-            <Button onClick={()=> navigate(`/${network.name}/${props.tidePool?.address}`)}>Enter TidePool</Button>
+            <Button
+              onClick={() =>
+                navigate(`/${network.name}/${props.tidePool?.address}`)
+              }
+            >
+              Enter TidePool
+            </Button>
           </Flex>
         </Box>
       )}

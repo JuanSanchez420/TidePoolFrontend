@@ -43,4 +43,9 @@ export const Polygon: Network = {
   factory: "0x59b81A9B35d94000F40C3e0e7894D7762A526a36",
 }
 
-export const networks: Network[] = [Ethereum, Arbitrum, Optimism, Polygon]
+export const networks = {
+  [Ethereum.chainId]: Ethereum,
+  [Arbitrum.chainId]: Arbitrum,
+  [Optimism.chainId]: Optimism,
+  [Polygon.chainId]: Polygon,
+}

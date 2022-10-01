@@ -4,10 +4,11 @@ import styled from "styled-components"
 import { Flex, Box, Heading, Text } from "../components"
 import theme from "../info/theme"
 import { networks, Network } from "../info/networks"
-import useWeb3Modal from "../hooks/useWeb3Modal"
 import { Chevron, Search } from "../components/Icons"
 import { TextInput } from "../components/Input"
 import { Card } from "../components/Card"
+import { useWeb3React } from "@web3-react/core"
+import useNetwork from "../hooks/useNetwork"
 
 const Logo = styled.img`
   height: 1rem;
@@ -70,16 +71,16 @@ const RedDot = styled.span`
 `
 
 const List = () => {
-  const web3 = useWeb3Modal()
+  const network = useNetwork()
   const [open, setOpen] = useState(false)
-  const g = useContext(Global)
+  const { theList } = useContext(Global)
   const [search, setSearch] = useState("")
 
   const view = useMemo(() => {
-    if (search === "") return g.theList.tidePools
+    if (search === "") return theList.tidePools
 
     return (
-      g.theList.tidePools.filter(
+      theList.tidePools.filter(
         (tp) =>
           tp.pool.token0.symbol.toLowerCase().indexOf(search.toLowerCase()) >=
             0 ||
@@ -90,7 +91,7 @@ const List = () => {
           tp.address === search
       ) || []
     )
-  }, [search, g.theList.tidePools])
+  }, [search, theList.tidePools])
 
   return (
     <Box p="1rem">
@@ -106,8 +107,8 @@ const List = () => {
             onMouseOver={() => setOpen(true)}
             onMouseOut={() => setTimeout(() => setOpen(false), 1000)}
           >
-            <Logo src={g.network.image} />
-            <Text>{g.network.name}</Text>
+            <Logo src={network.image} />
+            <Text>{network.name}</Text>
             <Box width="15px" mx="5px" color={theme.colors.white}>
               <Chevron open={open} />
             </Box>
@@ -121,14 +122,14 @@ const List = () => {
             >
               Select a Network
             </Text>
-            {networks.map((n: Network) => (
+            {Object.values(networks).map((n: Network) => (
               <Highlight key={n.chainId}>
                 <Flex
                   key={n.chainId}
                   alignItems="center"
                   justifyContent="space-around"
                   py="2px"
-                  onClick={() => web3.switchChains(n.chainId)}
+                  onClick={() => {}}
                 >
                   <Logo src={n.image} />
                   <Text color={theme.colors.white}>{n.name}</Text>
@@ -144,7 +145,9 @@ const List = () => {
           icon={<Search height="2rem" width="2rem" color="white" />}
         />
       </Flex>
-      {view.map(c=><Card key={c.address} tidePool={c} slot0={null}/>)}
+      {view.map((c) => (
+        <Card key={c.address} tidePool={c} slot0={null} />
+      ))}
     </Box>
   )
 }
