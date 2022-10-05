@@ -46,6 +46,8 @@ const IconRight = styled.img`
 export const Container = styled(Box)`
   border-radius: 1rem;
   padding: 10px;
+  max-width: 400px;
+  width: 100%;
   background-color: ${(props) => props.theme.colors.darkBlue};
   filter: ${(props) => props.theme.utils.dropShadow};
 `
@@ -63,7 +65,11 @@ const ContractLink = styled.a`
   font-size: 0.85rem;
 `
 
-export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
+export const Info = (props: {
+  tidePool?: TidePool
+  slot0?: Slot0 | null
+  hideEntryLink?: boolean
+}) => {
   const network = useNetwork()
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
@@ -72,12 +78,7 @@ export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
 
   return (
     <>
-      <Flex
-        pb="10px"
-        alignItems="center"
-        justifyContent="space-around"
-        minWidth="330px"
-      >
+      <Flex pb="10px" alignItems="center" justifyContent="space-around">
         <Flex alignItems="center">
           <IconBox width="40px" height="35px" marginRight="1rem">
             <IconLeft
@@ -164,15 +165,17 @@ export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
               </ContractLink>
             </Flex>
           </Flex>
-          <Flex justifyContent="center" mt="1rem">
-            <Button
-              onClick={() =>
-                navigate(`/${network.name}/${props.tidePool?.address}`)
-              }
-            >
-              Enter TidePool
-            </Button>
-          </Flex>
+          {!props.hideEntryLink && (
+            <Flex justifyContent="center" mt="1rem">
+              <Button
+                onClick={() =>
+                  navigate(`/${network.name}/${props.tidePool?.address}`)
+                }
+              >
+                Enter TidePool
+              </Button>
+            </Flex>
+          )}
         </Box>
       )}
     </>
@@ -182,6 +185,7 @@ export const Info = (props: { tidePool?: TidePool; slot0?: Slot0 | null }) => {
 export const Card = (props: {
   tidePool: TidePool
   slot0: Slot0 | null
+  hideEntryLink?: boolean
 }): JSX.Element => {
   return (
     <Container mb={["2rem"]} mx="auto" maxWidth="400px" width="100%" p="5px">

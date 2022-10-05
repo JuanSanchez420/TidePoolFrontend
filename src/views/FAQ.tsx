@@ -29,7 +29,7 @@ const Answer = styled(Text)`
 
 const FAQ = () => {
   return (
-    <>
+    <Box mx="auto" width="100%" maxWidth="1000px" p="1rem">
       <ContentContainer>
         <Question>"What is TidePools.io?"</Question>
         <Answer>
@@ -125,7 +125,7 @@ const FAQ = () => {
           we'll also deploy there as well.
         </Answer>
       </ContentContainer>
-    </>
+    </Box>
   )
 }
 

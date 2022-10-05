@@ -6,52 +6,85 @@ import {
   Text,
   HollowButton,
   UnorderedList,
-  BlobWrapper,
 } from "../components"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import theme from "../info/theme"
+import WaveWrapper from "../components/Waves"
 
-const ContentBox = styled(Flex)`
-  position: relative;
-`
-
-const Crab = styled.img`
-  right: 1rem;
-  max-height: 100px;
+const CrabHeading = styled.img`
+  height: 100%;
+  max-height: 75px;
   transform: scaleX(-1);
-  position: absolute;
 
   ${(props) => props.theme.mediaQueries.md} {
-    max-height: 150px;
-    right: -200px;
+    display: none;
   }
 `
 
-const Coins = styled.img`
-  right: 1rem;
+const CrabHero = styled.img`
+  display: none;
+  height: 100%;
+  max-height: 75px;
+  transform: scaleX(-1);
+  z-index: 2;
+
+  ${(props) => props.theme.mediaQueries.md} {
+    display: block;
+    max-height: 150px;
+  }
+
+  ${(props) => props.theme.mediaQueries.lg} {
+    max-height: 200px;
+  }
+`
+
+const CoinsHeading = styled.img`
   max-height: 50px;
   transform: scaleX(-1);
-  position: absolute;
-  top: 10%;
 
   ${(props) => props.theme.mediaQueries.md} {
-    max-height: 75px;
-    right: -200px;
+    display: none;
   }
+`
+
+const CoinsHero = styled.img`
+  display: none;
+  max-height: 50px;
+  transform: scaleX(-1);
+
+  ${(props) => props.theme.mediaQueries.md} {
+    display: block;
+    max-height: 75px;
+  }
+
+  ${(props) => props.theme.mediaQueries.lg} {
+    max-height: 100px;
+  }
+`
+
+const ZFlex = styled(Flex)`
+  z-index: 11;
 `
 
 function Home() {
   const navigate = useNavigate()
 
   return (
-    <Box mx="auto">
-      <BlobWrapper height="100px">
-        <ContentBox justifyContent="center" p="1rem">
-          <Flex flexDirection="column">
-            <Box maxWidth={["12rem", "12rem", "30rem"]}>
-              <Heading mb="1rem">Welcome to TIDEPOOLS.io</Heading>
-            </Box>
+    <Box mx="auto" width="100%">
+      <WaveWrapper>
+        <Flex
+          justifyContent="center"
+          p="1rem"
+          alignItems={["start", "start", "center"]}
+        >
+          <ZFlex flexDirection="column">
+            <Flex>
+              <Heading mb="1rem" mr="1rem">
+                Welcome to TIDEPOOLS.io
+              </Heading>
+              <CrabHeading src="/images/TidePoolsCrab.svg" />
+            </Flex>
             <Text mb="1rem" color={theme.colors.white}>
               We generate the largest returns on Uniswap V3 liquidity pools.
             </Text>
@@ -66,15 +99,23 @@ function Home() {
                 </HollowButton>
               </Box>
             </Flex>
+          </ZFlex>
+          <CrabHero src="/images/TidePoolsCrab.svg" />
+        </Flex>
+      </WaveWrapper>
+
+      <Flex
+        justifyContent="center"
+        p="1rem"
+        alignItems={["start", "start", "center"]}
+      >
+        <Flex flexDirection="column">
+          <Flex>
+            <Heading mb="1rem" mr="1rem">
+              Generate Passive Income
+            </Heading>
+            <CoinsHeading src="/images/pile-of-coins.gif" />
           </Flex>
-          <Crab src="/images/TidePoolsCrab.svg" />
-        </ContentBox>
-      </BlobWrapper>
-      <ContentBox justifyContent="center">
-        <Flex flexDirection="column" p="1rem">
-          <Box maxWidth={["20rem", "20rem", "30rem"]}>
-            <Heading mb="1rem">Generate Passive Income</Heading>
-          </Box>
           <Text color={theme.colors.white}>
             TIDEPOOLS.io turns V3 liquidity pools into hassle-free V2 liquidity
             pools.
@@ -94,32 +135,37 @@ function Home() {
             </Box>
           </Flex>
         </Flex>
-        <Coins src="/images/pile-of-coins.gif" />
-      </ContentBox>
-      <Flex
-        justifyContent="center"
-        flexDirection="column"
-        alignItems="center"
-        mt="1rem"
-      >
-        <Text
-          color={theme.colors.yellow}
-          fontWeight="900"
-          mb="1rem"
-          fontSize="1.5rem"
-        >
-          BETA PRODUCT
-        </Text>
-        <Text color={theme.colors.yellow}>
-          TIDEPOOLS.io contracts have been
-        </Text>
-        <Text color={theme.colors.yellow}>
-          finalized, tested, and security checked.
-        </Text>
-        <Text color={theme.colors.yellow} mb="1rem">
-          Our website is still a work in progress.
-        </Text>
+        <CoinsHero src="/images/pile-of-coins.gif" />
       </Flex>
+      <WaveWrapper>
+        <Flex
+          justifyContent="center"
+          flexDirection="column"
+          alignItems="center"
+          mt="1rem"
+          
+        >
+          <ZFlex flexDirection="column" alignItems="center">
+          <Text
+            color={theme.colors.yellow}
+            fontWeight="900"
+            mb="1rem"
+            fontSize="1.5rem"
+          >
+            BETA PRODUCT
+          </Text>
+          <Text color={theme.colors.yellow}>
+            TIDEPOOLS.io contracts have been
+          </Text>
+          <Text color={theme.colors.yellow}>
+            finalized, tested, and security checked.
+          </Text>
+          <Text color={theme.colors.yellow} mb="1rem">
+            Our website is still a work in progress.
+          </Text>
+          </ZFlex>
+        </Flex>
+      </WaveWrapper>
     </Box>
   )
 }

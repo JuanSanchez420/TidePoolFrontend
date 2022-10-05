@@ -1,10 +1,13 @@
+import { useEffect } from "react"
 import styled from "styled-components"
-import { Flex, Button, Box } from "./index"
-import { Hamburger, Wallet } from "./Icons"
+import { Flex, Button } from "./index"
+import { Wallet } from "./Icons"
 import theme from "../info/theme"
 import { Link } from "react-router-dom"
 import { useWeb3React } from "@web3-react/core"
 import { connectors } from "../utils/web3React"
+import useLocalStorage from "../hooks/useLocalStorage"
+import HamburgerMenu from "./HamburgerMenu"
 
 const Connect = styled(Button)`
     border-radius: 1rem;
@@ -18,77 +21,38 @@ const Connect = styled(Button)`
     }
 `
 
-const Menu = styled(Box)`
-  border-radius: 0.5rem;
-  padding: 5px 15px;
-  text-transform: none;
-  margin-right: 1rem;
-  position: relative;
-
-  :hover #menu {
-    visibility: visible;
-    transition-delay: 0s;
-  }
-`
-
-const MenuLink = styled(Link)`
-  text-decoration: none;
-  color: black;
-
-  :hover {
-    text-decoration: underline;
-  }
-`
-
-const MenuOptions = styled(Flex)`
-  visibility: hidden;
-  transition: 0.2s 1s;
-  width: 150px;
-  position: absolute;
-  // left: 0;
-  right: 0;
-  top: 3rem;
-  padding: 0.5rem;
-  border-radius: 1rem;
-  background-color: ${(props) => props.theme.colors.white};
-  filter: ${(props) => props.theme.utils.dropShadow};
-  z-index: 11;
-`
-
 const TidePoolLogo = styled.img`
   height: 4rem;
 `
 
 export const Header = () => {
   const { activate, account } = useWeb3React()
+  const [prevWallet, setPrevWallet] = useLocalStorage("provider")
+
+  const handleActivate = () => {
+    activate(connectors.injected, (e) => console.log(e), true)
+    setPrevWallet(connectors.injected)
+  }
+
+  useEffect(() => {
+    if (prevWallet && !account)
+      activate(connectors.injected, (e) => console.log(e), true)
+  }, [prevWallet, account, activate])
 
   return (
     <Flex py="1rem" px="0.5rem" alignItems="center" flexShrink="0">
       <Flex flex="1 1 auto">
         <Link to="/">
-          <TidePoolLogo src="/images/DarkLogoWithTaglineHorizontal.png" />
+          <TidePoolLogo src="/images/TidePoolsDarkLogo.svg" />
         </Link>
       </Flex>
       <Flex alignItems="center">
         {account ? (
-          <Wallet height={"2.5rem"} color={theme.colors.yellow} />
+          <Wallet height={"2rem"} color={theme.colors.yellow} />
         ) : (
-          <Connect
-            onClick={() =>
-              activate(connectors.injected, (e) => console.log(e), true)
-            }
-          >
-            Connect
-          </Connect>
+          <Connect onClick={() => handleActivate()}>Connect</Connect>
         )}
-        <Menu>
-          <Hamburger height={"3rem"} color={"#FFF"} />
-          <MenuOptions id="menu" flexDirection="column" alignItems="start">
-            <MenuLink to="/">Home</MenuLink>
-            <MenuLink to="/create">Create</MenuLink>
-            <MenuLink to="/faq">FAQ</MenuLink>
-          </MenuOptions>
-        </Menu>
+        <HamburgerMenu />
       </Flex>
     </Flex>
   )

@@ -3,13 +3,7 @@ import { Web3ReactProvider } from "@web3-react/core"
 import { Routes, Route, Outlet } from "react-router-dom"
 import { ThemeProvider } from "styled-components"
 import theme from "./info/theme"
-import {
-  Wrapper,
-  Box,
-  Flex,
-  LoadingLogo,
-  DarkWrapper,
-} from "./components/index"
+import { Wrapper, Flex, LoadingLogo, DarkWrapper } from "./components/index"
 import { Header } from "./components/Header"
 import { Footer } from "./components/Footer"
 import { GlobalContext } from "./context/GlobalContext"
@@ -21,38 +15,21 @@ const List = lazy(() => import("./views/List"))
 const Create = lazy(() => import("./views/Create"))
 const FAQ = lazy(() => import("./views/FAQ"))
 
-const Loading = () => {
-  return (
-    <Flex
-      height="100%"
-      width="100%"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <LoadingLogo />
-    </Flex>
-  )
-}
-
 const Layout = () => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <ThemeProvider theme={theme}>
         <GlobalContext>
           <Wrapper>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<LoadingLogo />}>
               <DarkWrapper>
-                <Box maxWidth="1000px" m="auto">
-                  <Header />
-                </Box>
+                <Header />
               </DarkWrapper>
-              <Flex maxWidth="1000px" m="auto" flex="1 0 auto">
+              <Flex width="100%" justifyContent="center" flex="1 0 auto">
                 <Outlet />
               </Flex>
               <DarkWrapper>
-                <Box maxWidth="1000px" m="auto">
-                  <Footer />
-                </Box>
+                <Footer />
               </DarkWrapper>
             </Suspense>
           </Wrapper>

@@ -41,6 +41,8 @@ export const Wrapper = styled(Flex)`
   min-height: 100%;
   background-color: ${(props) => props.theme.colors.lightBlue};
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `
 
 export const Button = styled.button`
@@ -109,43 +111,9 @@ export const LoadingLogo = () => {
   return <Logo src="/images/TidePoolsCrab.svg" />
 }
 
-const TopWave = styled(Box)`
-  background: url("/images/topWave.svg");
-  background-position: top left;
-  background-repeat: no-repeat;
-  background-size: 100%;
-`
-
-const BottomWave = styled(Box)`
-  background: url("/images/bottomWave.svg");
-  background-position: top left;
-  background-repeat: no-repeat;
-  background-size: 100%;
-`
-
-const MiddleWave = styled(Box)`
-  background-color: ${(props) => props.theme.colors.darkBlue};
-`
-
 export const UnorderedList = styled.ul`
   color: ${(props) => props.theme.colors.white};
 `
-
-export const BlobWrapper = ({
-  height,
-  children,
-}: {
-  height: string
-  children: React.ReactNode
-}) => {
-  return (
-    <Box>
-      <TopWave height={height} />
-      <MiddleWave>{children}</MiddleWave>
-      <BottomWave height={height} />
-    </Box>
-  )
-}
 
 export const Heading = styled(Text)`
   color: ${(props) => props.theme.colors.babyBlue};

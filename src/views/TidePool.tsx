@@ -101,9 +101,9 @@ const TidePool = () => {
   }
 
   return (
-    <Box>
-      <Container maxWidth="400px" width="100%" mx="auto" my="1rem">
-        <Info tidePool={tidePool} slot0={slot0} />
+    <Box p="1rem" width="100%">
+      <Container mx="auto" my="1rem">
+        <Info tidePool={tidePool} slot0={slot0} hideEntryLink />
 
         <ActionBox flexDirection="column" selected={index === 0}>
           <Flex>

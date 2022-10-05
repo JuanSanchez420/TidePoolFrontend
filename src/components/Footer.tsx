@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Flex, UnorderedList } from "./index"
+import { Flex, UnorderedList, Box } from "./index"
 import { Link } from "react-router-dom"
 
 const TidePoolLogo = styled.img`
@@ -19,11 +19,13 @@ const MenuLink = styled(Link)`
 export const Footer = () => {
   return (
     <Flex py="1rem" px="0.5rem" alignItems="center" flexShrink="0">
-      <Flex flex="1 1 auto">
-        <a href="/">
-          <TidePoolLogo src="/images/DarkLogoWithTaglineHorizontal.png" />
-        </a>
-      </Flex>
+      <Box display={["none", "block"]}>
+        <Flex flex="1 1 auto">
+          <a href="/">
+            <TidePoolLogo src="/images/TidePoolsDarkLogoNoTagline.svg" />
+          </a>
+        </Flex>
+      </Box>
       <Flex justifyContent="center" flex="5">
         <UnorderedList>
           <li>

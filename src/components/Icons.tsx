@@ -144,7 +144,7 @@ export const Wallet = (props: React.SVGAttributes<HTMLOrSVGElement>) => {
       fill="currentColor"
       viewBox="0 0 501.333 501.333"
       stroke="currentColor"
-      strokeWidth={2}
+      strokeWidth={1}
     >
       <g>
         <g>
@@ -164,18 +164,6 @@ export const Wallet = (props: React.SVGAttributes<HTMLOrSVGElement>) => {
           />
         </g>
       </g>
-    </svg>
-  )
-}
-
-export const Blob = (props: React.SVGAttributes<HTMLOrSVGElement>) => {
-  return (
-    <svg viewBox="0 0 200 200" {...props} xmlns="http://www.w3.org/2000/svg">
-      <path
-        fill="currentColor"
-        d="M39.8,-65.6C52.8,-61.3,65.6,-53.3,72.3,-41.7C78.9,-30.2,79.3,-15.1,80,0.3C80.6,15.8,81.3,31.6,72.8,39.9C64.3,48.2,46.5,48.9,32.8,57.6C19.1,66.2,9.6,82.6,-0.9,84.2C-11.4,85.7,-22.7,72.4,-33,61.8C-43.3,51.3,-52.5,43.4,-63.4,33.6C-74.3,23.7,-87,11.9,-89,-1.2C-91,-14.2,-82.4,-28.4,-74,-42.6C-65.6,-56.8,-57.4,-71,-45.1,-75.7C-32.8,-80.4,-16.4,-75.6,-1.5,-72.9C13.3,-70.3,26.7,-69.8,39.8,-65.6Z"
-        transform="translate(100 100)"
-      />
     </svg>
   )
 }

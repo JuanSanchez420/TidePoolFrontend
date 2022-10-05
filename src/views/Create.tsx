@@ -1,15 +1,15 @@
-import React, { useState, useMemo, useContext } from "react"
+import React, { useState, useMemo } from "react"
 import { Flex, Box, Text, Button, Dots } from "../components"
 import { External } from "../components/Icons"
 import { TextInput } from "../components/Input"
 import useFactory from "../hooks/useFactory"
 import styled from "styled-components"
 import { CreateState } from "../info/types"
-import { Global } from "../context/GlobalContext"
 import { Link } from "react-router-dom"
 import useNetwork from "../hooks/useNetwork"
 
 const ActionsContainer = styled(Box)`
+  width: 100%;
   max-width: 400px;
   margin: auto;
   background-color: ${(props) => props.theme.colors.white};
@@ -80,7 +80,7 @@ const CreateTidePool = () => {
     }, [state, pool])
 
   return (
-    <Flex flexDirection="column" p="1rem">
+    <Flex flexDirection="column" p="1rem" width="100%">
       <ActionsContainer>
         <Flex flexDirection="column" justifyContent="space-evenly">
           <Box mb="1rem">
