@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { Box, Button, Flex, FlexProps } from "../components/index"
 import { Container, Info } from "../components/Card"
@@ -65,24 +65,36 @@ const TidePool = () => {
   const tidePool = theList.tidePools.find((p) => p.address === address)
 
   const {
+    token: token0,
     state: t0State,
     balance: t0Balance,
     approve: approveT0,
   } = useToken(tidePool?.pool.token0.address, account, tidePool?.address)
   const {
+    token: token1,
     state: t1State,
     balance: t1Balance,
     approve: approveT1,
   } = useToken(tidePool?.pool.token1.address, account, tidePool?.address)
 
-  const { deposit, withdraw, balance } = useTidePool(tidePool?.address, account)
-  const { slot0 } = usePool(tidePool?.pool.address)
-
+  const { deposit, withdraw, balance, calculateFee } = useTidePool(
+    tidePool?.address,
+    account
+  )
+  const { pool } = usePool(tidePool?.pool.address)
   const [index, setIndex] = useState(0)
-
   const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
   const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))
   const [w, setW] = useState<BigNumber>(BigNumber.from(0))
+  const loaded = useRef(false)
+
+  useEffect(()=>{
+    const f = async () => {
+      loaded.current = true
+      console.log(await calculateFee())
+    }
+    if(!loaded.current && tidePool && pool) f()
+  },[tidePool, pool, calculateFee])
 
   const doDeposit = async () => {
     try {
@@ -103,7 +115,7 @@ const TidePool = () => {
   return (
     <Box p="1rem" width="100%">
       <Container mx="auto" my="1rem">
-        <Info tidePool={tidePool} slot0={slot0} hideEntryLink />
+        <Info tidePool={tidePool} pool={pool} hideEntryLink />
 
         <ActionBox flexDirection="column" selected={index === 0}>
           <Flex>
@@ -127,14 +139,14 @@ const TidePool = () => {
               <Box mb="1rem">
                 {t0State === ApprovalState.APPROVED ? (
                   <EthAmount
-                    token={tidePool?.pool.token0}
+                    token={token0}
                     balance={t0Balance}
                     value={zeroIn}
                     setValue={setZeroIn}
                   />
                 ) : (
                   <Button disabled={!account} onClick={() => approveT0()}>
-                    Approve {tidePool?.pool.token0.symbol}
+                    Approve {token0?.symbol}
                   </Button>
                 )}
               </Box>
@@ -142,14 +154,14 @@ const TidePool = () => {
               <Box mb="1rem">
                 {t1State === ApprovalState.APPROVED ? (
                   <EthAmount
-                    token={tidePool?.pool.token1}
+                    token={token1}
                     balance={t1Balance}
                     value={oneIn}
                     setValue={setOneIn}
                   />
                 ) : (
                   <Button disabled={!account} onClick={() => approveT1()}>
-                    Approve {tidePool?.pool.token1.symbol}
+                    Approve {token1?.symbol}
                   </Button>
                 )}
               </Box>

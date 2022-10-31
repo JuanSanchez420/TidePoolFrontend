@@ -5,6 +5,7 @@ export interface Network {
   image: string
   blockExplorer: string
   factory: string
+  subgraph: string
 }
 
 export const Ethereum: Network = {
@@ -14,6 +15,7 @@ export const Ethereum: Network = {
   image: "/images/ethereum.png",
   blockExplorer: "https://etherscan.io/",
   factory: "0xA2D974Be6Aa43D38c087E9De221801BACCAB252B",
+  subgraph: "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3"
 }
 
 export const Arbitrum: Network = {
@@ -23,6 +25,7 @@ export const Arbitrum: Network = {
   image: "/images/arbitrum.svg",
   blockExplorer: "https://arbiscan.io/",
   factory: "0xc28EaA5051C0cfB8A493749990787d0190e8300F",
+  subgraph: "https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-dev"
 }
 
 export const Optimism: Network = {
@@ -32,6 +35,7 @@ export const Optimism: Network = {
   image: "/images/optimism.svg",
   blockExplorer: "https://optimistic.etherscan.io/",
   factory: "0xA2D974Be6Aa43D38c087E9De221801BACCAB252B",
+  subgraph: "https://api.thegraph.com/subgraphs/name/ianlapham/optimism-post-regenesis"
 }
 
 export const Polygon: Network = {
@@ -41,6 +45,7 @@ export const Polygon: Network = {
   image: "/images/polygon.svg",
   blockExplorer: "https://polygonscan.com/",
   factory: "0x59b81A9B35d94000F40C3e0e7894D7762A526a36",
+  subgraph: "https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-polygon"
 }
 
 export const networks = {

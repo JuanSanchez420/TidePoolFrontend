@@ -1,12 +1,13 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Box, Flex, Text, Button } from "./index"
 import { Chevron, External } from "./Icons"
 import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
-import { Slot0, TidePool } from "../info/types"
+import { TidePool } from "../info/types"
 import theme from "../info/theme"
 import { useNavigate } from "react-router-dom"
 import useNetwork from "../hooks/useNetwork"
+import { Pool } from "@uniswap/v3-sdk"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -67,7 +68,7 @@ const ContractLink = styled.a`
 
 export const Info = (props: {
   tidePool?: TidePool
-  slot0?: Slot0 | null
+  pool: Pool | undefined
   hideEntryLink?: boolean
 }) => {
   const network = useNetwork()
@@ -84,14 +85,14 @@ export const Info = (props: {
             <IconLeft
               src={
                 props.tidePool
-                  ? imageUrls[props.tidePool.pool.token0.symbol]
+                  ? imageUrls[props.tidePool.pool.token0.symbol || ""]
                   : ""
               }
             />
             <IconRight
               src={
                 props.tidePool
-                  ? imageUrls[props.tidePool.pool.token1.symbol]
+                  ? imageUrls[props.tidePool.pool.token1.symbol || ""]
                   : ""
               }
             />
@@ -184,7 +185,7 @@ export const Info = (props: {
 
 export const Card = (props: {
   tidePool: TidePool
-  slot0: Slot0 | null
+  pool: Pool | undefined
   hideEntryLink?: boolean
 }): JSX.Element => {
   return (

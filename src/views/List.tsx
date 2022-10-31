@@ -7,6 +7,12 @@ import { TextInput } from "../components/Input"
 import { Card } from "../components/Card"
 import useNetwork from "../hooks/useNetwork"
 import NetworkSelect from "../components/NetworkSelect"
+import { Link } from "react-router-dom"
+import styled from "styled-components"
+
+const CreateLink = styled(Link)`
+  color: white;
+`
 
 const List = () => {
   const network = useNetwork()
@@ -20,9 +26,9 @@ const List = () => {
     return (
       theList.tidePools.filter(
         (tp) =>
-          tp.pool.token0.symbol.toLowerCase().indexOf(search.toLowerCase()) >=
+          (tp.pool.token0.symbol || "").toLowerCase().indexOf(search.toLowerCase()) >=
             0 ||
-          tp.pool.token1.symbol.toLowerCase().indexOf(search.toLowerCase()) >=
+          (tp.pool.token1.symbol || "").toLowerCase().indexOf(search.toLowerCase()) >=
             0 ||
           tp.pool.token0.address === search ||
           tp.pool.token1.address === search ||
@@ -38,6 +44,12 @@ const List = () => {
         Start earning passive crypto income with our automated V3 liquidity
         pools.
       </Text>
+      <Text mb="1rem" color={theme.colors.white}>
+        Don't see your favorite pool?{" "}
+        <CreateLink to="/create" color={theme.colors.white}>
+            Create it!
+        </CreateLink>
+      </Text>
       <Flex mb="1rem" maxWidth="400px" mx="auto">
         <NetworkSelect open={open} setOpen={setOpen} network={network} />
         <TextInput
@@ -47,7 +59,7 @@ const List = () => {
         />
       </Flex>
       {view.map((c) => (
-        <Card key={c.address} tidePool={c} slot0={null} />
+        <Card key={c.address} tidePool={c} pool={undefined} />
       ))}
     </Box>
   )

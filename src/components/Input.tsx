@@ -1,9 +1,8 @@
-import React from "react"
 import styled from "styled-components"
 import { Flex, Text, Button, Box, FlexProps } from "./index"
 import { imageUrls } from "../info/tokens"
 import { ethers, BigNumber } from "ethers"
-import { Token } from "../info/types"
+import { Token } from "@uniswap/sdk-core"
 import theme from "../info/theme"
 
 const InputBox = styled.input`
@@ -52,7 +51,7 @@ export const TokenInput = ({
 
   return (
     <Wrapper p="10px" alignItems="center" color={color}>
-      <Icon src={token ? imageUrls[token.symbol] : ""} />
+      <Icon src={token?.symbol ? imageUrls[token.symbol] : ""} />
       <Text color="white">{token?.symbol}</Text>
       <InputBox
         value={ethers.utils.formatUnits(value, token?.decimals)}
