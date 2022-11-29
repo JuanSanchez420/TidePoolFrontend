@@ -87,11 +87,12 @@ const TidePool = () => {
   const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))
   const [w, setW] = useState<BigNumber>(BigNumber.from(0))
   const loaded = useRef(false)
+  const [apr, setApr] = useState<number>(0)
 
   useEffect(()=>{
     const f = async () => {
       loaded.current = true
-      console.log(await calculateFee())
+      setApr(await calculateFee())
     }
     if(!loaded.current && tidePool && pool) f()
   },[tidePool, pool, calculateFee])
@@ -115,7 +116,7 @@ const TidePool = () => {
   return (
     <Box p="1rem" width="100%">
       <Container mx="auto" my="1rem">
-        <Info tidePool={tidePool} pool={pool} hideEntryLink />
+        <Info tidePool={tidePool} pool={pool} apr={apr} hideEntryLink />
 
         <ActionBox flexDirection="column" selected={index === 0}>
           <Flex>
@@ -135,8 +136,8 @@ const TidePool = () => {
             </Tab>
           </Flex>
           {index === 0 ? (
-            <Flex flexDirection="column" p="1rem" alignItems="center">
-              <Box mb="1rem">
+            <Flex flexDirection="column" p="1rem" alignItems="center" width="100%">
+              <Box mb="1rem" width="100%">
                 {t0State === ApprovalState.APPROVED ? (
                   <EthAmount
                     token={token0}
@@ -145,13 +146,13 @@ const TidePool = () => {
                     setValue={setZeroIn}
                   />
                 ) : (
-                  <Button disabled={!account} onClick={() => approveT0()}>
+                  <Button disabled={!account} onClick={() => approveT0()} style={{width:"100%"}}>
                     Approve {token0?.symbol}
                   </Button>
                 )}
               </Box>
 
-              <Box mb="1rem">
+              <Box mb="1rem" width="100%">
                 {t1State === ApprovalState.APPROVED ? (
                   <EthAmount
                     token={token1}
@@ -160,14 +161,14 @@ const TidePool = () => {
                     setValue={setOneIn}
                   />
                 ) : (
-                  <Button disabled={!account} onClick={() => approveT1()}>
+                  <Button disabled={!account} onClick={() => approveT1()} style={{width:"100%"}}>
                     Approve {token1?.symbol}
                   </Button>
                 )}
               </Box>
               {t0State === ApprovalState.APPROVED ||
               t1State === ApprovalState.APPROVED ? (
-                <Flex justifyContent="center">
+                <Flex justifyContent="center" width="100%">
                   <Button onClick={() => doDeposit()}>Deposit</Button>
                 </Flex>
               ) : null}
@@ -185,7 +186,7 @@ const TidePool = () => {
 
               {t0State === ApprovalState.APPROVED ||
               t1State === ApprovalState.APPROVED ? (
-                <Flex justifyContent="center">
+                <Flex justifyContent="center" width="100%">
                   <Button onClick={() => doWithdraw()}>Withdraw</Button>
                 </Flex>
               ) : null}

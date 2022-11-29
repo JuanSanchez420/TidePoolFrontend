@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Box, Flex, Text, Button } from "./index"
 import { Chevron, External } from "./Icons"
 import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
 import { TidePool } from "../info/types"
 import theme from "../info/theme"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import useNetwork from "../hooks/useNetwork"
 import { Pool } from "@uniswap/v3-sdk"
+import getUniswapInfoLink from "../utils/getUniswapInfoLink"
+import {Arbitrum} from "../info/networks"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -69,6 +71,7 @@ const ContractLink = styled.a`
 export const Info = (props: {
   tidePool?: TidePool
   pool: Pool | undefined
+  apr: number
   hideEntryLink?: boolean
 }) => {
   const network = useNetwork()
@@ -76,6 +79,10 @@ export const Info = (props: {
   const navigate = useNavigate()
 
   const fee = props.tidePool ? props.tidePool?.pool.fee / 1e4 : 0
+
+  const dailyApr = props.apr.toFixed(2)
+  const monthlyApr = (props.apr * 30).toFixed(2)
+  const yearlyApr = (props.apr * 365).toFixed(2)
 
   return (
     <>
@@ -106,19 +113,14 @@ export const Info = (props: {
       </Flex>
       <Flex pb="10px" alignItems="center" justifyContent="space-around">
         <Text>&nbsp;</Text>
+        {network?.chainId !==  Arbitrum.chainId ?
         <Flex>
           <Text color="white" fontSize="0.85rem">
-            XX%
+            <ContractLink href={`/uniswap-v3-calculator/${props.tidePool?.pool.address}`} target="_blank">
+                Calculate APR
+            </ContractLink>
           </Text>
-          <Text
-            color={theme.colors.babyBlue}
-            fontWeight="700"
-            ml="5px"
-            fontSize="0.85rem"
-          >
-            APR
-          </Text>
-        </Flex>
+        </Flex> : null}
         <DetailsLink onClick={() => setOpen(!open)}>
           <Flex>
             <Text>Details</Text>
@@ -147,6 +149,16 @@ export const Info = (props: {
                 target="_blank"
               >
                 Uniswap pool <External height="1rem" width="1rem" />
+              </ContractLink>
+              <ContractLink
+                href={getUniswapInfoLink(
+                  network.name || "",
+                  props.tidePool?.pool.address || "",
+                  "pools"
+                )}
+                target="_blank"
+              >
+                Uniswap analytics <External height="1rem" width="1rem" />
               </ContractLink>
             </Flex>
             <Flex flexDirection="column">
@@ -186,6 +198,7 @@ export const Info = (props: {
 export const Card = (props: {
   tidePool: TidePool
   pool: Pool | undefined
+  apr: number
   hideEntryLink?: boolean
 }): JSX.Element => {
   return (

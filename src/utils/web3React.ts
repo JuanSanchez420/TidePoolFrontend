@@ -1,5 +1,5 @@
 import { InjectedConnector } from "@web3-react/injected-connector"
-import { WalletConnectConnector } from "@web3-react/walletconnect-connector"
+// import { WalletConnectConnector } from "@web3-react/walletconnect-connector"
 import { ethers } from "ethers"
 import { Ethereum, Arbitrum, Optimism, Polygon } from "../info/networks"
 
@@ -13,7 +13,7 @@ export const injected = new InjectedConnector({
     Polygon.chainId,
   ],
 })
-
+/*
 const walletconnect = new WalletConnectConnector({
   rpc: {
     [Ethereum.chainId]: Ethereum.rpc,
@@ -23,13 +23,13 @@ const walletconnect = new WalletConnectConnector({
   },
   qrcode: true,
 })
-
+*/
 export const connectors: {
   injected: InjectedConnector
-  walletconnect: WalletConnectConnector
+  // walletconnect: WalletConnectConnector
 } = {
   injected: injected,
-  walletconnect: walletconnect,
+  // walletconnect: walletconnect,
 }
 
 export const getLibrary = (
@@ -37,7 +37,7 @@ export const getLibrary = (
     | ethers.providers.ExternalProvider
     | ethers.providers.JsonRpcFetchFunc
 ): ethers.providers.Web3Provider => {
-  const library = new ethers.providers.Web3Provider(provider)
+  const library = new ethers.providers.Web3Provider(provider, "any")
   library.pollingInterval = POLLING_INTERVAL
   return library
 }

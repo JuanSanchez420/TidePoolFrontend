@@ -5,9 +5,8 @@ import { Wallet } from "./Icons"
 import theme from "../info/theme"
 import { Link } from "react-router-dom"
 import { useWeb3React } from "@web3-react/core"
-import { connectors } from "../utils/web3React"
-import useLocalStorage from "../hooks/useLocalStorage"
 import HamburgerMenu from "./HamburgerMenu"
+import useWallet from "../hooks/useWallet"
 
 const Connect = styled(Button)`
     border-radius: 1rem;
@@ -26,18 +25,8 @@ const TidePoolLogo = styled.img`
 `
 
 export const Header = () => {
-  const { activate, account } = useWeb3React()
-  const [prevWallet, setPrevWallet] = useLocalStorage("provider")
-
-  const handleActivate = () => {
-    activate(connectors.injected, (e) => console.log(e), true)
-    setPrevWallet(connectors.injected)
-  }
-
-  useEffect(() => {
-    if (prevWallet && !account)
-      activate(connectors.injected, (e) => console.log(e), true)
-  }, [prevWallet, account, activate])
+  const { account } = useWeb3React()
+  const { handleActivate } = useWallet()
 
   return (
     <Flex py="1rem" px="0.5rem" alignItems="center" flexShrink="0">

@@ -127,18 +127,35 @@ function Home() {
             <li>Pays all the gas costs</li>
           </UnorderedList>
 
-          <Flex justifyContent="center">
-            <Box width={"8rem"}>
-              <HollowButton onClick={() => navigate("/pools")}>
-                View Pools
-              </HollowButton>
-            </Box>
-          </Flex>
         </Flex>
         <CoinsHero src="/images/pile-of-coins.gif" />
       </Flex>
       <WaveWrapper>
-        <Flex
+      <Flex
+        justifyContent="center"
+        p="1rem"
+        alignItems={["start", "start", "center"]}
+      >
+        <Flex flexDirection="column">
+          <Flex>
+            <Heading mb="1rem" mr="1rem">
+              Find the pool that's right for you
+            </Heading>
+          </Flex>
+          <Text color={theme.colors.white}>
+            TidePools are across 4 chains (Ethereum, Arbitrum, Optimism, and Polygon) with many pools per chain. <br/>And if you don't see a pool you want, you can create it in a simple transaction!
+          </Text>
+
+          <UnorderedList>
+            <li>Multiple chains</li>
+            <li>APR calculators to find the highest returns</li>
+            <li>Create your own TidePools</li>
+          </UnorderedList>
+        </Flex>
+      </Flex>
+      </WaveWrapper>
+
+      <Flex
           justifyContent="center"
           flexDirection="column"
           alignItems="center"
@@ -165,7 +182,6 @@ function Home() {
           </Text>
           </ZFlex>
         </Flex>
-      </WaveWrapper>
     </Box>
   )
 }

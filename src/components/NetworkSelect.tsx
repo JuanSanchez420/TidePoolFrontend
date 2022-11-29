@@ -4,6 +4,7 @@ import { Flex, Box, Text } from "../components"
 import theme from "../info/theme"
 import { networks, Network } from "../info/networks"
 import { Chevron } from "../components/Icons"
+import useWallet from "../hooks/useWallet"
 
 const NetworkSelect = styled(Flex)`
   font-size: 1rem;
@@ -71,6 +72,7 @@ export interface NetworkSelectProps {
 }
 
 const NetworkSelectMenu = ({ open, setOpen, network }: NetworkSelectProps) => {
+  const { switchNetwork} = useWallet()
   return (
     <NetworkSelect mr="1rem">
       <Flex
@@ -100,7 +102,7 @@ const NetworkSelectMenu = ({ open, setOpen, network }: NetworkSelectProps) => {
               alignItems="center"
               justifyContent="space-around"
               py="2px"
-              onClick={() => {}}
+              onClick={() => switchNetwork(n)}
             >
               <Logo src={n.image} />
               <Text color={theme.colors.white}>{n.name}</Text>

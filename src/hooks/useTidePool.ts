@@ -17,7 +17,7 @@ const useTidePool = (address?: string, user?: string | null) => {
   const [lower, setLower] = useState<BigNumber>(BigNumber.from(0))
   const [totalSupply, setTotalSupply] = useState<BigNumber>(BigNumber.from(0))
   const { getVolume, getLiquidity } = useSubgraph()
-  const { getPosition, pool } = usePool(tidePool?.pool.address)
+  const { getPosition, pool, estimatePosition } = usePool(tidePool?.pool.address)
   const { token: token0 } = useToken(tidePool?.pool.token0.address)
   const { token: token1 } = useToken(tidePool?.pool.token1.address)
 
@@ -47,9 +47,12 @@ const useTidePool = (address?: string, user?: string | null) => {
       TickMath.MIN_TICK,
       pool?.tickCurrent
     )
-    if(liquidity.eq(0)) return 0
+    if(liquidity.eq(0) || volume === 0) return 0
     
-    const position = await getPosition(address || "", lower, upper)
+    let position = await getPosition(address || "", lower, upper)
+
+    if(position.liquidity.eq(0))
+      position = estimatePosition()
 
     const fraction = new Fraction(
       position.liquidity.toString(),
@@ -60,8 +63,10 @@ const useTidePool = (address?: string, user?: string | null) => {
 
     const result = volume *  fee * parseFloat(fraction.toFixed(10))
 
+    // TODO: calculate deposit amount
+
     return result
-  },[pool, tidePool, address, getVolume, getLiquidity, getPosition, lower, upper])
+  },[pool, tidePool, address, getVolume, getLiquidity, getPosition, lower, upper, estimatePosition])
 
   const positionDisplay: {
     price: string

@@ -50,3 +50,11 @@ export interface Slot0 {
   feeProtocol: number
   unlocked: boolean
 }
+
+export interface Position {
+  liquidity: BigNumber
+  tokensOwed0: BigNumber
+  tokensOwed1: BigNumber
+  feeGrowthInside0LastX128: BigNumber
+  feeGrowthInside1LastX128: BigNumber
+}

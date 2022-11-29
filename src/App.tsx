@@ -14,6 +14,7 @@ const TidePool = lazy(() => import("./views/TidePool"))
 const List = lazy(() => import("./views/List"))
 const Create = lazy(() => import("./views/Create"))
 const FAQ = lazy(() => import("./views/FAQ"))
+const Calculator = lazy(() => import("./views/Calculator"))
 
 const Layout = () => {
   return (
@@ -48,6 +49,7 @@ function TidePools() {
         <Route path="/:network/:address" element={<TidePool />} />
         <Route path="/create" element={<Create />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/uniswap-v3-calculator/:address" element={<Calculator />} />
       </Route>
     </Routes>
   )

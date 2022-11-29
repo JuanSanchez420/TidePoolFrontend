@@ -1,8 +1,9 @@
 import { useCallback } from "react"
 import { gql, request } from "graphql-request"
 import useNetwork from "./useNetwork"
-import {BigNumber} from "ethers"
-import { TickMath } from "@uniswap/v3-sdk"
+import {BigNumber, ethers} from "ethers"
+import { TickMath, tickToPrice } from "@uniswap/v3-sdk"
+import useToken from "./useToken"
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
@@ -22,14 +23,46 @@ export interface VolumeUSD {
 const useSubgraph = () => {
   const network = useNetwork()
 
+  const getETHUSD = useCallback(async (): Promise<number> =>{
+    const q = gql`
+    {
+      pool(id: "${network.ETHUSD.toLowerCase()}") {
+        tick
+      }
+    }
+    `
+    const r = await request(network.subgraph, q)
+
+    const tick = Number(r.pool.tick)
+    const str = tickToPrice(network.WETH, network.USDC, tick).toFixed(0)
+
+    return Number(str)
+  },[])
+
+  const getDerivedETHValue = useCallback(async (token: string): Promise<BigNumber> =>{
+    const q = gql`
+      {
+        token(id: "${token.toLowerCase()}") {
+          derivedETH
+        }
+      }
+    `
+    const r = await request(network.subgraph, q)
+    const parts = r.token.derivedETH.split(".")
+    const whole = parts[0]
+    const decimals = parts[1] && parts[1].length < 18 ? parts[1] : parts[1].substring(0,17)
+    return ethers.utils.parseEther(`${whole}.${decimals}`)
+  },[network])
+
   const getVolume24 = useCallback(async (pool: string): Promise<VolumeUSD> => {
+    // get the previous full day of volume data
     const q = gql`
       {
         poolDayDatas(
-          first: 1
+          first: 2
           orderBy: date
           orderDirection: desc
-          where: { pool_: { id: "${pool.toLowerCase()}" } }
+          where: { pool: "${pool.toLowerCase()}" }
         ) {
           volumeUSD
         }
@@ -37,7 +70,7 @@ const useSubgraph = () => {
     `
     const r = await request(network.subgraph, q)
 
-    return r.poolDayDatas[0]
+    return r.poolDayDatas[1]
   }, [network])
 
   const getVolume = async (pool: string) => {
@@ -51,7 +84,7 @@ const useSubgraph = () => {
     {
       ticks(first: 1000, skip: ${
         page * 1000
-      }, where: { poolAddress: "${pool.toLowerCase()}", tickIdx_gte: "${lower}", tickIdx_lte: "${upper}"}, orderBy: tickIdx) {
+      }, where: { pool: "${pool.toLowerCase()}", tickIdx_gte: "${lower}", tickIdx_lte: "${upper}"}, orderBy: tickIdx) {
         tickIdx
         liquidityNet
       }
@@ -65,7 +98,6 @@ const useSubgraph = () => {
   )
 
   const getTicks = async (pool: string, lower: number, upper: number) => {
-    console.log(`getting ticks for pool: ${pool}`)
     let ticks: Tick[] = []
     let page = 0
 
@@ -80,12 +112,10 @@ const useSubgraph = () => {
       }
       await sleep(500)
     }
-console.log(ticks)
     return ticks
   }
 
   const sumNetLiquidity = (ticks: Tick[]) => {
-console.log(`ticks.length: ${ticks.length}`)
     let total = BigNumber.from(0)
     ticks.forEach((t,i)=>{
       total = total.add(BigNumber.from(t.liquidityNet))
@@ -99,7 +129,7 @@ console.log(`ticks.length: ${ticks.length}`)
     return sum
   }
 
-  return { getVolume, getLiquidity }
+  return { getVolume, getLiquidity, getETHUSD, getDerivedETHValue }
 }
 
 export default useSubgraph
