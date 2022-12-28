@@ -22,7 +22,7 @@ export const Box = styled.div<BoxProps>`
 `
 
 export const DarkWrapper = styled(Box)`
-  background-color: ${(props) => props.theme.colors.darkBlue};
+  background-color: ${({ theme }) => theme.colors.darkBlue};
   width: 100%;
 `
 
@@ -36,10 +36,10 @@ export const Flex = styled(Box)<FlexProps>`
 
 export const Wrapper = styled(Flex)`
   font-size: normal;
-  color: ${(props) => props.theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
   width: 100%;
   min-height: 100%;
-  background-color: ${(props) => props.theme.colors.lightBlue};
+  background-color: ${({ theme }) => theme.colors.lightBlue};
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -49,26 +49,26 @@ export const Button = styled.button`
   all: unset;
   cursor: pointer;
   box-sizing: border-box;
-  color: ${(props) => props.theme.colors.buttonText};
+  color: ${({ theme }) => theme.colors.buttonText};
   font-weight: bold;
   text-align: center;
   border-radius: 1rem;
   padding: 5px 15px;
   text-decoration: none;
-  background-color: ${(props) => props.theme.colors.yellow};
+  background-color: ${({ theme }) => theme.colors.yellow};
 
   :hover {
-    background-color: ${(props) => props.theme.colors.darkYellow};
+    background-color: ${({ theme }) => theme.colors.darkYellow};
   }
 `
 
 export const HollowButton = styled(Button)`
-  color: ${(props) => props.theme.colors.buttonText};
-  background-color: ${(props) => props.theme.colors.white};
-  border: 1px solid ${(props) => props.theme.colors.buttonText};
+  color: ${({ theme }) => theme.colors.buttonText};
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.buttonText};
 
   :hover {
-    background-color: ${(props) => props.theme.colors.darkYellow};
+    background-color: ${({ theme }) => theme.colors.darkYellow};
   }
 `
 
@@ -112,11 +112,15 @@ export const LoadingLogo = () => {
 }
 
 export const UnorderedList = styled.ul`
-  color: ${(props) => props.theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
+`
+
+export const OrderedList = styled.ol`
+  color: ${({ theme }) => theme.colors.white};
 `
 
 export const Heading = styled(Text)`
-  color: ${(props) => props.theme.colors.babyBlue};
+  color: ${({ theme }) => theme.colors.babyBlue};
   font-weight: 900;
   font-size: 2rem;
 `

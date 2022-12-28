@@ -9,7 +9,7 @@ const InputBox = styled.input`
   all: unset;
   cursor: pointer;
   width: 100%;
-  color: ${(props) => props.theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   display: inline-block;
   box-sizing: border-box;
   text-align: center;

@@ -17,7 +17,7 @@ const TopSVG = styled.svg`
   width: calc(100% + 1.3px);
   height: 50px;
 
-  ${(props) => props.theme.mediaQueries.md} {
+  ${({theme}) => theme.mediaQueries.md} {
     height: 75px;
   }
 `
@@ -58,7 +58,7 @@ const BottomSVG = styled.svg`
   width: calc(100% + 1.3px);
   height: 50px;
 
-  ${(props) => props.theme.mediaQueries.md} {
+  ${({theme}) => theme.mediaQueries.md} {
     height: 75px;
   }
 `
@@ -85,7 +85,7 @@ const BottomWave = (props: React.SVGAttributes<HTMLOrSVGElement>) => {
 }
 
 const MiddleWave = styled(Box)`
-  background-color: ${(props) => props.theme.colors.darkBlue};
+  background-color: ${({theme}) => theme.colors.darkBlue};
 `
 
 const WaveWrapper = ({ children }: { children: React.ReactNode }) => {

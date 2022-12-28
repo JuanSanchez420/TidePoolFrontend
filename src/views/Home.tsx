@@ -17,7 +17,7 @@ const CrabHeading = styled.img`
   max-height: 75px;
   transform: scaleX(-1);
 
-  ${(props) => props.theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.md} {
     display: none;
   }
 `
@@ -29,12 +29,12 @@ const CrabHero = styled.img`
   transform: scaleX(-1);
   z-index: 2;
 
-  ${(props) => props.theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.md} {
     display: block;
     max-height: 150px;
   }
 
-  ${(props) => props.theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     max-height: 200px;
   }
 `
@@ -43,7 +43,7 @@ const CoinsHeading = styled.img`
   max-height: 50px;
   transform: scaleX(-1);
 
-  ${(props) => props.theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.md} {
     display: none;
   }
 `
@@ -53,12 +53,12 @@ const CoinsHero = styled.img`
   max-height: 50px;
   transform: scaleX(-1);
 
-  ${(props) => props.theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.md} {
     display: block;
     max-height: 75px;
   }
 
-  ${(props) => props.theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     max-height: 100px;
   }
 `
@@ -126,43 +126,44 @@ function Home() {
             <li>Maximize fee generation</li>
             <li>Pays all the gas costs</li>
           </UnorderedList>
-
         </Flex>
         <CoinsHero src="/images/pile-of-coins.gif" />
       </Flex>
       <WaveWrapper>
-      <Flex
-        justifyContent="center"
-        p="1rem"
-        alignItems={["start", "start", "center"]}
-      >
-        <Flex flexDirection="column">
-          <Flex>
-            <Heading mb="1rem" mr="1rem">
-              Find the pool that's right for you
-            </Heading>
-          </Flex>
-          <Text color={theme.colors.white}>
-            TidePools are across 4 chains (Ethereum, Arbitrum, Optimism, and Polygon) with many pools per chain. <br/>And if you don't see a pool you want, you can create it in a simple transaction!
-          </Text>
+        <Flex
+          justifyContent="center"
+          p="1rem"
+          alignItems={["start", "start", "center"]}
+        >
+          <Flex flexDirection="column">
+            <Flex>
+              <Heading mb="1rem" mr="1rem">
+                Find the pool that's right for you
+              </Heading>
+            </Flex>
+            <Text color={theme.colors.white}>
+              TidePools are across 4 chains (Ethereum, Arbitrum, Optimism, and
+              Polygon) with many pools per chain. <br />
+              And if you don't see a pool you want, you can create it in a
+              simple transaction!
+            </Text>
 
-          <UnorderedList>
-            <li>Multiple chains</li>
-            <li>APR calculators to find the highest returns</li>
-            <li>Create your own TidePools</li>
-          </UnorderedList>
+            <UnorderedList>
+              <li>Multiple chains</li>
+              <li>APR calculators to find the highest returns</li>
+              <li>Create your own TidePools</li>
+            </UnorderedList>
+          </Flex>
         </Flex>
-      </Flex>
       </WaveWrapper>
 
       <Flex
-          justifyContent="center"
-          flexDirection="column"
-          alignItems="center"
-          mt="1rem"
-          
-        >
-          <ZFlex flexDirection="column" alignItems="center">
+        justifyContent="center"
+        flexDirection="column"
+        alignItems="center"
+        mt="1rem"
+      >
+        <ZFlex flexDirection="column" alignItems="center">
           <Text
             color={theme.colors.yellow}
             fontWeight="900"
@@ -180,8 +181,8 @@ function Home() {
           <Text color={theme.colors.yellow} mb="1rem">
             Our website is still a work in progress.
           </Text>
-          </ZFlex>
-        </Flex>
+        </ZFlex>
+      </Flex>
     </Box>
   )
 }

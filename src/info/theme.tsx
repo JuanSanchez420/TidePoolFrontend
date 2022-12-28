@@ -31,6 +31,7 @@ const colors: { [key: string]: string } = {
   white: "#FFFFFF",
   yellow: "#FFD51E",
   darkYellow: "#B89A17",
+  overlay: "#452a7a"
 }
 
 const utils: { [key: string]: string } = {
@@ -38,6 +39,8 @@ const utils: { [key: string]: string } = {
     "drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06))",
 }
 
-const theme = { mediaQueries, colors, utils }
+const zIndices = { modal: 100 }
+
+const theme = { mediaQueries, colors, utils, zIndices }
 
 export default theme

@@ -50,8 +50,8 @@ const useToken = (
           new Token(tp.chainId, t1.address, t1.decimals, t1.symbol, t1.name)
         )
       })
-      const addresses = Array.from(new Set(tokenList.map(t=>t.address)))
-      setTokens(tokenList.filter(t=>addresses.includes(t.address)))
+      const addresses = Array.from(new Set(tokenList.map((t) => t.address)))
+      setTokens(tokenList.filter((t) => addresses.includes(t.address)))
     }
   }, [theList])
 

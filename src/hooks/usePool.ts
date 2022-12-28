@@ -37,9 +37,12 @@ const usePool = (address?: string) => {
     const tick = pool ? pool.tickCurrent : 0
     const tickSpacing = pool ? pool?.tickSpacing : 10
 
+    const multiplier =
+      pool?.tickSpacing === 200 ? 2.5 : pool?.tickSpacing === 60 ? 8 : 50
+
     return [
-      nearestUsableTick(tick - 5 * tickSpacing, tickSpacing),
-      nearestUsableTick(tick + 5 * tickSpacing, tickSpacing),
+      nearestUsableTick(tick - multiplier * tickSpacing, tickSpacing),
+      nearestUsableTick(tick + multiplier * tickSpacing, tickSpacing),
     ]
   }, [pool])
 
@@ -49,23 +52,25 @@ const usePool = (address?: string) => {
       tokensOwed0: BigNumber.from(0),
       tokensOwed1: BigNumber.from(0),
       feeGrowthInside0LastX128: BigNumber.from(0),
-      feeGrowthInside1LastX128: BigNumber.from(0)
+      feeGrowthInside1LastX128: BigNumber.from(0),
     } as Position
     if (!pool) return position
     const [l, u] = estimateRange()
 
     const amount0 = ethers.utils.parseUnits("10", pool?.token0.decimals)
     const amount1 = ethers.utils.parseUnits("10", pool?.token1.decimals)
-    const liquidity = BigNumber.from(maxLiquidityForAmounts(
-      pool?.sqrtRatioX96,
-      TickMath.getSqrtRatioAtTick(l),
-      TickMath.getSqrtRatioAtTick(u),
-      amount0.toString(),
-      amount1.toString(),
-      false
-    ).toString())
+    const liquidity = BigNumber.from(
+      maxLiquidityForAmounts(
+        pool?.sqrtRatioX96,
+        TickMath.getSqrtRatioAtTick(l),
+        TickMath.getSqrtRatioAtTick(u),
+        amount0.toString(),
+        amount1.toString(),
+        false
+      ).toString()
+    )
 
-    return {...position, liquidity}
+    return { ...position, liquidity }
   }
 
   const getPosition = async (

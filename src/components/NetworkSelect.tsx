@@ -15,8 +15,8 @@ const NetworkSelect = styled(Flex)`
   cursor: pointer;
   z-index: 11;
   width: 11rem;
-  color: ${(props) => props.theme.colors.white};
-  background-color: ${(props) => props.theme.colors.darkBlue};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.darkBlue};
 
   :hover #wut {
     visibility: visible;
@@ -34,8 +34,8 @@ const NetworkSelectOptions = styled(Flex)`
   top: 3rem;
   padding: 0.5rem;
   border-radius: 1rem;
-  background-color: ${(props) => props.theme.colors.buttonText};
-  filter: ${(props) => props.theme.utils.dropShadow};
+  background-color: ${({ theme }) => theme.colors.buttonText};
+  filter: ${({ theme }) => theme.utils.dropShadow};
   z-index: 11;
 `
 const Logo = styled.img`
@@ -47,7 +47,7 @@ const Logo = styled.img`
 const Highlight = styled(Text)`
   margin-left: 0.5rem;
   :hover {
-    background-color: ${(props) => props.theme.colors.darkBlue};
+    background-color: ${({ theme }) => theme.colors.darkBlue};
     border-radius: 1rem;
     span {
       visibility: visible;
@@ -58,7 +58,7 @@ const Highlight = styled(Text)`
 const RedDot = styled.span`
   visibility: hidden;
   border-radius: 50%;
-  background-color: ${(props) => props.theme.colors.red};
+  background-color: ${({ theme }) => theme.colors.red};
   height: 5px;
   width: 5px;
   margin-right: 3px;
@@ -72,7 +72,7 @@ export interface NetworkSelectProps {
 }
 
 const NetworkSelectMenu = ({ open, setOpen, network }: NetworkSelectProps) => {
-  const { switchNetwork} = useWallet()
+  const { switchNetwork } = useWallet()
   return (
     <NetworkSelect mr="1rem">
       <Flex

@@ -5,15 +5,15 @@ import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
 import { TidePool } from "../info/types"
 import theme from "../info/theme"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import useNetwork from "../hooks/useNetwork"
 import { Pool } from "@uniswap/v3-sdk"
 import getUniswapInfoLink from "../utils/getUniswapInfoLink"
-import {Arbitrum} from "../info/networks"
+import { Arbitrum } from "../info/networks"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
-  background-color: ${(props) => props.theme.colors.red};
+  background-color: ${({ theme }) => theme.colors.red};
   padding: 3px 13px;
   color: white;
   font-weight: 700;
@@ -21,7 +21,7 @@ const Fee = styled(Box)`
 `
 
 export const Title = styled(Text)`
-  color: ${(props) => props.theme.colors.babyBlue};
+  color: ${({ theme }) => theme.colors.babyBlue};
   font-weight: 700;
   font-size: 1.25rem;
 `
@@ -51,12 +51,12 @@ export const Container = styled(Box)`
   padding: 10px;
   max-width: 400px;
   width: 100%;
-  background-color: ${(props) => props.theme.colors.darkBlue};
-  filter: ${(props) => props.theme.utils.dropShadow};
+  background-color: ${({ theme }) => theme.colors.darkBlue};
+  filter: ${({ theme }) => theme.utils.dropShadow};
 `
 
 const DetailsLink = styled.a`
-  color: ${(props) => props.theme.colors.yellow};
+  color: ${({ theme }) => theme.colors.yellow};
   font-weight: 700;
   :hover {
     cursor: pointer;
@@ -64,7 +64,7 @@ const DetailsLink = styled.a`
 `
 
 const ContractLink = styled.a`
-  color: ${(props) => props.theme.colors.babyBlue};
+  color: ${({ theme }) => theme.colors.babyBlue};
   font-size: 0.85rem;
 `
 
@@ -113,14 +113,18 @@ export const Info = (props: {
       </Flex>
       <Flex pb="10px" alignItems="center" justifyContent="space-around">
         <Text>&nbsp;</Text>
-        {network?.chainId !==  Arbitrum.chainId ?
-        <Flex>
-          <Text color="white" fontSize="0.85rem">
-            <ContractLink href={`/uniswap-v3-calculator/${props.tidePool?.pool.address}`} target="_blank">
+        {network?.chainId !== Arbitrum.chainId ? (
+          <Flex>
+            <Text color="white" fontSize="0.85rem">
+              <ContractLink
+                href={`/uniswap-v3-calculator/${props.tidePool?.pool.address}`}
+                target="_blank"
+              >
                 Calculate APR
-            </ContractLink>
-          </Text>
-        </Flex> : null}
+              </ContractLink>
+            </Text>
+          </Flex>
+        ) : null}
         <DetailsLink onClick={() => setOpen(!open)}>
           <Flex>
             <Text>Details</Text>

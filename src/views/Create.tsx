@@ -12,7 +12,7 @@ const ActionsContainer = styled(Box)`
   width: 100%;
   max-width: 400px;
   margin: auto;
-  background-color: ${(props) => props.theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0.5rem;
   padding: 10px;
 `
@@ -21,13 +21,13 @@ const ContentContainer = styled(Box)`
   margin-top: 1rem;
   margin-left: auto;
   margin-right: auto;
-  background-color: ${(props) => props.theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0.5rem;
   padding: 10px;
 `
 
 const ExternalLink = styled(Link)`
-  background-color: ${(props) => props.theme.colors.lightBlue};
+  background-color: ${({ theme }) => theme.colors.lightBlue};
   padding: 0.1rem;
 `
 

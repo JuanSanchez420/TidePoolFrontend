@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react"
+import { lazy, Suspense } from "react"
 import { Web3ReactProvider } from "@web3-react/core"
 import { Routes, Route, Outlet } from "react-router-dom"
 import { ThemeProvider } from "styled-components"
@@ -8,6 +8,9 @@ import { Header } from "./components/Header"
 import { Footer } from "./components/Footer"
 import { GlobalContext } from "./context/GlobalContext"
 import { getLibrary } from "./utils/web3React"
+import ModalProvider from "./widgets/Modal/ModalContext"
+
+window.Buffer = window.Buffer || require("buffer").Buffer
 
 const Home = lazy(() => import("./views/Home"))
 const TidePool = lazy(() => import("./views/TidePool"))
@@ -23,15 +26,17 @@ const Layout = () => {
         <GlobalContext>
           <Wrapper>
             <Suspense fallback={<LoadingLogo />}>
-              <DarkWrapper>
-                <Header />
-              </DarkWrapper>
-              <Flex width="100%" justifyContent="center" flex="1 0 auto">
-                <Outlet />
-              </Flex>
-              <DarkWrapper>
-                <Footer />
-              </DarkWrapper>
+              <ModalProvider>
+                <DarkWrapper>
+                  <Header />
+                </DarkWrapper>
+                <Flex width="100%" justifyContent="center" flex="1 0 auto">
+                  <Outlet />
+                </Flex>
+                <DarkWrapper>
+                  <Footer />
+                </DarkWrapper>
+              </ModalProvider>
             </Suspense>
           </Wrapper>
         </GlobalContext>
@@ -49,7 +54,10 @@ function TidePools() {
         <Route path="/:network/:address" element={<TidePool />} />
         <Route path="/create" element={<Create />} />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/uniswap-v3-calculator/:address" element={<Calculator />} />
+        <Route
+          path="/uniswap-v3-calculator/:address"
+          element={<Calculator />}
+        />
       </Route>
     </Routes>
   )

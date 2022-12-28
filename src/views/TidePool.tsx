@@ -1,6 +1,12 @@
 import { useState, useContext, useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
-import { Box, Button, Flex, FlexProps } from "../components/index"
+import {
+  Box,
+  Button,
+  Flex,
+  FlexProps,
+  OrderedList,
+} from "../components/index"
 import { Container, Info } from "../components/Card"
 import { BigNumber } from "ethers"
 import { Global } from "../context/GlobalContext"
@@ -33,10 +39,8 @@ interface TabProps extends FlexProps {
 
 const Tab = styled(Box)<TabProps>`
   width: 100%;
-  background-color: ${(props) =>
-    props.selected
-      ? props.theme.colors.lighterBlue
-      : props.theme.colors.darkishBlue};
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.colors.lighterBlue : theme.colors.darkishBlue};
   color: white;
   text-align: center;
   padding: 1rem;
@@ -49,10 +53,8 @@ const Tab = styled(Box)<TabProps>`
 const ActionBox = styled(Flex)<TabProps>`
   margin-top: 1rem;
   border-radius: 1rem;
-  background-color: ${(props) =>
-    props.selected
-      ? props.theme.colors.lighterBlue
-      : props.theme.colors.darkishBlue};
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.colors.lighterBlue : theme.colors.darkishBlue};
 `
 
 const TidePool = () => {
@@ -89,13 +91,13 @@ const TidePool = () => {
   const loaded = useRef(false)
   const [apr, setApr] = useState<number>(0)
 
-  useEffect(()=>{
+  useEffect(() => {
     const f = async () => {
       loaded.current = true
       setApr(await calculateFee())
     }
-    if(!loaded.current && tidePool && pool) f()
-  },[tidePool, pool, calculateFee])
+    if (!loaded.current && tidePool && pool) f()
+  }, [tidePool, pool, calculateFee])
 
   const doDeposit = async () => {
     try {
@@ -114,7 +116,18 @@ const TidePool = () => {
   }
 
   return (
-    <Box p="1rem" width="100%">
+    <Box p="1rem" mx="auto" width="100%" maxWidth="600px">
+      <Flex justifyContent="center">
+        <OrderedList>
+          <li>
+            Approve either {token0?.symbol} or {token1?.symbol}, or both
+          </li>
+          <li>
+            Deposit any amounts of {token0?.symbol} or {token1?.symbol}
+          </li>
+          <li>That's it! We do the rest. Withdraw whenever you want.</li>
+        </OrderedList>
+      </Flex>
       <Container mx="auto" my="1rem">
         <Info tidePool={tidePool} pool={pool} apr={apr} hideEntryLink />
 
@@ -136,7 +149,12 @@ const TidePool = () => {
             </Tab>
           </Flex>
           {index === 0 ? (
-            <Flex flexDirection="column" p="1rem" alignItems="center" width="100%">
+            <Flex
+              flexDirection="column"
+              p="1rem"
+              alignItems="center"
+              width="100%"
+            >
               <Box mb="1rem" width="100%">
                 {t0State === ApprovalState.APPROVED ? (
                   <EthAmount
@@ -146,7 +164,11 @@ const TidePool = () => {
                     setValue={setZeroIn}
                   />
                 ) : (
-                  <Button disabled={!account} onClick={() => approveT0()} style={{width:"100%"}}>
+                  <Button
+                    disabled={!account}
+                    onClick={() => approveT0()}
+                    style={{ width: "100%" }}
+                  >
                     Approve {token0?.symbol}
                   </Button>
                 )}
@@ -161,7 +183,11 @@ const TidePool = () => {
                     setValue={setOneIn}
                   />
                 ) : (
-                  <Button disabled={!account} onClick={() => approveT1()} style={{width:"100%"}}>
+                  <Button
+                    disabled={!account}
+                    onClick={() => approveT1()}
+                    style={{ width: "100%" }}
+                  >
                     Approve {token1?.symbol}
                   </Button>
                 )}

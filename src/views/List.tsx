@@ -26,10 +26,12 @@ const List = () => {
     return (
       theList.tidePools.filter(
         (tp) =>
-          (tp.pool.token0.symbol || "").toLowerCase().indexOf(search.toLowerCase()) >=
-            0 ||
-          (tp.pool.token1.symbol || "").toLowerCase().indexOf(search.toLowerCase()) >=
-            0 ||
+          (tp.pool.token0.symbol || "")
+            .toLowerCase()
+            .indexOf(search.toLowerCase()) >= 0 ||
+          (tp.pool.token1.symbol || "")
+            .toLowerCase()
+            .indexOf(search.toLowerCase()) >= 0 ||
           tp.pool.token0.address === search ||
           tp.pool.token1.address === search ||
           tp.address === search
@@ -47,7 +49,7 @@ const List = () => {
       <Text mb="1rem" color={theme.colors.white}>
         Don't see your favorite pool?{" "}
         <CreateLink to="/create" color={theme.colors.white}>
-            Create it!
+          Create it!
         </CreateLink>
       </Text>
       <Flex mb="1rem" maxWidth="400px" mx="auto">

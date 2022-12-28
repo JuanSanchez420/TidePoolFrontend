@@ -34,13 +34,13 @@ export const Container = styled(Box)`
   padding: 10px;
   max-width: 600px;
   width: 100%;
-  background-color: ${(props) => props.theme.colors.darkBlue};
-  filter: ${(props) => props.theme.utils.dropShadow};
+  background-color: ${({ theme }) => theme.colors.darkBlue};
+  filter: ${({ theme }) => theme.utils.dropShadow};
   margin: auto;
 `
 
 const ContractLink = styled.a`
-  color: ${(props) => props.theme.colors.babyBlue};
+  color: ${({ theme }) => theme.colors.babyBlue};
   font-size: 0.85rem;
 `
 
@@ -48,7 +48,9 @@ const Calculator = () => {
   const poolAddress = useParams().address || ""
   const navigate = useNavigate()
   const { theList } = useContext(Global)
-  const tidePool = theList.tidePools.find(tp=>tp.pool.address === poolAddress)
+  const tidePool = theList.tidePools.find(
+    (tp) => tp.pool.address === poolAddress
+  )
   const network = useNetwork()
   const loaded = useRef(false)
   const { getETHUSD, getDerivedETHValue } = useSubgraph()
@@ -199,7 +201,7 @@ const Calculator = () => {
                 : 0}
             </Text>
             <Text color={theme.colors.white}>
-              Share of liquidity: {results.share.toFixed(6)}%
+              Share of liquidity: {results.share.multiply(100).toFixed(6)}%
             </Text>
             <Text color={theme.colors.white}>
               All fees last 24h:{" "}
@@ -240,21 +242,23 @@ const Calculator = () => {
               Yearly APR:{" "}
               {((results.fees365d / depositAmount) * 100).toFixed(2)}%
             </Text>
-            {tidePool ? 
-            <Flex justifyContent="center" mt="1rem">
-              <Button
-                onClick={() =>
-                  navigate(`/${network.name}/${tidePool?.address}`)
-                }
-              >
-                Enter TidePool
-              </Button>
-            </Flex> : null}
+            {tidePool ? (
+              <Flex justifyContent="center" mt="1rem">
+                <Button
+                  onClick={() =>
+                    navigate(`/${network.name}/${tidePool?.address}`)
+                  }
+                >
+                  Enter TidePool
+                </Button>
+              </Flex>
+            ) : null}
           </Flex>
         )}
       </Container>
       <Text mt="1rem" color={theme.colors.white}>
-        The above calculations are ESTIMATES ONLY and don't take into account impermanent loss.
+        The above calculations are ESTIMATES ONLY and don't take into account
+        impermanent loss.
       </Text>
     </Box>
   )

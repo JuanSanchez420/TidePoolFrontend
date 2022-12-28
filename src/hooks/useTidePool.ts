@@ -17,7 +17,9 @@ const useTidePool = (address?: string, user?: string | null) => {
   const [lower, setLower] = useState<BigNumber>(BigNumber.from(0))
   const [totalSupply, setTotalSupply] = useState<BigNumber>(BigNumber.from(0))
   const { getVolume, getLiquidity } = useSubgraph()
-  const { getPosition, pool, estimatePosition } = usePool(tidePool?.pool.address)
+  const { getPosition, pool, estimatePosition } = usePool(
+    tidePool?.pool.address
+  )
   const { token: token0 } = useToken(tidePool?.pool.token0.address)
   const { token: token1 } = useToken(tidePool?.pool.token1.address)
 
@@ -40,39 +42,50 @@ const useTidePool = (address?: string, user?: string | null) => {
 
   // fee * 24hVolume * (position / (position + totalLiquidity))
   const calculateFee = useCallback(async () => {
-    if(!tidePool || !pool) return 0
+    if (!tidePool || !pool) return 0
     const volume = await getVolume(tidePool?.pool.address.toLowerCase() || "")
     const liquidity = await getLiquidity(
       tidePool?.pool.address.toLowerCase() || "",
       TickMath.MIN_TICK,
       pool?.tickCurrent
     )
-    if(liquidity.eq(0) || volume === 0) return 0
-    
+    if (liquidity.eq(0) || volume === 0) return 0
+
     let position = await getPosition(address || "", lower, upper)
 
-    if(position.liquidity.eq(0))
-      position = estimatePosition()
+    if (position.liquidity.eq(0)) position = estimatePosition()
 
     const fraction = new Fraction(
       position.liquidity.toString(),
       position.liquidity.add(liquidity).toString()
     )
 
-    const fee = tidePool?.pool.fee ? tidePool?.pool.fee / 1000000 : FeeAmount.LOWEST / 1000000
+    const fee = tidePool?.pool.fee
+      ? tidePool?.pool.fee / 1000000
+      : FeeAmount.LOWEST / 1000000
 
-    const result = volume *  fee * parseFloat(fraction.toFixed(10))
+    const result = volume * fee * parseFloat(fraction.toFixed(10))
 
     // TODO: calculate deposit amount
 
     return result
-  },[pool, tidePool, address, getVolume, getLiquidity, getPosition, lower, upper, estimatePosition])
+  }, [
+    pool,
+    tidePool,
+    address,
+    getVolume,
+    getLiquidity,
+    getPosition,
+    lower,
+    upper,
+    estimatePosition,
+  ])
 
   const positionDisplay: {
     price: string
     lower: string
     upper: string
-  } = useMemo(()=>{
+  } = useMemo(() => {
     if (!token0 || !token1 || !lower || !upper || !pool)
       return { price: "0", lower: "0", upper: "0" }
 
@@ -84,7 +97,8 @@ const useTidePool = (address?: string, user?: string | null) => {
       price: price.toFixed(2),
       lower: l.toFixed(2),
       upper: u.toFixed(2),
-    }},[token0, token1, lower, upper, pool])
+    }
+  }, [token0, token1, lower, upper, pool])
 
   const deposit = async (zero: BigNumber, one: BigNumber) => {
     try {
@@ -111,7 +125,7 @@ const useTidePool = (address?: string, user?: string | null) => {
     upper,
     lower,
     totalSupply,
-    calculateFee
+    calculateFee,
   }
 }
 
