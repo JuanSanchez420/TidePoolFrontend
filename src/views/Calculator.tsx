@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react"
-import { Flex, Box, Heading, Text, LoadingLogo, Button } from "../components"
+import { Flex, Box, Heading, Text, LoadingLogo, Button, Dots } from "../components"
 import theme from "../info/theme"
 import useNetwork from "../hooks/useNetwork"
 import useSubgraph from "../hooks/useSubgraph"
@@ -44,6 +44,15 @@ const ContractLink = styled.a`
   font-size: 0.85rem;
 `
 
+const Loading = () => {
+  return (
+    <Flex flexDirection="column" justifyContent="center" alignItems="center">
+      <LoadingLogo />
+      <Text color="white" mt="1rem"><Dots>Loading</Dots></Text>
+    </Flex>
+  )
+}
+
 const Calculator = () => {
   const poolAddress = useParams().address || ""
   const navigate = useNavigate()
@@ -73,6 +82,7 @@ const Calculator = () => {
     const f = async () => {
       loaded.current = true
       if (pool) {
+        
         const ETHUSD = await getETHUSD()
 
         const token0ETHValue = network.WETH.equals(pool.token0)
@@ -160,9 +170,7 @@ const Calculator = () => {
       </Text>
       <Container>
         {results.fee === 0 ? (
-          <Flex justifyContent="center" alignItems="center">
-            <LoadingLogo />
-          </Flex>
+            <Loading />
         ) : (
           <Flex mb="1rem" maxWidth="400px" mx="auto" flexDirection="column">
             <Text color={theme.colors.white}>
@@ -258,7 +266,7 @@ const Calculator = () => {
       </Container>
       <Text mt="1rem" color={theme.colors.white}>
         The above calculations are ESTIMATES ONLY and don't take into account
-        impermanent loss.
+        impermanent loss or slippage.
       </Text>
     </Box>
   )

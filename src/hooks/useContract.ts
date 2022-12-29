@@ -11,15 +11,19 @@ import useNetwork from "./useNetwork"
 
 const useContract = (address?: string, abi?: any): ethers.Contract | null => {
   const { account, library } = useWeb3React()
+  const network = useNetwork()
 
   const contract = useMemo(() => {
     if (!address || !abi) return null
+    let provider = null
+    if(!library)
+      provider = new ethers.providers.JsonRpcProvider(network.rpcPublic, "any")
     return new ethers.Contract(
       address,
       abi,
-      account ? library.getSigner() : library
+      account ? library.getSigner() : provider
     )
-  }, [library, account, abi, address])
+  }, [library, account, abi, address, network])
 
   return contract
 }
