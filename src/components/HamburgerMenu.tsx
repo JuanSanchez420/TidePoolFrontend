@@ -66,6 +66,7 @@ interface Page {
 const pages: Page[] = [
   { url: "/", title: "Home" },
   { url: "/pools", title: "TidePools" },
+  { url: "/how-it-works", title: "How It Works" },
   { url: "/create", title: "Create" },
   { url: "/faq", title: "FAQ" },
 ]

@@ -1,4 +1,3 @@
-import React from "react"
 import {
   Flex,
   Box,
@@ -122,9 +121,9 @@ function Home() {
           </Text>
 
           <UnorderedList>
-            <li>Automated pool management.</li>
+            <li>Automated pool management</li>
             <li>Maximize fee generation</li>
-            <li>Pays all the gas costs</li>
+            <li>We pay all the gas costs</li>
           </UnorderedList>
         </Flex>
         <CoinsHero src="/images/pile-of-coins.gif" />
@@ -156,33 +155,6 @@ function Home() {
           </Flex>
         </Flex>
       </WaveWrapper>
-
-      <Flex
-        justifyContent="center"
-        flexDirection="column"
-        alignItems="center"
-        mt="1rem"
-      >
-        <ZFlex flexDirection="column" alignItems="center">
-          <Text
-            color={theme.colors.yellow}
-            fontWeight="900"
-            mb="1rem"
-            fontSize="1.5rem"
-          >
-            BETA PRODUCT
-          </Text>
-          <Text color={theme.colors.yellow}>
-            TIDEPOOLS.io contracts have been
-          </Text>
-          <Text color={theme.colors.yellow}>
-            finalized, tested, and security checked.
-          </Text>
-          <Text color={theme.colors.yellow} mb="1rem">
-            Our website is still a work in progress.
-          </Text>
-        </ZFlex>
-      </Flex>
     </Box>
   )
 }

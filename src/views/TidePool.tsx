@@ -6,6 +6,7 @@ import {
   Flex,
   FlexProps,
   OrderedList,
+  Text
 } from "../components/index"
 import { Container, Info } from "../components/Card"
 import { BigNumber } from "ethers"
@@ -23,6 +24,11 @@ import { useWeb3React } from "@web3-react/core"
 const EthAmount = styled(TokenInput)`
   text-align: center;
   margin-bottom: 0.5rem;
+`
+
+const ExternalLink = styled(Link)`
+  padding: 0.1rem;
+  color: white;
 `
 
 const BackLink = styled(Link)`
@@ -117,7 +123,7 @@ const TidePool = () => {
 
   return (
     <Box p="1rem" mx="auto" width="100%" maxWidth="600px">
-      <Flex justifyContent="center">
+      <Flex justifyContent="center" flexDirection="column">
         <OrderedList>
           <li>
             Approve either {token0?.symbol} or {token1?.symbol}, or both
@@ -127,6 +133,7 @@ const TidePool = () => {
           </li>
           <li>That's it! We do the rest. Withdraw whenever you want.</li>
         </OrderedList>
+        <Text color="white" textAlign="center">For a more detailed explanation, visit <ExternalLink to="/how-it-works" target="_blank">How It Works</ExternalLink>.</Text>
       </Flex>
       <Container mx="auto" my="1rem">
         <Info tidePool={tidePool} pool={pool} apr={apr} hideEntryLink />

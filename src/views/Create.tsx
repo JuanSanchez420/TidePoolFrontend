@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react"
+import { useState, useMemo } from "react"
 import { Flex, Box, Text, Button, Dots } from "../components"
 import { External } from "../components/Icons"
 import { TextInput } from "../components/Input"
@@ -7,6 +7,7 @@ import styled from "styled-components"
 import { CreateState } from "../info/types"
 import { Link } from "react-router-dom"
 import useNetwork from "../hooks/useNetwork"
+import WaveWrapper from "../components/Waves"
 
 const ActionsContainer = styled(Box)`
   width: 100%;
@@ -15,30 +16,42 @@ const ActionsContainer = styled(Box)`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0.5rem;
   padding: 10px;
+  margin-top: 1rem;
+
+  input::placeholder {
+    color:white;
+  }
 `
 
-const ContentContainer = styled(Box)`
-  margin-top: 1rem;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 0.5rem;
-  padding: 10px;
+const Container = styled(Flex)`
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  max-width: 600px;
+  margin: auto;
+  z-index: 11;
+  position: relative;
+  overflow: hidden;
+  color: white;
 `
 
 const ExternalLink = styled(Link)`
-  background-color: ${({ theme }) => theme.colors.lightBlue};
   padding: 0.1rem;
+  color: white;
 `
 
 const Question = styled(Text)`
   margin-bottom: 0.5rem;
   font-weight: 600;
   font-style: italic;
-  font-size: 20px;
+  font-size: large;
+  color: white;
+  text-decoration: underline;
 `
 const Answer = styled(Text)`
   margin-bottom: 1rem;
+  margin-left: 2rem;
+  color: white;
 `
 
 const CreateTidePool = () => {
@@ -80,7 +93,7 @@ const CreateTidePool = () => {
     }, [state, pool])
 
   return (
-    <Flex flexDirection="column" p="1rem" width="100%">
+    <Box mx="auto" width="100%">
       <ActionsContainer>
         <Flex flexDirection="column" justifyContent="space-evenly">
           <Box mb="1rem">
@@ -93,7 +106,8 @@ const CreateTidePool = () => {
           <Actions state={state} pool={selected} />
         </Flex>
       </ActionsContainer>
-      <ContentContainer>
+      <WaveWrapper>
+        <Container>
         <Text>
           Want to use TidePools for a UniswapV3 pool you don't see listed?
           Create one!
@@ -113,9 +127,9 @@ const CreateTidePool = () => {
         <Text>
           That's it! A TidePool will be created and ready for use immediately.
         </Text>
-        <Text fontWeight="900" fontSize="x-large" my="1rem">
-          CREATING A TIDEPOOL FAQ
-        </Text>
+        </Container>
+      </WaveWrapper>
+      <Container>
         <Question>"How much does creating a TidePool cost?"</Question>
         <Answer>
           <Text>
@@ -132,6 +146,9 @@ const CreateTidePool = () => {
             There are no more costs after creation. We take care of the rest!
           </Text>
         </Answer>
+        </Container>
+        <WaveWrapper>
+        <Container>
         <Question>"Do I control the TidePool if I create it?"</Question>
         <Answer>
           No. There are no special permissions with any TidePool, even for the
@@ -142,8 +159,10 @@ const CreateTidePool = () => {
           All addresses are checked directly with the Uniswap factory to make
           sure you can't screw this up or steal from someone.
         </Answer>
-      </ContentContainer>
-    </Flex>
+        </Container>
+        </WaveWrapper>
+        
+    </Box>
   )
 }
 

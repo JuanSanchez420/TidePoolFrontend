@@ -17,6 +17,7 @@ const TidePool = lazy(() => import("./views/TidePool"))
 const List = lazy(() => import("./views/List"))
 const Create = lazy(() => import("./views/Create"))
 const FAQ = lazy(() => import("./views/FAQ"))
+const HowItWorks = lazy(() => import("./views/HowItWorks"))
 const Calculator = lazy(() => import("./views/Calculator"))
 
 const Layout = () => {
@@ -52,6 +53,7 @@ function TidePools() {
         <Route index element={<Home />} />
         <Route path="/pools" element={<List />} />
         <Route path="/:network/:address" element={<TidePool />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/create" element={<Create />} />
         <Route path="/faq" element={<FAQ />} />
         <Route
