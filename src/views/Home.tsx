@@ -136,7 +136,7 @@ function Home() {
         >
           <Flex flexDirection="column">
             <Flex>
-              <Heading mb="1rem" mr="1rem">
+              <Heading mb="1rem">
                 Find the pool that's right for you
               </Heading>
             </Flex>

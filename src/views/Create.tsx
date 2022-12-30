@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useContext } from "react"
 import { Flex, Box, Text, Button, Dots } from "../components"
 import { External } from "../components/Icons"
 import { TextInput } from "../components/Input"
@@ -6,8 +6,8 @@ import useFactory from "../hooks/useFactory"
 import styled from "styled-components"
 import { CreateState } from "../info/types"
 import { Link } from "react-router-dom"
-import useNetwork from "../hooks/useNetwork"
 import WaveWrapper from "../components/Waves"
+import { Global } from "../context/GlobalContext"
 
 const ActionsContainer = styled(Box)`
   width: 100%;
@@ -55,7 +55,7 @@ const Answer = styled(Text)`
 `
 
 const CreateTidePool = () => {
-  const network = useNetwork()
+  const {network} = useContext(Global)
   const [selected, setSelected] = useState("")
   const [address, setAddress] = useState(null)
   const { state, deploy } = useFactory()

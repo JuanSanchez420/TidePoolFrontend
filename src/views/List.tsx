@@ -5,7 +5,6 @@ import theme from "../info/theme"
 import { Search } from "../components/Icons"
 import { TextInput } from "../components/Input"
 import { Card } from "../components/Card"
-import useNetwork from "../hooks/useNetwork"
 import NetworkSelect from "../components/NetworkSelect"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
@@ -15,7 +14,6 @@ const CreateLink = styled(Link)`
 `
 
 const List = () => {
-  const network = useNetwork()
   const [open, setOpen] = useState(false)
   const { theList } = useContext(Global)
   const [search, setSearch] = useState("")
@@ -53,7 +51,7 @@ const List = () => {
         </CreateLink>
       </Text>
       <Flex mb="1rem" maxWidth="400px" mx="auto">
-        <NetworkSelect open={open} setOpen={setOpen} network={network} />
+        <NetworkSelect open={open} setOpen={setOpen} />
         <TextInput
           value={search}
           setValue={setSearch}

@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useWeb3React } from "@web3-react/core"
 import { connectors } from "../utils/web3React"
 import { Network } from "../info/networks"
+import { Global } from "../context/GlobalContext"
 
 declare global {
   interface Window {
@@ -13,6 +14,7 @@ const useWallet = () => {
   const { activate, deactivate, active, library, error } = useWeb3React()
   const injected = connectors["injected"]
   const [tried, setTried] = useState(false)
+  const { setNetwork } = useContext(Global)
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
@@ -53,32 +55,36 @@ const useWallet = () => {
   }
 
   const switchNetwork = async (network: Network) => {
-    try {
-      await library?.provider.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: `0x${Number(network.chainId).toString(16)}` }],
-      })
-    } catch (switchError: any) {
-      console.log(switchError)
-      if (switchError.code === 4902) {
-        try {
-          await library?.provider.request({
-            method: "wallet_addEthereumChain",
-            params: [
-              {
-                chainId: `0x${Number(1).toString(16)}`,
-                rpcUrls: [network.rpcPublic],
-                chainName: network.name,
-                nativeCurrency: network.nativeCurrency,
-                blockExplorerUrls: [network.blockExplorer],
-                iconUrls: [network.icon],
-              },
-            ],
-          })
-        } catch (error) {
-          // w/e
+    if (library) {
+      try {
+        await library.provider.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: `0x${Number(network.chainId).toString(16)}` }],
+        })
+      } catch (switchError: any) {
+        console.log(switchError)
+        if (switchError.code === 4902) {
+          try {
+            await library?.provider.request({
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainId: `0x${Number(1).toString(16)}`,
+                  rpcUrls: [network.rpcPublic],
+                  chainName: network.name,
+                  nativeCurrency: network.nativeCurrency,
+                  blockExplorerUrls: [network.blockExplorer],
+                  iconUrls: [network.icon],
+                },
+              ],
+            })
+          } catch (error) {
+            // w/e
+          }
         }
       }
+    } else {
+      setNetwork(network)
     }
   }
 

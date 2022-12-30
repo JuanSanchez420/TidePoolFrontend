@@ -55,7 +55,7 @@ export const Ethereum: Network = {
 export const Arbitrum: Network = {
   name: "Arbitrum",
   rpc: "https://arbitrum-mainnet.infura.io/v3/8c8620ccdccd4d10a4ce8b5786d4659f",
-  rpcPublic: "",
+  rpcPublic: "https://arb1.arbitrum.io/rpc",
   chainId: 42161,
   image: "/images/arbitrum.svg",
   blockExplorer: "https://arbiscan.io/",

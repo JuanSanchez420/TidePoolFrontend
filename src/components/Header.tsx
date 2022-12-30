@@ -11,18 +11,22 @@ import WalletSelectModal from "./WalletSelectModal"
 
 const Connect = styled(Button)`
     border-radius: 1rem;
+    width: 100%;
     padding: 5px 15px;
-    width: 7rem;
-
     background-color: ${({ theme }) => theme.colors.yellow}
 
     :hover {
         background-color: ${({ theme }) => theme.colors.darkYellow}
     }
+
+    ${({theme}) => theme.mediaQueries.sm} {
+        width: 7rem;
+    };
 `
 
 const TidePoolLogo = styled.img`
   height: 4rem;
+  width: 100%;
 `
 
 export const Header = () => {

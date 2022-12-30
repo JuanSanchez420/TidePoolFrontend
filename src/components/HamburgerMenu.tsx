@@ -5,9 +5,8 @@ import { Link } from "react-router-dom"
 
 const Menu = styled(Box)`
   border-radius: 0.5rem;
-  padding: 5px 15px;
+  padding: 5px 10px;
   text-transform: none;
-  margin-right: 1rem;
   position: relative;
 
   :hover {

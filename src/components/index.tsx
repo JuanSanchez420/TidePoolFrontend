@@ -122,5 +122,9 @@ export const OrderedList = styled.ol`
 export const Heading = styled(Text)`
   color: ${({ theme }) => theme.colors.babyBlue};
   font-weight: 900;
-  font-size: 2rem;
+  font-size: 1.5rem;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 2rem;
+  }};
 `

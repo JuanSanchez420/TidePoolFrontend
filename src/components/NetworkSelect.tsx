@@ -1,10 +1,11 @@
-import React, { SetStateAction } from "react"
+import React, { SetStateAction, useContext, useEffect } from "react"
 import styled from "styled-components"
 import { Flex, Box, Text } from "../components"
 import theme from "../info/theme"
 import { networks, Network } from "../info/networks"
 import { Chevron } from "../components/Icons"
 import useWallet from "../hooks/useWallet"
+import { Global } from "../context/GlobalContext"
 
 const NetworkSelect = styled(Flex)`
   font-size: 1rem;
@@ -68,11 +69,12 @@ const RedDot = styled.span`
 export interface NetworkSelectProps {
   open: boolean
   setOpen: React.Dispatch<SetStateAction<boolean>>
-  network: Network
 }
 
-const NetworkSelectMenu = ({ open, setOpen, network }: NetworkSelectProps) => {
+const NetworkSelectMenu = ({ open, setOpen }: NetworkSelectProps) => {
   const { switchNetwork } = useWallet()
+  const { network } = useContext(Global)
+
   return (
     <NetworkSelect mr="1rem">
       <Flex

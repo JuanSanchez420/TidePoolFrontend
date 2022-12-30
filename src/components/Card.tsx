@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Box, Flex, Text, Button } from "./index"
 import { Chevron, External } from "./Icons"
 import styled from "styled-components"
@@ -6,10 +6,10 @@ import { imageUrls } from "../info/tokens"
 import { TidePool } from "../info/types"
 import theme from "../info/theme"
 import { useNavigate } from "react-router-dom"
-import useNetwork from "../hooks/useNetwork"
 import { Pool } from "@uniswap/v3-sdk"
 import getUniswapInfoLink from "../utils/getUniswapInfoLink"
 import { Arbitrum } from "../info/networks"
+import { Global } from "../context/GlobalContext"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -74,7 +74,7 @@ export const Info = (props: {
   apr: number
   hideEntryLink?: boolean
 }) => {
-  const network = useNetwork()
+  const {network} = useContext(Global)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 

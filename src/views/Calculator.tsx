@@ -1,7 +1,14 @@
 import { useContext, useEffect, useRef, useState } from "react"
-import { Flex, Box, Heading, Text, LoadingLogo, Button, Dots } from "../components"
+import {
+  Flex,
+  Box,
+  Heading,
+  Text,
+  LoadingLogo,
+  Button,
+  Dots,
+} from "../components"
 import theme from "../info/theme"
-import useNetwork from "../hooks/useNetwork"
 import useSubgraph from "../hooks/useSubgraph"
 import { ethers } from "ethers"
 import {
@@ -48,7 +55,9 @@ const Loading = () => {
   return (
     <Flex flexDirection="column" justifyContent="center" alignItems="center">
       <LoadingLogo />
-      <Text color="white" mt="1rem"><Dots>Loading</Dots></Text>
+      <Text color="white" mt="1rem">
+        <Dots>Loading</Dots>
+      </Text>
     </Flex>
   )
 }
@@ -60,7 +69,7 @@ const Calculator = () => {
   const tidePool = theList.tidePools.find(
     (tp) => tp.pool.address === poolAddress
   )
-  const network = useNetwork()
+  const { network } = useContext(Global)
   const loaded = useRef(false)
   const { getETHUSD, getDerivedETHValue } = useSubgraph()
   const { pool, estimateRange } = usePool(poolAddress)
@@ -82,7 +91,6 @@ const Calculator = () => {
     const f = async () => {
       loaded.current = true
       if (pool) {
-        
         const ETHUSD = await getETHUSD()
 
         const token0ETHValue = network.WETH.equals(pool.token0)
@@ -170,7 +178,7 @@ const Calculator = () => {
       </Text>
       <Container>
         {results.fee === 0 ? (
-            <Loading />
+          <Loading />
         ) : (
           <Flex mb="1rem" maxWidth="400px" mx="auto" flexDirection="column">
             <Text color={theme.colors.white}>
