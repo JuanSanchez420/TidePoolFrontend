@@ -1,8 +1,8 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useWeb3React } from "@web3-react/core"
 import { connectors } from "../utils/web3React"
 import { Network } from "../info/networks"
-import { Global } from "../context/GlobalContext"
+import { NetworkConnector } from "@web3-react/network-connector"
 
 declare global {
   interface Window {
@@ -11,10 +11,19 @@ declare global {
 }
 
 const useWallet = () => {
-  const { activate, deactivate, active, library, error } = useWeb3React()
+  const { activate, deactivate, active, library, error, connector } =
+    useWeb3React()
   const injected = connectors["injected"]
+  const defaultNetwork = connectors["network"]
   const [tried, setTried] = useState(false)
-  const { setNetwork } = useContext(Global)
+
+  const handleActivateInjected = () => {
+    activate(connectors.injected, (error) => console.log(error), true)
+  }
+
+  const handleActivateWalletConnect = () => {
+    activate(connectors.walletconnect, (error) => console.log(error), false)
+  }
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
@@ -24,9 +33,10 @@ const useWallet = () => {
         })
       } else {
         setTried(true)
+        activate(defaultNetwork, (error) => console.log(error), false)
       }
     })
-  }, [activate, injected])
+  }, [activate, injected, defaultNetwork])
 
   useEffect(() => {
     if (!tried && active) {
@@ -42,19 +52,14 @@ const useWallet = () => {
     }
   }, [error])
 
-  const handleActivateInjected = () => {
-    activate(connectors.injected, (error) => console.log(error), true)
-  }
-
-  const handleActivateWalletConnect = () => {
-    activate(connectors.walletconnect, (error) => console.log(error), false)
-  }
-
   const handleDisconnect = () => {
     deactivate()
   }
 
-  const switchNetwork = async (network: Network) => {
+  const switchNetwork = useCallback(async (network: Network) => {
+    if (connector instanceof NetworkConnector) {
+      connector.changeChainId(network.chainId)
+    }
     if (library) {
       try {
         await library.provider.request({
@@ -83,10 +88,8 @@ const useWallet = () => {
           }
         }
       }
-    } else {
-      setNetwork(network)
     }
-  }
+  },[connector, library])
 
   return {
     tried,

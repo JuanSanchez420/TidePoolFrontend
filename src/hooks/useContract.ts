@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react"
+import { useMemo } from "react"
 import { ethers } from "ethers"
 import {
   TIDEPOOL_ABI,
@@ -7,23 +7,20 @@ import {
   FACTORY_ABI,
 } from "../info/abi"
 import { useWeb3React } from "@web3-react/core"
-import { Global } from "../context/GlobalContext"
+import useNetwork from "./useNetwork"
 
 const useContract = (address?: string, abi?: any): ethers.Contract | null => {
   const { account, library } = useWeb3React()
-  const { network } = useContext(Global)
 
   const contract = useMemo(() => {
     if (!address || !abi) return null
-    let provider = null
-    if (!library)
-      provider = new ethers.providers.JsonRpcProvider(network.rpc, "any")
+
     return new ethers.Contract(
       address,
       abi,
-      account ? library.getSigner() : provider
+      account ? library.getSigner() : library
     )
-  }, [library, account, abi, address, network])
+  }, [library, account, abi, address])
 
   return contract
 }
@@ -45,6 +42,6 @@ export const useTokenContract = (address?: string): ethers.Contract | null => {
 }
 
 export const useFactoryContract = (): ethers.Contract | null => {
-  const { network } = useContext(Global)
+  const network = useNetwork()
   return useContract(network.factory, FACTORY_ABI)
 }

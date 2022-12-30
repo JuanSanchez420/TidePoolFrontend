@@ -1,15 +1,15 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { Box, Flex, Text, Button } from "./index"
 import { Chevron, External } from "./Icons"
 import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
 import { TidePool } from "../info/types"
 import theme from "../info/theme"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Pool } from "@uniswap/v3-sdk"
 import getUniswapInfoLink from "../utils/getUniswapInfoLink"
 import { Arbitrum } from "../info/networks"
-import { Global } from "../context/GlobalContext"
+import useNetwork from "../hooks/useNetwork"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -68,13 +68,17 @@ const ContractLink = styled.a`
   font-size: 0.85rem;
 `
 
+const APRLink = styled(Link)`
+  color: white;
+`
+
 export const Info = (props: {
   tidePool?: TidePool
   pool: Pool | undefined
   apr: number
   hideEntryLink?: boolean
 }) => {
-  const {network} = useContext(Global)
+  const network = useNetwork()
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
@@ -116,12 +120,11 @@ export const Info = (props: {
         {network?.chainId !== Arbitrum.chainId ? (
           <Flex>
             <Text color="white" fontSize="0.85rem">
-              <ContractLink
-                href={`/uniswap-v3-calculator/${props.tidePool?.pool.address}`}
-                target="_blank"
+              <APRLink
+                to={`/uniswap-v3-calculator/${props.tidePool?.pool.address}`}
               >
                 Calculate APR
-              </ContractLink>
+              </APRLink>
             </Text>
           </Flex>
         ) : null}

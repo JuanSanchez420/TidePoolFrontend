@@ -24,6 +24,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import { External } from "../components/Icons"
 import { Global } from "../context/GlobalContext"
+import { networks } from "../info/networks"
+import useNetwork from "../hooks/useNetwork"
 
 interface Results {
   fee: number
@@ -63,13 +65,14 @@ const Loading = () => {
 }
 
 const Calculator = () => {
-  const poolAddress = useParams().address || ""
+  const params = useParams()
+  const poolAddress = params.address || ""
   const navigate = useNavigate()
   const { theList } = useContext(Global)
   const tidePool = theList.tidePools.find(
-    (tp) => tp.pool.address === poolAddress
+    (tp) => tp.pool.address.toLowerCase() === poolAddress.toLowerCase()
   )
-  const { network } = useContext(Global)
+  const network = useNetwork()
   const loaded = useRef(false)
   const { getETHUSD, getDerivedETHValue } = useSubgraph()
   const { pool, estimateRange } = usePool(poolAddress)

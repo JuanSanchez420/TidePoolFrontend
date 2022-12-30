@@ -1,11 +1,11 @@
-import React, { SetStateAction, useContext, useEffect } from "react"
+import React, { SetStateAction } from "react"
 import styled from "styled-components"
 import { Flex, Box, Text } from "../components"
 import theme from "../info/theme"
 import { networks, Network } from "../info/networks"
 import { Chevron } from "../components/Icons"
 import useWallet from "../hooks/useWallet"
-import { Global } from "../context/GlobalContext"
+import useNetwork from "../hooks/useNetwork"
 
 const NetworkSelect = styled(Flex)`
   font-size: 1rem;
@@ -73,7 +73,7 @@ export interface NetworkSelectProps {
 
 const NetworkSelectMenu = ({ open, setOpen }: NetworkSelectProps) => {
   const { switchNetwork } = useWallet()
-  const { network } = useContext(Global)
+  const network = useNetwork()
 
   return (
     <NetworkSelect mr="1rem">
@@ -100,7 +100,6 @@ const NetworkSelectMenu = ({ open, setOpen }: NetworkSelectProps) => {
         {Object.values(networks).map((n: Network) => (
           <Highlight key={n.chainId}>
             <Flex
-              key={n.chainId}
               alignItems="center"
               justifyContent="space-around"
               py="2px"

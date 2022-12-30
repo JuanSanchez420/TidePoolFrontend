@@ -1,12 +1,9 @@
-import React, { Dispatch, SetStateAction, useState, useEffect } from "react"
+import { Dispatch, SetStateAction, useState, useEffect } from "react"
 import { useWeb3React } from "@web3-react/core"
 import { Network, networks } from "../info/networks"
 import useLocalStorage from "./useLocalStorage"
 
-const useNetwork = (): {
-  network: Network
-  setNetwork: Dispatch<SetStateAction<Network>>
-} => {
+const useNetwork = (): Network => {
   const { chainId } = useWeb3React()
   const [previous, setPrevious] = useLocalStorage("network")
   const [network, setNetwork] = useState<Network>(
@@ -20,7 +17,7 @@ const useNetwork = (): {
     }
   }, [chainId, setPrevious])
 
-  return { network, setNetwork }
+  return network
 }
 
 export default useNetwork

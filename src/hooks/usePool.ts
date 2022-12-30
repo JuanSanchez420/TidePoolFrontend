@@ -12,11 +12,11 @@ import {
 import { Token } from "@uniswap/sdk-core"
 import useToken from "./useToken"
 import { Global } from "../context/GlobalContext"
-import { useWeb3React } from "@web3-react/core"
+import useNetwork from "./useNetwork"
 
 const usePool = (address?: string) => {
-  const { chainId } = useWeb3React()
   const { theList } = useContext(Global)
+  const network = useNetwork()
   const contract = useUniswapPoolContract(address)
   const [pool, setPool] = useState<Pool | undefined>()
   const { tokens } = useToken()
@@ -26,7 +26,6 @@ const usePool = (address?: string) => {
   useEffect(() => {
     const fetch = async () => {
       loaded.current = true
-
       const slot0 = await contract?.slot0()
       const liquidity = await contract?.liquidity()
       const tp = theList.tidePools.find(
@@ -43,7 +42,7 @@ const usePool = (address?: string) => {
       setPool(getPool(slot0, fee, liquidity?.toString(), token0, token1))
     }
     if (address && contract) fetch()
-  }, [contract, address, theList.tidePools, tokens, chainId])
+  }, [contract, address, theList.tidePools, tokens, network])
 
   const estimateRange = useCallback(() => {
     const tick = pool ? pool.tickCurrent : 0
