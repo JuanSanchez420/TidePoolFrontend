@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback, useRef } from "react"
+import { useState, useEffect, useContext, useCallback } from "react"
 import { useUniswapPoolContract } from "./useContract"
 import { Position, Slot0 } from "../info/types"
 import { BigNumber, ethers } from "ethers"
@@ -20,12 +20,9 @@ const usePool = (address?: string) => {
   const contract = useUniswapPoolContract(address)
   const [pool, setPool] = useState<Pool | undefined>()
   const { tokens } = useToken()
-  const loaded = useRef(false)
 
-  // TODO: MULTICALL
   useEffect(() => {
     const fetch = async () => {
-      loaded.current = true
       const slot0 = await contract?.slot0()
       const liquidity = await contract?.liquidity()
       const tp = theList.tidePools.find(
@@ -41,7 +38,7 @@ const usePool = (address?: string) => {
 
       setPool(getPool(slot0, fee, liquidity?.toString(), token0, token1))
     }
-    if (address && contract) fetch()
+    if (address && contract?.provider) fetch()
   }, [contract, address, theList.tidePools, tokens, network])
 
   const estimateRange = useCallback(() => {

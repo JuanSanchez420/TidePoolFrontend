@@ -75,7 +75,6 @@ const APRLink = styled(Link)`
 export const Info = (props: {
   tidePool?: TidePool
   pool: Pool | undefined
-  apr: number
   hideEntryLink?: boolean
 }) => {
   const network = useNetwork()
@@ -83,10 +82,6 @@ export const Info = (props: {
   const navigate = useNavigate()
 
   const fee = props.tidePool ? props.tidePool?.pool.fee / 1e4 : 0
-
-  const dailyApr = props.apr.toFixed(2)
-  const monthlyApr = (props.apr * 30).toFixed(2)
-  const yearlyApr = (props.apr * 365).toFixed(2)
 
   return (
     <>

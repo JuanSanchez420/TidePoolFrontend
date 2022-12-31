@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from "react"
+import { useState, useContext } from "react"
 import { useParams } from "react-router-dom"
 import {
   Box,
@@ -85,7 +85,7 @@ const TidePool = () => {
     approve: approveT1,
   } = useToken(tidePool?.pool.token1.address, account, tidePool?.address)
 
-  const { deposit, withdraw, balance, calculateFee } = useTidePool(
+  const { deposit, withdraw, balance } = useTidePool(
     tidePool?.address,
     account
   )
@@ -94,16 +94,6 @@ const TidePool = () => {
   const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
   const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))
   const [w, setW] = useState<BigNumber>(BigNumber.from(0))
-  const loaded = useRef(false)
-  const [apr, setApr] = useState<number>(0)
-
-  useEffect(() => {
-    const f = async () => {
-      loaded.current = true
-      setApr(await calculateFee())
-    }
-    if (!loaded.current && tidePool && pool) f()
-  }, [tidePool, pool, calculateFee])
 
   const doDeposit = async () => {
     try {
@@ -136,7 +126,7 @@ const TidePool = () => {
         <Text color="white" textAlign="center">For a more detailed explanation, visit <ExternalLink to="/how-it-works" target="_blank">How It Works</ExternalLink>.</Text>
       </Flex>
       <Container mx="auto" my="1rem">
-        <Info tidePool={tidePool} pool={pool} apr={apr} hideEntryLink />
+        <Info tidePool={tidePool} pool={pool} hideEntryLink />
 
         <ActionBox flexDirection="column" selected={index === 0}>
           <Flex>

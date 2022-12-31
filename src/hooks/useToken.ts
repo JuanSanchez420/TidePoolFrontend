@@ -26,8 +26,6 @@ const useToken = (
   const contract = useTokenContract(tokenAddress)
   const { theList } = useContext(Global)
 
-  // TODO: MULTICALL
-
   const checkAllowance = useCallback(async () => {
     const allowance = await contract?.allowance(owner, spender)
     if (allowance)
@@ -62,14 +60,14 @@ const useToken = (
   }, [tokens, tokenAddress])
 
   useEffect(() => {
-    if (owner) checkAllowance()
+    if (owner && contract?.provider) checkAllowance()
   }, [state, contract, checkAllowance, owner])
 
   useEffect(() => {
     const getBalance = async () => {
       setBalance(await contract?.balanceOf(owner))
     }
-    if (owner) getBalance()
+    if (owner && contract?.provider) getBalance()
   }, [contract, owner])
 
   return useMemo(() => {

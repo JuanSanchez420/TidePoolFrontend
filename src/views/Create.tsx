@@ -5,7 +5,6 @@ import { TextInput } from "../components/Input"
 import useFactory from "../hooks/useFactory"
 import styled from "styled-components"
 import { CreateState } from "../info/types"
-import { Link } from "react-router-dom"
 import WaveWrapper from "../components/Waves"
 import useNetwork from "../hooks/useNetwork"
 
@@ -35,7 +34,7 @@ const Container = styled(Flex)`
   color: white;
 `
 
-const ExternalLink = styled(Link)`
+const ExternalLink = styled.a`
   padding: 0.1rem;
   color: white;
 `
@@ -116,7 +115,7 @@ const CreateTidePool = () => {
           <li>Choose your chain</li>
           <li>
             Find a{" "}
-            <ExternalLink to="https://info.uniswap.org/#/pools">
+            <ExternalLink href="https://info.uniswap.org/#/pools" target="_blank">
               Uniswap V3 Pool address
               <External height="1rem" width="1rem" />
             </ExternalLink>
