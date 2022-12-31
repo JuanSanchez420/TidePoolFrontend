@@ -1,4 +1,4 @@
-import { createContext, SetStateAction } from "react"
+import { createContext } from "react"
 import useTheList from "../hooks/useTheList"
 import { TheList } from "../info/types"
 import useNetwork from "../hooks/useNetwork"

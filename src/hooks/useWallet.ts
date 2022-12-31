@@ -1,102 +1,46 @@
-import { useState, useEffect, useCallback } from "react"
+import { useCallback } from "react"
 import { useWeb3React } from "@web3-react/core"
-import { connectors } from "../utils/web3React"
-import { Network } from "../info/networks"
-import { NetworkConnector } from "@web3-react/network-connector"
-
-declare global {
-  interface Window {
-    ethereum: any
-  }
-}
+import { Network as Chain } from "../info/networks"
+import {
+  metaMask,
+  walletConnect,
+} from "../utils/web3React"
 
 const useWallet = () => {
-  const { activate, deactivate, active, library, error, connector } =
+  const { connector, isActivating, isActive, chainId } =
     useWeb3React()
-  const injected = connectors["injected"]
-  const defaultNetwork = connectors["network"]
-  const [tried, setTried] = useState(false)
 
-  const handleActivateInjected = () => {
-    activate(connectors.injected, (error) => console.log(error), true)
+  const connect = async (connectorName: "metamask" | "walletconnect") => {
+    if (isActive) {
+      await connector?.deactivate?.()
+    }
+    if (connectorName === "metamask") {
+      metaMask.activate(chainId).catch((e) => console.log(e))
+    }
+    if (connectorName === "walletconnect") {
+      walletConnect.activate(chainId).catch((e) => console.log(e))
+    }
   }
 
-  const handleActivateWalletConnect = () => {
-    activate(connectors.walletconnect, (error) => console.log(error), false)
+  const disconnect = async () => {
+    if(connector.deactivate) {
+      connector.deactivate()
+    } else {
+      connector.resetState()
+    }
   }
 
-  useEffect(() => {
-    injected.isAuthorized().then((isAuthorized) => {
-      if (isAuthorized) {
-        activate(injected, undefined, true).catch(() => {
-          setTried(true)
-        })
-      } else {
-        setTried(true)
-        activate(defaultNetwork, (error) => console.log(error), false)
-      }
-    })
-  }, [activate, injected, defaultNetwork])
-
-  useEffect(() => {
-    if (!tried && active) {
-      setTried(true)
-    }
-  }, [tried, active])
-
-  useEffect(() => {
-    if (error && error.name === "UnsupportedChainIdError") {
-      alert(
-        "Please switch to a supported chain: Ethereum, Arbitrum, Optimism, or Polygon."
-      )
-    }
-  }, [error])
-
-  const handleDisconnect = () => {
-    deactivate()
-  }
-
-  const switchNetwork = useCallback(async (network: Network) => {
-    if (connector instanceof NetworkConnector) {
-      connector.changeChainId(network.chainId)
-    }
-    if (library) {
-      try {
-        await library.provider.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: `0x${Number(network.chainId).toString(16)}` }],
-        })
-      } catch (switchError: any) {
-        console.log(switchError)
-        if (switchError.code === 4902) {
-          try {
-            await library?.provider.request({
-              method: "wallet_addEthereumChain",
-              params: [
-                {
-                  chainId: `0x${Number(1).toString(16)}`,
-                  rpcUrls: [network.rpcPublic],
-                  chainName: network.name,
-                  nativeCurrency: network.nativeCurrency,
-                  blockExplorerUrls: [network.blockExplorer],
-                  iconUrls: [network.icon],
-                },
-              ],
-            })
-          } catch (error) {
-            // w/e
-          }
-        }
-      }
-    }
-  },[connector, library])
+  const switchNetwork = useCallback(
+    async (network: Chain) => {
+        connector.activate(network.chainId)
+    },
+    [connector]
+  )
 
   return {
-    tried,
-    handleActivateInjected,
-    handleActivateWalletConnect,
     switchNetwork,
-    handleDisconnect,
+    connect,
+    disconnect
   }
 }
 

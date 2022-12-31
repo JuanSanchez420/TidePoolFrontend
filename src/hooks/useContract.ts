@@ -6,11 +6,11 @@ import {
   ERC20_ABI,
   FACTORY_ABI,
 } from "../info/abi"
-import { useWeb3React } from "@web3-react/core"
 import useNetwork from "./useNetwork"
+import useSignerOrProvider from "./useSignerOrProvider"
 
 const useContract = (address?: string, abi?: any): ethers.Contract | null => {
-  const { account, library } = useWeb3React()
+  const provider = useSignerOrProvider()
 
   const contract = useMemo(() => {
     if (!address || !abi) return null
@@ -18,9 +18,9 @@ const useContract = (address?: string, abi?: any): ethers.Contract | null => {
     return new ethers.Contract(
       address,
       abi,
-      account ? library.getSigner() : library
+      provider
     )
-  }, [library, account, abi, address])
+  }, [provider, abi, address])
 
   return contract
 }

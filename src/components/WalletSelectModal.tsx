@@ -17,12 +17,12 @@ const Container = styled(Flex)`
 `
 
 const WalletSelectModal = ({ onDismiss }: { onDismiss: Handler }) => {
-  const { handleActivateInjected, handleActivateWalletConnect } = useWallet()
+  const { connect } = useWallet()
   return (
     <Container flexDirection="column" justifyContent="space-evenly">
       <Button
         onClick={() => {
-          handleActivateInjected()
+          connect("metamask")
           onDismiss()
         }}
       >
@@ -30,7 +30,7 @@ const WalletSelectModal = ({ onDismiss }: { onDismiss: Handler }) => {
       </Button>
       <Button
         onClick={() => {
-          handleActivateWalletConnect()
+          connect("walletconnect")
           onDismiss()
         }}
       >

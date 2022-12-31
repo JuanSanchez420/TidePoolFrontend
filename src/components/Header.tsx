@@ -5,9 +5,10 @@ import theme from "../info/theme"
 import { Link } from "react-router-dom"
 import { useWeb3React } from "@web3-react/core"
 import HamburgerMenu from "./HamburgerMenu"
-import useWallet from "../hooks/useWallet"
 import useModal from "../widgets/Modal/useModal"
 import WalletSelectModal from "./WalletSelectModal"
+import useEagerConnect from "../hooks/useEagerConnect"
+import useWallet from "../hooks/useWallet"
 
 const Connect = styled(Button)`
     border-radius: 1rem;
@@ -19,7 +20,7 @@ const Connect = styled(Button)`
         background-color: ${({ theme }) => theme.colors.darkYellow}
     }
 
-    ${({theme}) => theme.mediaQueries.sm} {
+    ${({ theme }) => theme.mediaQueries.sm} {
         width: 7rem;
     };
 `
@@ -33,7 +34,9 @@ export const Header = () => {
   const { account } = useWeb3React()
   const ws = <WalletSelectModal onDismiss={() => null} />
   const [onPresent] = useModal(ws, "walletModal")
-  const { handleDisconnect } = useWallet()
+  const { disconnect } = useWallet()
+
+  useEagerConnect()
 
   return (
     <Flex py="1rem" px="0.5rem" alignItems="center" flexShrink="0">
@@ -47,7 +50,7 @@ export const Header = () => {
           <Wallet
             height={"2rem"}
             color={theme.colors.yellow}
-            onClick={handleDisconnect}
+            onClick={disconnect}
           />
         ) : (
           <Connect onClick={onPresent}>Connect</Connect>

@@ -7,8 +7,8 @@ import { Wrapper, Flex, LoadingLogo, DarkWrapper } from "./components/index"
 import { Header } from "./components/Header"
 import { Footer } from "./components/Footer"
 import { GlobalContext } from "./context/GlobalContext"
-import { getLibrary } from "./utils/web3React"
 import ModalProvider from "./widgets/Modal/ModalContext"
+import { connectors } from "./utils/web3React"
 
 window.Buffer = window.Buffer || require("buffer").Buffer
 
@@ -22,7 +22,7 @@ const Calculator = lazy(() => import("./views/Calculator"))
 
 const Layout = () => {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
+    <Web3ReactProvider connectors={connectors}>
       <ThemeProvider theme={theme}>
         <GlobalContext>
           <Wrapper>

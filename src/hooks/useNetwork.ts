@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useWeb3React } from "@web3-react/core"
 import { Network, networks } from "../info/networks"
 import useLocalStorage from "./useLocalStorage"
