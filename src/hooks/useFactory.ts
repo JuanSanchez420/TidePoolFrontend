@@ -14,7 +14,7 @@ const useFactory = () => {
         const tx = await contract?.deploy(address)
         const receipt = await tx.wait()
 
-        r = receipt.events[2].args.TidePoolCreated
+        r = receipt.events[2].args.tidePool
         setState(CreateState.DONE)
       } catch (e) {
         console.log(e)
