@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom"
 import {
   Box,
   Button,
+  Connect,
   Flex,
   FlexProps,
   OrderedList,
-  Text
+  Text,
 } from "../components/index"
 import { Container, Info } from "../components/Card"
 import { BigNumber } from "ethers"
@@ -20,6 +21,8 @@ import usePool from "../hooks/usePool"
 import { Link } from "react-router-dom"
 import theme from "../info/theme"
 import { useWeb3React } from "@web3-react/core"
+import useModal from "../widgets/Modal/useModal"
+import WalletSelectModal from "../components/WalletSelectModal"
 
 const EthAmount = styled(TokenInput)`
   text-align: center;
@@ -85,15 +88,14 @@ const TidePool = () => {
     approve: approveT1,
   } = useToken(tidePool?.pool.token1.address, account, tidePool?.address)
 
-  const { deposit, withdraw, balance } = useTidePool(
-    tidePool?.address,
-    account
-  )
+  const { deposit, withdraw, balance } = useTidePool(tidePool?.address, account)
   const { pool } = usePool(tidePool?.pool.address)
   const [index, setIndex] = useState(0)
   const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
   const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))
   const [w, setW] = useState<BigNumber>(BigNumber.from(0))
+  const ws = <WalletSelectModal onDismiss={() => null} />
+  const [onPresent] = useModal(ws, "walletModal")
 
   const doDeposit = async () => {
     try {
@@ -123,7 +125,13 @@ const TidePool = () => {
           </li>
           <li>That's it! We do the rest. Withdraw whenever you want.</li>
         </OrderedList>
-        <Text color="white" textAlign="center">For a more detailed explanation, visit <ExternalLink to="/how-it-works" target="_blank">How It Works</ExternalLink>.</Text>
+        <Text color="white" textAlign="center">
+          For a more detailed explanation, visit{" "}
+          <ExternalLink to="/how-it-works" target="_blank">
+            How It Works
+          </ExternalLink>
+          .
+        </Text>
       </Flex>
       <Container mx="auto" my="1rem">
         <Info tidePool={tidePool} pool={pool} hideEntryLink />
@@ -145,7 +153,11 @@ const TidePool = () => {
               Withdraw
             </Tab>
           </Flex>
-          {index === 0 ? (
+          {!account ? (
+            <Flex justifyContent="center" my="1rem">
+              <Connect onClick={onPresent}>Connect</Connect>
+            </Flex>
+          ) : index === 0 ? (
             <Flex
               flexDirection="column"
               p="1rem"

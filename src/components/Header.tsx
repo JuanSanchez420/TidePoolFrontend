@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { Flex, Button } from "./index"
+import { Flex, Connect } from "./index"
 import { Wallet } from "./Icons"
 import theme from "../info/theme"
 import { Link } from "react-router-dom"
@@ -9,21 +9,6 @@ import useModal from "../widgets/Modal/useModal"
 import WalletSelectModal from "./WalletSelectModal"
 import useEagerConnect from "../hooks/useEagerConnect"
 import useWallet from "../hooks/useWallet"
-
-const Connect = styled(Button)`
-    border-radius: 1rem;
-    width: 100%;
-    padding: 5px 15px;
-    background-color: ${({ theme }) => theme.colors.yellow}
-
-    :hover {
-        background-color: ${({ theme }) => theme.colors.darkYellow}
-    }
-
-    ${({ theme }) => theme.mediaQueries.sm} {
-        width: 7rem;
-    };
-`
 
 const TidePoolLogo = styled.img`
   height: 4rem;

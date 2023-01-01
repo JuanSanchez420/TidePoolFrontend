@@ -62,6 +62,21 @@ export const Button = styled.button`
   }
 `
 
+export const Connect = styled(Button)`
+    border-radius: 1rem;
+    width: 100%;
+    padding: 5px 15px;
+    background-color: ${({ theme }) => theme.colors.yellow}
+
+    :hover {
+        background-color: ${({ theme }) => theme.colors.darkYellow}
+    }
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+        width: 7rem;
+    };
+`
+
 export const HollowButton = styled(Button)`
   color: ${({ theme }) => theme.colors.buttonText};
   background-color: ${({ theme }) => theme.colors.white};

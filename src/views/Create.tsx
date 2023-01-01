@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useContext } from "react"
 import { Flex, Box, Text, Button, Dots } from "../components"
 import { External } from "../components/Icons"
 import { TextInput } from "../components/Input"
@@ -7,6 +7,9 @@ import styled from "styled-components"
 import { CreateState } from "../info/types"
 import WaveWrapper from "../components/Waves"
 import useNetwork from "../hooks/useNetwork"
+import { isAddress } from "ethers/lib/utils"
+import { Global } from "../context/GlobalContext"
+import { Link } from "react-router-dom"
 
 const ActionsContainer = styled(Box)`
   width: 100%;
@@ -39,6 +42,10 @@ const ExternalLink = styled.a`
   color: white;
 `
 
+const PoolsLink = styled(Link)`
+  color: white;
+`
+
 const Question = styled(Text)`
   margin-bottom: 0.5rem;
   font-weight: 600;
@@ -55,13 +62,16 @@ const Answer = styled(Text)`
 
 const CreateTidePool = () => {
   const network = useNetwork()
+  const { theList } = useContext(Global)
   const [selected, setSelected] = useState("")
   const [address, setAddress] = useState(null)
   const { state, deploy } = useFactory()
 
   const createPool = async () => {
+    if(!isAddress(selected)) return alert("Invalid address")
+    const exists = theList.tidePools.find((p) => p.pool.address.toLowerCase() === selected.toLowerCase())
+    if(exists) return alert("Pool already exists")
     const r = await deploy(selected)
-    console.log(r)
     if (r) setAddress(r)
   }
 
@@ -112,7 +122,7 @@ const CreateTidePool = () => {
           Create one!
         </Text>
         <ol>
-          <li>Choose your chain</li>
+          <li>Choose your chain on the <PoolsLink to="/pools">tidepools</PoolsLink> page</li>
           <li>
             Find a{" "}
             <ExternalLink href="https://info.uniswap.org/#/pools" target="_blank">
@@ -137,9 +147,9 @@ const CreateTidePool = () => {
           </Text>
           <ul>
             <li>Ethereum: 0.12879538ETH ($215)</li>
-            <li>Arbitrum: 0.00085288105251 ETH ($1.50)</li>
+            <li>Arbitrum: 0.0004556015 ETH ($0.55)</li>
             <li>Optimism: 0.000118097067 ETH ($0.20)</li>
-            <li>Polygon: 0.129863760073589464 MATIC ($0.08)</li>
+            <li>Polygon: 0.153569502867533328 MATIC ($0.12)</li>
           </ul>
           <Text>
             There are no more costs after creation. We take care of the rest!

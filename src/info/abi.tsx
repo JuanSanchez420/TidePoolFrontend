@@ -323,7 +323,7 @@ export const TIDEPOOL_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
 export const UNISWAPPOOL_ABI = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
@@ -966,7 +966,7 @@ export const UNISWAPPOOL_ABI = [
     stateMutability: "view",
     type: "function",
   },
-];
+]
 
 export const ERC20_ABI = [
   {
@@ -1255,7 +1255,7 @@ export const ERC20_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
 export const FACTORY_ABI = [
   {
@@ -1296,6 +1296,13 @@ export const FACTORY_ABI = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "tidePools",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "treasury",
     outputs: [{ internalType: "address", name: "", type: "address" }],
@@ -1309,4 +1316,4 @@ export const FACTORY_ABI = [
     stateMutability: "view",
     type: "function",
   },
-];
+]

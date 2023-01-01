@@ -8,6 +8,7 @@ const Menu = styled(Box)`
   padding: 5px 10px;
   text-transform: none;
   position: relative;
+  z-index: 12;
 
   :hover {
     cursor: pointer;
@@ -82,6 +83,7 @@ const HamburgerMenu = () => {
       >
         {pages.map((p) => (
           <Highlight key={`highlight-${p.title}`}>
+            <MenuLink to={p.url}>
             <Flex
               key={p.title}
               alignItems="center"
@@ -89,9 +91,10 @@ const HamburgerMenu = () => {
               py="2px"
               px="10px"
             >
-              <MenuLink to={p.url}>{p.title}</MenuLink>
+              {p.title}
               <RedDot />
             </Flex>
+            </MenuLink>
           </Highlight>
         ))}
       </MenuOptions>
