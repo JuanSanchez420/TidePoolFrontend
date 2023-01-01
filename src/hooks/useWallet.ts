@@ -15,10 +15,10 @@ const useWallet = () => {
       await connector?.deactivate?.()
     }
     if (connectorName === "metamask") {
-      metaMask.activate(chainId).catch((e) => console.log(e))
+      metaMask.activate(chainId).then(()=>window.location.reload()).catch((e) => console.log(e))
     }
     if (connectorName === "walletconnect") {
-      walletConnect.activate(chainId).catch((e) => console.log(e))
+      walletConnect.activate(chainId).then(()=>window.location.reload()).catch((e) => console.log(e))
     }
   }
 

@@ -146,7 +146,7 @@ const CreateTidePool = () => {
             network usage.
           </Text>
           <ul>
-            <li>Ethereum: 0.12879538ETH ($215)</li>
+            <li>Ethereum: 0.068133671497970085 ETH ($81.94)</li>
             <li>Arbitrum: 0.0004556015 ETH ($0.55)</li>
             <li>Optimism: 0.000118097067 ETH ($0.20)</li>
             <li>Polygon: 0.153569502867533328 MATIC ($0.12)</li>

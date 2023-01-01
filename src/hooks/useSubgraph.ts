@@ -3,8 +3,7 @@ import { gql, request } from "graphql-request"
 import { BigNumber, ethers } from "ethers"
 import { TickMath, tickToPrice } from "@uniswap/v3-sdk"
 import useNetwork from "./useNetwork"
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+import sleep from "../utils/sleep"
 
 export interface Ticks {
   ticks: Tick[]

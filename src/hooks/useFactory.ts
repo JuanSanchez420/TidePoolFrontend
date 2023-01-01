@@ -15,7 +15,7 @@ const useFactory = () => {
         const receipt = await tx.wait()
 
         r = receipt.events[2].args.TidePoolCreated
-        setState(r ? CreateState.DONE : CreateState.ERROR)
+        setState(CreateState.DONE)
       } catch (e) {
         console.log(e)
         setState(CreateState.ERROR)
