@@ -5,8 +5,10 @@ import { tickToPrice } from "@uniswap/v3-sdk"
 import usePool from "./usePool"
 import useToken from "./useToken"
 import { Global } from "../context/GlobalContext"
+import { useWeb3React } from "@web3-react/core"
 
-const useTidePool = (address?: string, user?: string | null) => {
+const useTidePool = (address?: string) => {
+  const { account } = useWeb3React()
   const { theList } = useContext(Global)
   const tidePool = theList.tidePools.find((p) => p.address === address)
   const contract = useTidePoolContract(address)
@@ -20,6 +22,7 @@ const useTidePool = (address?: string, user?: string | null) => {
   const { token: token0 } = useToken(tidePool?.pool.token0.address)
   const { token: token1 } = useToken(tidePool?.pool.token1.address)
 
+  /*
   useEffect(() => {
     const fetch = async () => {
       setUpper(BigNumber.from(await contract?.upper()))
@@ -28,13 +31,14 @@ const useTidePool = (address?: string, user?: string | null) => {
     }
     if (address && contract?.provider) fetch()
   }, [contract, address])
+*/
 
   useEffect(() => {
     const getBalance = async () => {
-      setBalance(await contract?.balanceOf(user))
+      setBalance(await contract?.balanceOf(account))
     }
-    if (user && contract?.provider) getBalance()
-  }, [contract, user])
+    if (account && contract?.provider) getBalance()
+  }, [contract, account])
 
   const positionDisplay: {
     price: string

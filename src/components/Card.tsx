@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Box, Flex, Text, Button } from "./index"
 import { Chevron, External } from "./Icons"
 import styled from "styled-components"
@@ -10,6 +10,8 @@ import { Pool } from "@uniswap/v3-sdk"
 import getUniswapInfoLink from "../utils/getUniswapInfoLink"
 import { Arbitrum } from "../info/networks"
 import useNetwork from "../hooks/useNetwork"
+import useTidePool from "../hooks/useTidePool"
+import { ethers } from "ethers"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -81,10 +83,18 @@ export const Info = (props: {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
+  const { balance } = useTidePool(props.tidePool?.address)
+
+  const balanceFormatted = useMemo(() => {
+    if (!balance) return "0"
+
+    return parseFloat(ethers.utils.formatEther(balance)).toLocaleString()
+  }, [balance])
+
   const fee = props.tidePool ? props.tidePool?.pool.fee / 1e4 : 0
 
   return (
-    <>
+    <Box >
       <Flex pb="10px" alignItems="center" justifyContent="space-around">
         <Flex alignItems="center">
           <IconBox width="40px" height="35px" marginRight="1rem">
@@ -110,10 +120,15 @@ export const Info = (props: {
         </Flex>
         <Fee>{fee}% Fee</Fee>
       </Flex>
-      <Flex pb="10px" alignItems="center" justifyContent="space-around">
-        <Text>&nbsp;</Text>
+      <Flex pb="10px" alignItems="center" justifyContent="space-evenly" px="15px">
+        <Flex flexDirection="column" flex="1">
+          {balance.gt(0) ? <Text color="white" fontSize="0.75rem">
+            {`Balance: ${balanceFormatted}`}
+          </Text> : <Text color="white" fontSize="0.75rem">&nbsp;</Text>}
+        </Flex>
+
         {network?.chainId !== Arbitrum.chainId ? (
-          <Flex>
+          <Flex flex="2">
             <Text color="white" fontSize="0.85rem">
               <APRLink
                 to={`/uniswap-v3-calculator/${props.tidePool?.pool.address}`}
@@ -124,7 +139,7 @@ export const Info = (props: {
           </Flex>
         ) : null}
         <DetailsLink onClick={() => setOpen(!open)}>
-          <Flex>
+          <Flex flex="1">
             <Text>Details</Text>
             <Text width="12px" ml="5px">
               <Chevron open={open} />
@@ -193,7 +208,7 @@ export const Info = (props: {
           )}
         </Box>
       )}
-    </>
+    </Box>
   )
 }
 

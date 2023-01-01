@@ -88,7 +88,7 @@ const TidePool = () => {
     approve: approveT1,
   } = useToken(tidePool?.pool.token1.address, account, tidePool?.address)
 
-  const { deposit, withdraw, balance } = useTidePool(tidePool?.address, account)
+  const { deposit, withdraw, balance } = useTidePool(tidePool?.address)
   const { pool } = usePool(tidePool?.pool.address)
   const [index, setIndex] = useState(0)
   const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
