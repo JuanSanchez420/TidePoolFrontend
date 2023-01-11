@@ -133,7 +133,7 @@ export const Info = (props: {
               <APRLink
                 to={`/uniswap-v3-calculator/${props.tidePool?.pool.address}`}
               >
-                Calculate APR
+                {props.tidePool?.APR ? `${props.tidePool?.APR}% APR` : "Calculate APR"}
               </APRLink>
             </Text>
           </Flex>

@@ -11,6 +11,7 @@ export interface TidePool {
   chainId: number
   address: string
   pool: Pool
+  APR?: number
 }
 
 export interface Pool {
