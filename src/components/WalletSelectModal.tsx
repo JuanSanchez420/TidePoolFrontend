@@ -1,6 +1,6 @@
 import styled from "styled-components"
+import { useConnect } from "wagmi"
 import { Flex } from "."
-import useWallet from "../hooks/useWallet"
 import { Handler } from "../widgets/Modal/useModal"
 import { Button } from "./"
 
@@ -17,25 +17,21 @@ const Container = styled(Flex)`
 `
 
 const WalletSelectModal = ({ onDismiss }: { onDismiss: Handler }) => {
-  const { connect } = useWallet()
+  const { connect, connectors } = useConnect()
+
   return (
     <Container flexDirection="column" justifyContent="space-evenly">
-      <Button
-        onClick={() => {
-          connect("metamask")
-          onDismiss()
-        }}
-      >
-        MetaMask
-      </Button>
-      <Button
-        onClick={() => {
-          connect("walletconnect")
-          onDismiss()
-        }}
-      >
-        WalletConnect
-      </Button>
+      {connectors.map((c) => (
+        <Button
+          key={c.name}
+          onClick={() => {
+            connect({ connector: c })
+            onDismiss()
+          }}
+        >
+          {c.name}
+        </Button>
+      ))}
     </Container>
   )
 }

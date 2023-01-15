@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback } from "react"
+import { useState, useEffect, useContext, useCallback, useRef } from "react"
 import { useUniswapPoolContract } from "./useContract"
 import { Position, Slot0 } from "../info/types"
 import { BigNumber, ethers } from "ethers"
@@ -12,14 +12,13 @@ import {
 import { Token } from "@uniswap/sdk-core"
 import useToken from "./useToken"
 import { Global } from "../context/GlobalContext"
-import useNetwork from "./useNetwork"
 
 const usePool = (address?: string) => {
-  const { theList } = useContext(Global)
-  const network = useNetwork()
+  const { theList, network, loaded } = useContext(Global)
   const contract = useUniswapPoolContract(address)
   const [pool, setPool] = useState<Pool | undefined>()
   const { tokens } = useToken()
+  const didMount = useRef(false)
 
   useEffect(() => {
     const fetch = async () => {
@@ -38,8 +37,17 @@ const usePool = (address?: string) => {
 
       setPool(getPool(slot0, fee, liquidity?.toString(), token0, token1))
     }
-    if (address && contract?.provider) fetch()
-  }, [contract, address, theList.tidePools, tokens, network])
+    if (
+      didMount.current &&
+      loaded &&
+      address &&
+      network &&
+      theList.tidePools &&
+      contract
+    )
+      fetch()
+    didMount.current = true
+  }, [contract, address, theList.tidePools, tokens, network, loaded])
 
   const estimateRange = useCallback(() => {
     const tick = pool ? pool.tickCurrent : 0

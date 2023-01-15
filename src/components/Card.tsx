@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useContext, useMemo, useState } from "react"
 import { Box, Flex, Text, Button } from "./index"
 import { Chevron, External } from "./Icons"
 import styled from "styled-components"
@@ -9,9 +9,9 @@ import { Link, useNavigate } from "react-router-dom"
 import { Pool } from "@uniswap/v3-sdk"
 import getUniswapInfoLink from "../utils/getUniswapInfoLink"
 import { Arbitrum } from "../info/networks"
-import useNetwork from "../hooks/useNetwork"
 import useTidePool from "../hooks/useTidePool"
 import { ethers } from "ethers"
+import { Global } from "../context/GlobalContext"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -79,7 +79,7 @@ export const Info = (props: {
   pool: Pool | undefined
   hideEntryLink?: boolean
 }) => {
-  const network = useNetwork()
+  const { network } = useContext(Global)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
@@ -94,7 +94,7 @@ export const Info = (props: {
   const fee = props.tidePool ? props.tidePool?.pool.fee / 1e4 : 0
 
   return (
-    <Box >
+    <Box>
       <Flex pb="10px" alignItems="center" justifyContent="space-around">
         <Flex alignItems="center">
           <IconBox width="40px" height="35px" marginRight="1rem">
@@ -120,20 +120,33 @@ export const Info = (props: {
         </Flex>
         <Fee>{fee}% Fee</Fee>
       </Flex>
-      <Flex pb="10px" alignItems="center" justifyContent="space-evenly" px="15px">
+      <Flex
+        pb="10px"
+        alignItems="center"
+        justifyContent="space-evenly"
+        px="15px"
+      >
         <Flex flexDirection="column" flex="1">
-          {balance.gt(0) ? <Text color="white" fontSize="0.75rem">
-            {`Balance: ${balanceFormatted}`}
-          </Text> : <Text color="white" fontSize="0.75rem">&nbsp;</Text>}
+          {balance.gt(0) ? (
+            <Text color="white" fontSize="0.75rem">
+              {`Balance: ${balanceFormatted}`}
+            </Text>
+          ) : (
+            <Text color="white" fontSize="0.75rem">
+              &nbsp;
+            </Text>
+          )}
         </Flex>
 
         {network?.chainId !== Arbitrum.chainId ? (
           <Flex flex="2">
             <Text color="white" fontSize="0.85rem">
               <APRLink
-                to={`/uniswap-v3-calculator/${props.tidePool?.pool.address}`}
+                to={`/uniswap-v3-calculator/${network.name}/${props.tidePool?.pool.address}`}
               >
-                {props.tidePool?.APR ? `${props.tidePool?.APR}% APR` : "Calculate APR"}
+                {props.tidePool?.APR
+                  ? `${props.tidePool?.APR}% APR`
+                  : "Calculate APR"}
               </APRLink>
             </Text>
           </Flex>

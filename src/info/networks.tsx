@@ -156,3 +156,10 @@ export const networks = {
   [Optimism.chainId]: Optimism,
   [Polygon.chainId]: Polygon,
 }
+
+export const getNetworkByName = (name: string) => {
+  return (
+    Object.values(networks).find((network) => network.name === name) ||
+    networks[1]
+  )
+}

@@ -1,5 +1,4 @@
 import { lazy, Suspense } from "react"
-import { Web3ReactProvider } from "@web3-react/core"
 import { Routes, Route, Outlet } from "react-router-dom"
 import { ThemeProvider } from "styled-components"
 import theme from "./info/theme"
@@ -8,7 +7,8 @@ import { Header } from "./components/Header"
 import { Footer } from "./components/Footer"
 import { GlobalContext } from "./context/GlobalContext"
 import ModalProvider from "./widgets/Modal/ModalContext"
-import { connectors } from "./utils/web3React"
+import useWagmi from "./hooks/useWagmi"
+import { WagmiConfig } from "wagmi"
 
 window.Buffer = window.Buffer || require("buffer").Buffer
 
@@ -21,8 +21,10 @@ const HowItWorks = lazy(() => import("./views/HowItWorks"))
 const Calculator = lazy(() => import("./views/Calculator"))
 
 const Layout = () => {
+  const client = useWagmi()
+
   return (
-    <Web3ReactProvider connectors={connectors}>
+    <WagmiConfig client={client}>
       <ThemeProvider theme={theme}>
         <GlobalContext>
           <Wrapper>
@@ -42,7 +44,7 @@ const Layout = () => {
           </Wrapper>
         </GlobalContext>
       </ThemeProvider>
-    </Web3ReactProvider>
+    </WagmiConfig>
   )
 }
 
@@ -57,7 +59,7 @@ function TidePools() {
         <Route path="/create" element={<Create />} />
         <Route path="/faq" element={<FAQ />} />
         <Route
-          path="/uniswap-v3-calculator/:address"
+          path="/uniswap-v3-calculator/:network/:address"
           element={<Calculator />}
         />
       </Route>

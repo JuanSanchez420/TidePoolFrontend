@@ -1,9 +1,9 @@
-import { useCallback } from "react"
+import { useCallback, useContext } from "react"
 import { gql, request } from "graphql-request"
 import { BigNumber, ethers } from "ethers"
 import { TickMath, tickToPrice } from "@uniswap/v3-sdk"
-import useNetwork from "./useNetwork"
 import sleep from "../utils/sleep"
+import { Global } from "../context/GlobalContext"
 
 export interface Ticks {
   ticks: Tick[]
@@ -19,7 +19,7 @@ export interface VolumeUSD {
 }
 
 const useSubgraph = () => {
-  const network = useNetwork()
+  const { network } = useContext(Global)
 
   const getETHUSD = useCallback(async (): Promise<number> => {
     const q = gql`

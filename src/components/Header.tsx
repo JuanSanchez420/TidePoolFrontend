@@ -3,12 +3,10 @@ import { Flex, Connect } from "./index"
 import { Wallet } from "./Icons"
 import theme from "../info/theme"
 import { Link } from "react-router-dom"
-import { useWeb3React } from "@web3-react/core"
 import HamburgerMenu from "./HamburgerMenu"
 import useModal from "../widgets/Modal/useModal"
 import WalletSelectModal from "./WalletSelectModal"
-import useEagerConnect from "../hooks/useEagerConnect"
-import useWallet from "../hooks/useWallet"
+import { useAccount, useDisconnect } from "wagmi"
 
 const TidePoolLogo = styled.img`
   height: 4rem;
@@ -16,12 +14,11 @@ const TidePoolLogo = styled.img`
 `
 
 export const Header = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
+  const { disconnect } = useDisconnect()
+
   const ws = <WalletSelectModal onDismiss={() => null} />
   const [onPresent] = useModal(ws, "walletModal")
-  const { disconnect } = useWallet()
-
-  useEagerConnect()
 
   return (
     <Flex py="1rem" px="0.5rem" alignItems="center" flexShrink="0">
@@ -35,7 +32,7 @@ export const Header = () => {
           <Wallet
             height={"2rem"}
             color={theme.colors.yellow}
-            onClick={disconnect}
+            onClick={() => disconnect()}
           />
         ) : (
           <Connect onClick={onPresent}>Connect</Connect>

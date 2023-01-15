@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useContext, useMemo } from "react"
 import { ethers } from "ethers"
 import {
   TIDEPOOL_ABI,
@@ -6,21 +6,20 @@ import {
   ERC20_ABI,
   FACTORY_ABI,
 } from "../info/abi"
-import useNetwork from "./useNetwork"
-import useSignerOrProvider from "./useSignerOrProvider"
+import { useProvider } from "wagmi"
+import { useSigner } from "wagmi"
+import { Global } from "../context/GlobalContext"
 
 const useContract = (address?: string, abi?: any): ethers.Contract | null => {
-  const provider = useSignerOrProvider()
+  const { loaded, network } = useContext(Global)
+  const provider = useProvider({ chainId: network.chainId })
+  const { data: signer } = useSigner()
 
   const contract = useMemo(() => {
-    if (!address || !abi) return null
+    if (!loaded || !address || !abi || (!provider && !signer)) return null
 
-    return new ethers.Contract(
-      address,
-      abi,
-      provider
-    )
-  }, [provider, abi, address])
+    return new ethers.Contract(address, abi, signer ?? provider)
+  }, [provider, signer, abi, address, loaded])
 
   return contract
 }
@@ -42,6 +41,6 @@ export const useTokenContract = (address?: string): ethers.Contract | null => {
 }
 
 export const useFactoryContract = (): ethers.Contract | null => {
-  const network = useNetwork()
+  const { network } = useContext(Global)
   return useContract(network.factory, FACTORY_ABI)
 }

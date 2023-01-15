@@ -5,10 +5,10 @@ import { tickToPrice } from "@uniswap/v3-sdk"
 import usePool from "./usePool"
 import useToken from "./useToken"
 import { Global } from "../context/GlobalContext"
-import { useWeb3React } from "@web3-react/core"
+import { useAccount } from "wagmi"
 
 const useTidePool = (address?: string) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { theList } = useContext(Global)
   const tidePool = theList.tidePools.find((p) => p.address === address)
   const contract = useTidePoolContract(address)
@@ -37,7 +37,7 @@ const useTidePool = (address?: string) => {
     const getBalance = async () => {
       setBalance(await contract?.balanceOf(account))
     }
-    if (account && contract?.provider) getBalance()
+    if (account && contract) getBalance()
   }, [contract, account])
 
   const positionDisplay: {

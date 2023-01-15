@@ -1,11 +1,11 @@
-import React, { SetStateAction } from "react"
+import React, { SetStateAction, useContext } from "react"
 import styled from "styled-components"
 import { Flex, Box, Text } from "../components"
 import theme from "../info/theme"
 import { networks, Network } from "../info/networks"
 import { Chevron } from "../components/Icons"
-import useWallet from "../hooks/useWallet"
-import useNetwork from "../hooks/useNetwork"
+import { useSwitchNetwork } from "wagmi"
+import { Global } from "../context/GlobalContext"
 
 const NetworkSelect = styled(Flex)`
   font-size: 1rem;
@@ -72,8 +72,15 @@ export interface NetworkSelectProps {
 }
 
 const NetworkSelectMenu = ({ open, setOpen }: NetworkSelectProps) => {
-  const { switchNetwork } = useWallet()
-  const network = useNetwork()
+  const { switchNetwork } = useSwitchNetwork()
+  const { network, setDefaultNetwork } = useContext(Global)
+
+  const handleSwitchNetwork = (chainId: number) => {
+    if (switchNetwork) {
+      switchNetwork(chainId)
+    }
+    setDefaultNetwork(chainId)
+  }
 
   return (
     <NetworkSelect mr="1rem">
@@ -103,7 +110,7 @@ const NetworkSelectMenu = ({ open, setOpen }: NetworkSelectProps) => {
               alignItems="center"
               justifyContent="space-around"
               py="2px"
-              onClick={() => switchNetwork(n)}
+              onClick={() => handleSwitchNetwork(n.chainId)}
             >
               <Logo src={n.image} />
               <Text color={theme.colors.white}>{n.name}</Text>

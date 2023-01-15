@@ -6,7 +6,6 @@ import useFactory from "../hooks/useFactory"
 import styled from "styled-components"
 import { CreateState } from "../info/types"
 import WaveWrapper from "../components/Waves"
-import useNetwork from "../hooks/useNetwork"
 import { isAddress } from "ethers/lib/utils"
 import { Global } from "../context/GlobalContext"
 import { Link } from "react-router-dom"
@@ -21,7 +20,7 @@ const ActionsContainer = styled(Box)`
   margin-top: 1rem;
 
   input::placeholder {
-    color:white;
+    color: white;
   }
 `
 
@@ -61,16 +60,17 @@ const Answer = styled(Text)`
 `
 
 const CreateTidePool = () => {
-  const network = useNetwork()
-  const { theList } = useContext(Global)
+  const { theList, network } = useContext(Global)
   const [selected, setSelected] = useState("")
   const [address, setAddress] = useState(null)
   const { state, deploy } = useFactory()
 
   const createPool = async () => {
-    if(!isAddress(selected)) return alert("Invalid address")
-    const exists = theList.tidePools.find((p) => p.pool.address.toLowerCase() === selected.toLowerCase())
-    if(exists) return alert("Pool already exists")
+    if (!isAddress(selected)) return alert("Invalid address")
+    const exists = theList.tidePools.find(
+      (p) => p.pool.address.toLowerCase() === selected.toLowerCase()
+    )
+    if (exists) return alert("Pool already exists")
     const r = await deploy(selected)
     if (r) setAddress(r)
   }
@@ -117,25 +117,31 @@ const CreateTidePool = () => {
       </ActionsContainer>
       <WaveWrapper>
         <Container>
-        <Text>
-          Want to use TidePools for a UniswapV3 pool you don't see listed?
-          Create one!
-        </Text>
-        <ol>
-          <li>Choose your chain on the <PoolsLink to="/pools">tidepools</PoolsLink> page</li>
-          <li>
-            Find a{" "}
-            <ExternalLink href="https://info.uniswap.org/#/pools" target="_blank">
-              Uniswap V3 Pool address
-              <External height="1rem" width="1rem" />
-            </ExternalLink>
-          </li>
-          <li>Paste the address of the pool into the box above</li>
-          <li>Click "Create Pool" and run the transaction</li>
-        </ol>
-        <Text>
-          That's it! A TidePool will be created and ready for use immediately.
-        </Text>
+          <Text>
+            Want to use TidePools for a UniswapV3 pool you don't see listed?
+            Create one!
+          </Text>
+          <ol>
+            <li>
+              Choose your chain on the{" "}
+              <PoolsLink to="/pools">tidepools</PoolsLink> page
+            </li>
+            <li>
+              Find a{" "}
+              <ExternalLink
+                href="https://info.uniswap.org/#/pools"
+                target="_blank"
+              >
+                Uniswap V3 Pool address
+                <External height="1rem" width="1rem" />
+              </ExternalLink>
+            </li>
+            <li>Paste the address of the pool into the box above</li>
+            <li>Click "Create Pool" and run the transaction</li>
+          </ol>
+          <Text>
+            That's it! A TidePool will be created and ready for use immediately.
+          </Text>
         </Container>
       </WaveWrapper>
       <Container>
@@ -155,22 +161,21 @@ const CreateTidePool = () => {
             There are no more costs after creation. We take care of the rest!
           </Text>
         </Answer>
-        </Container>
-        <WaveWrapper>
+      </Container>
+      <WaveWrapper>
         <Container>
-        <Question>"Do I control the TidePool if I create it?"</Question>
-        <Answer>
-          No. There are no special permissions with any TidePool, even for the
-          owner or creator.
-        </Answer>
-        <Question>"What if someone puts a bad address in there?"</Question>
-        <Answer>
-          All addresses are checked directly with the Uniswap factory to make
-          sure you can't screw this up or steal from someone.
-        </Answer>
+          <Question>"Do I control the TidePool if I create it?"</Question>
+          <Answer>
+            No. There are no special permissions with any TidePool, even for the
+            owner or creator.
+          </Answer>
+          <Question>"What if someone puts a bad address in there?"</Question>
+          <Answer>
+            All addresses are checked directly with the Uniswap factory to make
+            sure you can't screw this up or steal from someone.
+          </Answer>
         </Container>
-        </WaveWrapper>
-        
+      </WaveWrapper>
     </Box>
   )
 }

@@ -20,9 +20,9 @@ import { ApprovalState } from "../info/types"
 import usePool from "../hooks/usePool"
 import { Link } from "react-router-dom"
 import theme from "../info/theme"
-import { useWeb3React } from "@web3-react/core"
 import useModal from "../widgets/Modal/useModal"
 import WalletSelectModal from "../components/WalletSelectModal"
+import { useAccount } from "wagmi"
 
 const EthAmount = styled(TokenInput)`
   text-align: center;
@@ -68,10 +68,9 @@ const ActionBox = styled(Flex)<TabProps>`
 
 const TidePool = () => {
   const address = useParams().address
+  const { address: account } = useAccount()
 
   const { theList } = useContext(Global)
-
-  const { account } = useWeb3React()
 
   const tidePool = theList.tidePools.find((p) => p.address === address)
 
