@@ -59,7 +59,7 @@ export const Arbitrum: Network = {
   chainId: 42161,
   image: "/images/arbitrum.svg",
   blockExplorer: "https://arbiscan.io/",
-  factory: "0xc28EaA5051C0cfB8A493749990787d0190e8300F",
+  factory: "0xc252CE4f0Fe4fe77C4e15652E6b01e8CFdE034b6",
   subgraph: "https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-dev",
   nativeCurrency: {
     name: "Ether",

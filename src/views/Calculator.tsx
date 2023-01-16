@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import {
   Flex,
   Box,
@@ -52,6 +52,12 @@ const ContractLink = styled.a`
   font-size: 0.85rem;
 `
 
+const FlipClick = styled.a`
+  color: ${({ theme }) => theme.colors.babyBlue};
+  font-size: 0.85rem;
+  cursor: pointer;
+`
+
 const Loading = () => {
   return (
     <Flex flexDirection="column" justifyContent="center" alignItems="center">
@@ -77,6 +83,7 @@ const Calculator = () => {
   const { getETHUSD, getDerivedETHValue } = useSubgraph()
   const { pool, estimateRange } = usePool(poolAddress)
   const { getVolume, getLiquidity } = useSubgraph()
+  const [zeroFirst, setZeroFirst] = useState<boolean>(false)
   const [results, setResults] = useState<Results>({
     fee: 0,
     volume: 0,
@@ -177,6 +184,18 @@ const Calculator = () => {
     poolAddress,
   ])
 
+  const [upper, lower] = useMemo(() => {
+    if (results.fee && pool) {
+      const tokens = zeroFirst
+        ? [pool.token0, pool.token1]
+        : [pool.token1, pool.token0]
+      const t0 = tickToPrice(tokens[0], tokens[1], results.lower).toFixed()
+      const t1 = tickToPrice(tokens[0], tokens[1], results.upper).toFixed()
+      return [t0, t1]
+    }
+    return ["0", "0"]
+  }, [results, pool, zeroFirst])
+
   return (
     <Box p="1rem" maxWidth="1000px">
       <Heading>Uniswap V3 Calculator</Heading>
@@ -213,15 +232,12 @@ const Calculator = () => {
                 currency: "USD",
               })}
             </Text>
-            <Text color={theme.colors.white}>
-              Range:{" "}
-              {pool
-                ? tickToPrice(pool.token0, pool.token1, results.lower).toFixed()
-                : 0}{" "}
-              to{" "}
-              {pool
-                ? tickToPrice(pool.token0, pool.token1, results.upper).toFixed()
-                : 0}
+            <Text color={theme.colors.white} mr="1rem">
+              Range (
+              <FlipClick onClick={() => setZeroFirst(!zeroFirst)}>
+                Flip
+              </FlipClick>
+              ): {lower} to {upper}
             </Text>
             <Text color={theme.colors.white}>
               Share of liquidity: {results.share.multiply(100).toFixed(6)}%
