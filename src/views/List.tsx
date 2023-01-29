@@ -59,7 +59,7 @@ const List = () => {
         />
       </Flex>
       {view.map((c) => (
-        <Card key={c.address} tidePool={c} pool={undefined} apr={0} />
+        <Card key={c.address} tidePool={c} pool={undefined} apr={0} balance={undefined} position={undefined} />
       ))}
     </Box>
   )

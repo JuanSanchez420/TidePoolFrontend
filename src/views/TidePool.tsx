@@ -87,7 +87,7 @@ const TidePool = () => {
     approve: approveT1,
   } = useToken(tidePool?.pool.token1.address, account, tidePool?.address)
 
-  const { deposit, withdraw, balance } = useTidePool(tidePool?.address)
+  const { deposit, withdraw, balance, position } = useTidePool(tidePool?.address)
   const { pool } = usePool(tidePool?.pool.address)
   const [index, setIndex] = useState(0)
   const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
@@ -133,7 +133,7 @@ const TidePool = () => {
         </Text>
       </Flex>
       <Container mx="auto" my="1rem">
-        <Info tidePool={tidePool} pool={pool} hideEntryLink />
+        <Info tidePool={tidePool} pool={pool} balance={balance} position={position} hideEntryLink />
 
         <ActionBox flexDirection="column" selected={index === 0}>
           <Flex>

@@ -17,7 +17,7 @@ const InputBox = styled.input`
 
 const Icon = styled.img`
   height: 25px;
-  margin-right: 10px;
+  margin-right: 5px;
 `
 
 export interface WrapperProps extends FlexProps {
@@ -28,6 +28,11 @@ const Wrapper = styled(Flex)<WrapperProps>`
   border-radius: 1rem;
   background-color: ${({ theme, color = theme.colors.darkBlue }) => color};
   padding: 3px 13px;
+`
+
+const MaxButton = styled(Button)`
+  font-size: 10px;
+  padding: 3px 10px;
 `
 
 interface TokenInputProps {
@@ -61,7 +66,7 @@ export const TokenInput = ({
         placeholder="0.0"
       />
       <Flex flexDirection="column">
-        <Button onClick={() => setValue(balance)}>MAX</Button>
+        <MaxButton onClick={() => setValue(balance)}>MAX</MaxButton>
         <Text fontSize="0.75rem" color="white">
           Balance:{" "}
           {significantDigits(

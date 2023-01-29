@@ -4,11 +4,13 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 import { arbitrum, optimism, polygon } from "@wagmi/chains"
 import { INFURA_KEY } from "../info/constants"
+// import { publicProvider } from 'wagmi/providers/public'
 
 const useWagmi = () => {
   const { chains, provider, webSocketProvider } = configureChains(
     [mainnet, arbitrum, polygon, optimism],
     [infuraProvider({ apiKey: INFURA_KEY })]
+    // [publicProvider()]
   )
 
   const client = createClient({

@@ -6,12 +6,13 @@ import { imageUrls } from "../info/tokens"
 import { TidePool } from "../info/types"
 import theme from "../info/theme"
 import { Link, useNavigate } from "react-router-dom"
-import { Pool } from "@uniswap/v3-sdk"
+import { Pool, Position, tickToPrice } from "@uniswap/v3-sdk"
 import getUniswapInfoLink from "../utils/getUniswapInfoLink"
 import { Arbitrum } from "../info/networks"
 import useTidePool from "../hooks/useTidePool"
 import { ethers } from "ethers"
 import { Global } from "../context/GlobalContext"
+import formatNumber from "../utils/formatNumber"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -74,8 +75,15 @@ const APRLink = styled(Link)`
   color: white;
 `
 
+const T = styled(Text)`
+  font-size: 0.85rem;
+  color: white;
+`
+
 export const Info = (props: {
   tidePool?: TidePool
+  balance: ethers.BigNumber | undefined
+  position: Position | undefined
   pool: Pool | undefined
   hideEntryLink?: boolean
 }) => {
@@ -83,7 +91,7 @@ export const Info = (props: {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
-  const { balance } = useTidePool(props.tidePool?.address)
+  const { tidePool, balance, position, pool, hideEntryLink } = props
 
   const balanceFormatted = useMemo(() => {
     if (!balance) return "0"
@@ -91,7 +99,27 @@ export const Info = (props: {
     return parseFloat(ethers.utils.formatEther(balance)).toLocaleString()
   }, [balance])
 
-  const fee = props.tidePool ? props.tidePool?.pool.fee / 1e4 : 0
+  const fee = tidePool ? tidePool?.pool.fee / 1e4 : 0
+
+  const [amount0, amount1, upper, lower] = useMemo(() => {
+    if (!position) return ["0", "0", "0", "0"]
+    const zero = ethers.utils.formatUnits(
+      position.amount0.quotient.toString(),
+      position.pool.token0.decimals
+    )
+    const one = ethers.utils.formatUnits(
+      position.amount1.quotient.toString(),
+      position.pool.token1.decimals
+    )
+    const upper = position.token0PriceUpper.toFixed(8)
+    const lower = position.token0PriceLower.toFixed(8)
+    return [
+      formatNumber(zero),
+      formatNumber(one),
+      formatNumber(upper),
+      formatNumber(lower),
+    ]
+  }, [position])
 
   return (
     <Box>
@@ -99,23 +127,14 @@ export const Info = (props: {
         <Flex alignItems="center">
           <IconBox width="40px" height="35px" marginRight="1rem">
             <IconLeft
-              src={
-                props.tidePool
-                  ? imageUrls[props.tidePool.pool.token0.symbol || ""]
-                  : ""
-              }
+              src={tidePool ? imageUrls[tidePool.pool.token0.symbol || ""] : ""}
             />
             <IconRight
-              src={
-                props.tidePool
-                  ? imageUrls[props.tidePool.pool.token1.symbol || ""]
-                  : ""
-              }
+              src={tidePool ? imageUrls[tidePool.pool.token1.symbol || ""] : ""}
             />
           </IconBox>
           <Title>
-            {props.tidePool?.pool.token0?.symbol} -{" "}
-            {props.tidePool?.pool.token1?.symbol}
+            {tidePool?.pool.token0?.symbol} - {tidePool?.pool.token1?.symbol}
           </Title>
         </Flex>
         <Fee>{fee}% Fee</Fee>
@@ -127,9 +146,9 @@ export const Info = (props: {
         px="15px"
       >
         <Flex flexDirection="column" flex="1">
-          {balance.gt(0) ? (
+          {balance && balance.gt(0) ? (
             <Text color="white" fontSize="0.75rem">
-              {`Balance: ${balanceFormatted}`}
+              {`Balance: ${balanceFormatted} TPOOL`}
             </Text>
           ) : (
             <Text color="white" fontSize="0.75rem">
@@ -142,11 +161,9 @@ export const Info = (props: {
           <Flex flex="2">
             <Text color="white" fontSize="0.85rem">
               <APRLink
-                to={`/uniswap-v3-calculator/${network.name}/${props.tidePool?.pool.address}`}
+                to={`/uniswap-v3-calculator/${network.name}/${tidePool?.pool.address}`}
               >
-                {props.tidePool?.APR
-                  ? `${props.tidePool?.APR}% APR`
-                  : "Calculate APR"}
+                {tidePool?.APR ? `${tidePool?.APR}% APR` : "Calculate APR"}
               </APRLink>
             </Text>
           </Flex>
@@ -162,6 +179,23 @@ export const Info = (props: {
       </Flex>
       {open && (
         <Box>
+          {position && (
+            <Flex
+              borderTop={`2px solid ${theme.colors.lightBlue}`}
+              py="0.5rem"
+              flexDirection="row"
+              justifyContent="space-evenly"
+            >
+              <Flex flexDirection="column">
+                <T>{`Total ${position.pool.token0.symbol}: ${amount0}`}</T>
+                <T>{`Total ${position.pool.token1.symbol}: ${amount1}`}</T>
+              </Flex>
+              <Flex flexDirection="column">
+                <T>Upper limit: {upper}</T>
+                <T>Lower limit: {lower}</T>
+              </Flex>
+            </Flex>
+          )}
           <Flex
             borderTop={`2px solid ${theme.colors.lightBlue}`}
             justifyContent="space-evenly"
@@ -169,13 +203,13 @@ export const Info = (props: {
           >
             <Flex flexDirection="column">
               <ContractLink
-                href={`${network.blockExplorer}address/${props.tidePool?.address}`}
+                href={`${network.blockExplorer}address/${tidePool?.address}`}
                 target="_blank"
               >
                 TidePool <External height="1rem" width="1rem" />
               </ContractLink>
               <ContractLink
-                href={`${network.blockExplorer}address/${props.tidePool?.pool.address}`}
+                href={`${network.blockExplorer}address/${tidePool?.pool.address}`}
                 target="_blank"
               >
                 Uniswap pool <External height="1rem" width="1rem" />
@@ -183,7 +217,7 @@ export const Info = (props: {
               <ContractLink
                 href={getUniswapInfoLink(
                   network.name || "",
-                  props.tidePool?.pool.address || "",
+                  tidePool?.pool.address || "",
                   "pools"
                 )}
                 target="_blank"
@@ -193,26 +227,26 @@ export const Info = (props: {
             </Flex>
             <Flex flexDirection="column">
               <ContractLink
-                href={`${network.blockExplorer}address/${props.tidePool?.pool.token0.address}`}
+                href={`${network.blockExplorer}address/${tidePool?.pool.token0.address}`}
                 target="_blank"
               >
-                {props.tidePool?.pool.token0.symbol}{" "}
+                {tidePool?.pool.token0.symbol}{" "}
                 <External height="1rem" width="1rem" />
               </ContractLink>
               <ContractLink
-                href={`${network.blockExplorer}address/${props.tidePool?.pool.token1.address}`}
+                href={`${network.blockExplorer}address/${tidePool?.pool.token1.address}`}
                 target="_blank"
               >
-                {props.tidePool?.pool.token1.symbol}{" "}
+                {tidePool?.pool.token1.symbol}{" "}
                 <External height="1rem" width="1rem" />
               </ContractLink>
             </Flex>
           </Flex>
-          {!props.hideEntryLink && (
+          {!hideEntryLink && (
             <Flex justifyContent="center" mt="1rem">
               <Button
                 onClick={() =>
-                  navigate(`/${network.name}/${props.tidePool?.address}`)
+                  navigate(`/${network.name}/${tidePool?.address}`)
                 }
               >
                 Enter TidePool
@@ -227,6 +261,8 @@ export const Info = (props: {
 
 export const Card = (props: {
   tidePool: TidePool
+  balance: ethers.BigNumber | undefined
+  position: Position | undefined
   pool: Pool | undefined
   apr: number
   hideEntryLink?: boolean

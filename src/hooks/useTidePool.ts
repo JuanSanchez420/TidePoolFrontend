@@ -1,63 +1,63 @@
-import { useState, useEffect, useContext, useMemo } from "react"
+import { useState, useEffect, useContext, useMemo, useRef } from "react"
 import { useTidePoolContract } from "./useContract"
-import { BigNumber } from "ethers"
-import { tickToPrice } from "@uniswap/v3-sdk"
+import { BigNumber, ethers } from "ethers"
+import {
+  tickToPrice,
+  Position,
+  PositionLibrary,
+  TickLibrary,
+} from "@uniswap/v3-sdk"
 import usePool from "./usePool"
 import useToken from "./useToken"
 import { Global } from "../context/GlobalContext"
 import { useAccount } from "wagmi"
+import { Price, Token } from "@uniswap/sdk-core"
+import JSBI from "jsbi"
 
 const useTidePool = (address?: string) => {
   const { address: account } = useAccount()
   const { theList } = useContext(Global)
   const tidePool = theList.tidePools.find((p) => p.address === address)
   const contract = useTidePoolContract(address)
-  const [balance, setBalance] = useState(BigNumber.from(0))
+  const [balance, setBalance] = useState<BigNumber | undefined>()
   const [upper, setUpper] = useState<BigNumber>(BigNumber.from(0))
   const [lower, setLower] = useState<BigNumber>(BigNumber.from(0))
+  const [position, setPosition] = useState<Position>()
   const [totalSupply, setTotalSupply] = useState<BigNumber>(BigNumber.from(0))
-  const { getPosition, pool, estimatePosition } = usePool(
+  const { getPosition, pool, estimatePosition, getOustandingFees } = usePool(
     tidePool?.pool.address
   )
-  const { token: token0 } = useToken(tidePool?.pool.token0.address)
-  const { token: token1 } = useToken(tidePool?.pool.token1.address)
-
-  /*
-  useEffect(() => {
-    const fetch = async () => {
-      setUpper(BigNumber.from(await contract?.upper()))
-      setLower(BigNumber.from(await contract?.lower()))
-      setTotalSupply(await contract?.totalSupply())
-    }
-    if (address && contract?.provider) fetch()
-  }, [contract, address])
-*/
+  const balanceMounted = useRef(false)
+  const positionMounted = useRef(false)
 
   useEffect(() => {
     const getBalance = async () => {
+      balanceMounted.current = true
       setBalance(await contract?.balanceOf(account))
     }
-    if (account && contract) getBalance()
+    if (account && contract && !balanceMounted.current) getBalance()
   }, [contract, account])
 
-  const positionDisplay: {
-    price: string
-    lower: string
-    upper: string
-  } = useMemo(() => {
-    if (!token0 || !token1 || !lower || !upper || !pool)
-      return { price: "0", lower: "0", upper: "0" }
+  useEffect(() => {
+    const f = async (a: string) => {
+      positionMounted.current = true
+      const upper = await contract?.upper()
+      const lower = await contract?.lower()
 
-    const price = tickToPrice(token0, token1, pool.tickCurrent)
-    const l = tickToPrice(token0, token1, lower.toNumber())
-    const u = tickToPrice(token0, token1, upper.toNumber())
-
-    return {
-      price: price.toFixed(2),
-      lower: l.toFixed(2),
-      upper: u.toFixed(2),
+      if (lower && upper && pool) {
+        const pos = await getPosition(a, lower, upper)
+        setPosition(new Position({
+          pool,
+          liquidity: pos.liquidity.toString(),
+          tickLower: lower,
+          tickUpper: upper,
+        }))
+        
+        // const fees = await getOustandingFees(address || "", lower, upper)
+      }
     }
-  }, [token0, token1, lower, upper, pool])
+    if (address && pool && contract && !positionMounted.current) f(address)
+  }, [address, pool, contract, getPosition, account])
 
   const deposit = async (zero: BigNumber, one: BigNumber) => {
     try {
@@ -78,6 +78,7 @@ const useTidePool = (address?: string) => {
   return {
     pool,
     balance,
+    position,
     deposit,
     withdraw,
     contract,

@@ -51,6 +51,7 @@ const useToken = (
       const addresses = Array.from(new Set(tokenList.map((t) => t.address)))
       setTokens(tokenList.filter((t) => addresses.includes(t.address)))
     }
+    return () => setTokens([])
   }, [theList])
 
   useEffect(() => {

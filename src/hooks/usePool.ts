@@ -22,39 +22,48 @@ const usePool = (address?: string) => {
 
   useEffect(() => {
     const fetch = async () => {
+      didMount.current = true
       const slot0 = await contract?.slot0()
       const liquidity = await contract?.liquidity()
-      const tp = theList.tidePools.find(
+
+      const tidePool = theList.tidePools.find(
         (tp) => tp.pool.address.toLowerCase() === address?.toLowerCase()
       )
+
       const token0 = tokens.find(
-        (t) => t.address.toLowerCase() === tp?.pool.token0.address.toLowerCase()
+        (t) =>
+          t.address.toLowerCase() ===
+          tidePool?.pool.token0.address.toLowerCase()
       )
+
       const token1 = tokens.find(
-        (t) => t.address.toLowerCase() === tp?.pool.token1.address.toLowerCase()
+        (t) =>
+          t.address.toLowerCase() ===
+          tidePool?.pool.token1.address.toLowerCase()
       )
-      const fee = tp?.pool.fee ?? FeeAmount.LOWEST
+
+      const fee = tidePool?.pool.fee ?? FeeAmount.LOWEST
 
       setPool(getPool(slot0, fee, liquidity?.toString(), token0, token1))
     }
     if (
-      didMount.current &&
+      !didMount.current &&
       loaded &&
       address &&
       network &&
       theList.tidePools &&
+      tokens.length > 0 &&
       contract
     )
       fetch()
-    didMount.current = true
-  }, [contract, address, theList.tidePools, tokens, network, loaded])
+  }, [contract, address, network, loaded, tokens, theList])
 
   const estimateRange = useCallback(() => {
     const tick = pool ? pool.tickCurrent : 0
     const tickSpacing = pool ? pool?.tickSpacing : 10
 
     const multiplier =
-      pool?.tickSpacing === 200 ? 2.5 : pool?.tickSpacing === 60 ? 8 : 50
+      pool?.tickSpacing === 200 ? 5 : pool?.tickSpacing === 60 ? 16 : 50
 
     return [
       nearestUsableTick(tick - multiplier * tickSpacing, tickSpacing),
@@ -120,10 +129,25 @@ const usePool = (address?: string) => {
     )
   }
 
+  const getOustandingFees = useCallback(
+    async (recipient: string, lower: number, upper: number) => {
+      const MAX_128 = BigNumber.from(2).pow(128).sub(1)
+      return await contract?.callStatic.collect(
+        recipient,
+        lower,
+        upper,
+        MAX_128,
+        MAX_128
+      )
+    },
+    [contract]
+  )
+
   return {
     getPosition,
     estimateRange,
     estimatePosition,
+    getOustandingFees,
     pool,
   }
 }
