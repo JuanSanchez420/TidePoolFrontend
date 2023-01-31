@@ -60,6 +60,11 @@ export const Button = styled.button`
   :hover {
     background-color: ${({ theme }) => theme.colors.darkYellow};
   }
+
+  :disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `
 
 export const Connect = styled(Button)`

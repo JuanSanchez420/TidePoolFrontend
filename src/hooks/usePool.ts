@@ -12,6 +12,8 @@ import {
 import { Token } from "@uniswap/sdk-core"
 import useToken from "./useToken"
 import { Global } from "../context/GlobalContext"
+import { UNISWAPPOOL_ABI } from "../info/abi"
+import { multicall } from "@wagmi/core"
 
 const usePool = (address?: string) => {
   const { theList, network, loaded } = useContext(Global)
@@ -23,8 +25,25 @@ const usePool = (address?: string) => {
   useEffect(() => {
     const fetch = async () => {
       didMount.current = true
-      const slot0 = await contract?.slot0()
-      const liquidity = await contract?.liquidity()
+      const p = {
+        address: address as `0x${string}`,
+        abi: UNISWAPPOOL_ABI,
+      }
+      const calls = await multicall({
+        contracts: [
+          {
+            ...p,
+            functionName: "slot0",
+          },
+          {
+            ...p,
+            functionName: "liquidity",
+          },
+        ],
+      })
+
+      const slot0 = calls[0] as Slot0
+      const liquidity = calls[1] as BigNumber
 
       const tidePool = theList.tidePools.find(
         (tp) => tp.pool.address.toLowerCase() === address?.toLowerCase()
@@ -129,25 +148,10 @@ const usePool = (address?: string) => {
     )
   }
 
-  const getOustandingFees = useCallback(
-    async (recipient: string, lower: number, upper: number) => {
-      const MAX_128 = BigNumber.from(2).pow(128).sub(1)
-      return await contract?.callStatic.collect(
-        recipient,
-        lower,
-        upper,
-        MAX_128,
-        MAX_128
-      )
-    },
-    [contract]
-  )
-
   return {
     getPosition,
     estimateRange,
     estimatePosition,
-    getOustandingFees,
     pool,
   }
 }

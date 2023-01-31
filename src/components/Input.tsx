@@ -27,11 +27,11 @@ export interface WrapperProps extends FlexProps {
 const Wrapper = styled(Flex)<WrapperProps>`
   border-radius: 1rem;
   background-color: ${({ theme, color = theme.colors.darkBlue }) => color};
-  padding: 3px 13px;
+  padding: 3 13px;
 `
 
 const MaxButton = styled(Button)`
-  font-size: 10px;
+  font-size: 1rem;
   padding: 3px 10px;
 `
 
@@ -50,9 +50,6 @@ export const TokenInput = ({
   setValue = () => null,
   color = theme.colors.darkishBlue,
 }: TokenInputProps): JSX.Element => {
-  const significantDigits = (v: string): string => {
-    return v.substring(0, v.indexOf(".") + 6)
-  }
 
   return (
     <Wrapper p="10px" alignItems="center" color={color}>
@@ -65,15 +62,9 @@ export const TokenInput = ({
         }
         placeholder="0.0"
       />
-      <Flex flexDirection="column">
+
         <MaxButton onClick={() => setValue(balance)}>MAX</MaxButton>
-        <Text fontSize="0.75rem" color="white">
-          Balance:{" "}
-          {significantDigits(
-            ethers.utils.formatUnits(balance, token?.decimals)
-          )}
-        </Text>
-      </Flex>
+
     </Wrapper>
   )
 }

@@ -36,31 +36,6 @@ export const TIDEPOOL_ABI = [
     name: "Approval",
     type: "event",
   },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount0",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount1",
-        type: "uint256",
-      },
-    ],
-    name: "Deposit",
-    type: "event",
-  },
   { anonymous: false, inputs: [], name: "Rebalance", type: "event" },
   {
     anonymous: false,
@@ -75,31 +50,6 @@ export const TIDEPOOL_ABI = [
       },
     ],
     name: "Transfer",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount0",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount1",
-        type: "uint256",
-      },
-    ],
-    name: "Withdraw",
     type: "event",
   },
   {
@@ -153,6 +103,18 @@ export const TIDEPOOL_ABI = [
     ],
     name: "deposit",
     outputs: [{ internalType: "uint128", name: "liquidity", type: "uint128" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "harvest",
+    outputs: [
+      { internalType: "uint256", name: "rewards0", type: "uint256" },
+      { internalType: "uint256", name: "rewards1", type: "uint256" },
+      { internalType: "uint256", name: "fees0", type: "uint256" },
+      { internalType: "uint256", name: "fees1", type: "uint256" },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },

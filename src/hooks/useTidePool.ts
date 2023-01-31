@@ -11,8 +11,10 @@ import usePool from "./usePool"
 import useToken from "./useToken"
 import { Global } from "../context/GlobalContext"
 import { useAccount } from "wagmi"
-import { Price, Token } from "@uniswap/sdk-core"
+import { CurrencyAmount, Price, Token } from "@uniswap/sdk-core"
 import JSBI from "jsbi"
+import { multicall } from "@wagmi/core"
+import { TIDEPOOL_ABI } from "../info/abi"
 
 const useTidePool = (address?: string) => {
   const { address: account } = useAccount()
@@ -23,8 +25,13 @@ const useTidePool = (address?: string) => {
   const [upper, setUpper] = useState<BigNumber>(BigNumber.from(0))
   const [lower, setLower] = useState<BigNumber>(BigNumber.from(0))
   const [position, setPosition] = useState<Position>()
+  const [lastRebalance, setLastRebalance] = useState<BigNumber>()
+  const [pendingRewards, setPendingRewards] = useState<{
+    rewards0: CurrencyAmount<Token>
+    rewards1: CurrencyAmount<Token>
+  }>()
   const [totalSupply, setTotalSupply] = useState<BigNumber>(BigNumber.from(0))
-  const { getPosition, pool, estimatePosition, getOustandingFees } = usePool(
+  const { getPosition, pool, estimatePosition } = usePool(
     tidePool?.pool.address
   )
   const balanceMounted = useRef(false)
@@ -39,29 +46,62 @@ const useTidePool = (address?: string) => {
   }, [contract, account])
 
   useEffect(() => {
-    const f = async (a: string) => {
+    const f = async (a: `0x${string}`) => {
       positionMounted.current = true
-      const upper = await contract?.upper()
-      const lower = await contract?.lower()
+
+      const tp = {
+        address: a,
+        abi: TIDEPOOL_ABI,
+      }
+      const calls = await multicall({
+        contracts: [
+          {
+            ...tp,
+            functionName: "upper",
+          },
+          { ...tp, functionName: "lower" },
+          { ...tp, functionName: "lastRebalance" },
+          { ...tp, functionName: "totalSupply" },
+        ],
+      })
+      const upper = calls[0] as number
+      const lower = calls[1] as number
+
+      setLastRebalance(calls[2] as BigNumber)
+      setTotalSupply(calls[3] as BigNumber)
 
       if (lower && upper && pool) {
-        const pos = await getPosition(a, lower, upper)
-        setPosition(new Position({
-          pool,
-          liquidity: pos.liquidity.toString(),
-          tickLower: lower,
-          tickUpper: upper,
-        }))
+        const pos = await getPosition(
+          a,
+          ethers.BigNumber.from(lower),
+          ethers.BigNumber.from(upper)
+        )
+        setPosition(
+          new Position({
+            pool,
+            liquidity: pos.liquidity.toString(),
+            tickLower: lower,
+            tickUpper: upper,
+          })
+        )
+
+        const pendingRewards = await contract?.callStatic.harvest()
         
-        // const fees = await getOustandingFees(address || "", lower, upper)
+        setPendingRewards({
+          rewards0: CurrencyAmount.fromRawAmount(pool.token0, pendingRewards[0]),
+          rewards1: CurrencyAmount.fromRawAmount(pool.token1, pendingRewards[1]),
+        })
       }
     }
-    if (address && pool && contract && !positionMounted.current) f(address)
+    if (address && pool && contract && !positionMounted.current)
+      f(address as `0x${string}`)
   }, [address, pool, contract, getPosition, account])
 
   const deposit = async (zero: BigNumber, one: BigNumber) => {
     try {
-      await contract?.deposit(zero, one)
+      const tx = await contract?.deposit(zero, one)
+      await tx.wait()
+      setBalance(await contract?.balanceOf(account))
     } catch (e) {
       console.log(e)
     }
@@ -69,7 +109,17 @@ const useTidePool = (address?: string) => {
 
   const withdraw = async () => {
     try {
-      await contract?.withdraw()
+      const tx = await contract?.withdraw()
+      await tx.wait()
+      setBalance(await contract?.balanceOf(account))
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const harvest = async () => {
+    try {
+      await contract?.harvest()
     } catch (e) {
       console.log(e)
     }
@@ -79,8 +129,11 @@ const useTidePool = (address?: string) => {
     pool,
     balance,
     position,
+    pendingRewards,
+    lastRebalance,
     deposit,
     withdraw,
+    harvest,
     contract,
     upper,
     lower,

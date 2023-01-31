@@ -1,16 +1,17 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useMemo } from "react"
 import { useParams } from "react-router-dom"
 import {
   Box,
   Button,
   Connect,
+  Dots,
   Flex,
   FlexProps,
   OrderedList,
   Text,
 } from "../components/index"
 import { Container, Info } from "../components/Card"
-import { BigNumber } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import { Global } from "../context/GlobalContext"
 import styled from "styled-components"
 import { TokenInput } from "../components/Input"
@@ -23,6 +24,7 @@ import theme from "../info/theme"
 import useModal from "../widgets/Modal/useModal"
 import WalletSelectModal from "../components/WalletSelectModal"
 import { useAccount } from "wagmi"
+import formatNumber from "../utils/formatNumber"
 
 const EthAmount = styled(TokenInput)`
   text-align: center;
@@ -87,7 +89,14 @@ const TidePool = () => {
     approve: approveT1,
   } = useToken(tidePool?.pool.token1.address, account, tidePool?.address)
 
-  const { deposit, withdraw, balance, position } = useTidePool(tidePool?.address)
+  const {
+    deposit,
+    withdraw,
+    balance,
+    position,
+    lastRebalance,
+    pendingRewards,
+  } = useTidePool(tidePool?.address)
   const { pool } = usePool(tidePool?.pool.address)
   const [index, setIndex] = useState(0)
   const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
@@ -95,20 +104,32 @@ const TidePool = () => {
   const [w, setW] = useState<BigNumber>(BigNumber.from(0))
   const ws = <WalletSelectModal onDismiss={() => null} />
   const [onPresent] = useModal(ws, "walletModal")
+  const [pendingTx, setPendingTx] = useState({
+    deposit: false,
+    withdraw: false,
+    approveT0: false,
+    approveT1: false,
+  })
 
-  const doDeposit = async () => {
+  const call = async (func: () => Promise<void>, label: string) => {
     try {
-      await deposit(zeroIn, oneIn)
+      setPendingTx({ ...pendingTx, [label]: true })
+      await func()
     } catch (e) {
       console.log(e)
+    } finally {
+      setPendingTx({ ...pendingTx, [label]: false })
     }
   }
 
-  const doWithdraw = async () => {
+  const doDeposit = async () => {
     try {
-      await withdraw()
+      setPendingTx({ ...pendingTx, deposit: true })
+      await deposit(zeroIn, oneIn)
     } catch (e) {
       console.log(e)
+    } finally {
+      setPendingTx({ ...pendingTx, deposit: false })
     }
   }
 
@@ -133,7 +154,15 @@ const TidePool = () => {
         </Text>
       </Flex>
       <Container mx="auto" my="1rem">
-        <Info tidePool={tidePool} pool={pool} balance={balance} position={position} hideEntryLink />
+        <Info
+          tidePool={tidePool}
+          pool={pool}
+          balance={balance}
+          position={position}
+          lastRebalance={lastRebalance}
+          pendingRewards={pendingRewards}
+          hideEntryLink
+        />
 
         <ActionBox flexDirection="column" selected={index === 0}>
           <Flex>
@@ -173,12 +202,29 @@ const TidePool = () => {
                   />
                 ) : (
                   <Button
-                    disabled={!account}
-                    onClick={() => approveT0()}
+                    disabled={!account || pendingTx.approveT0}
+                    onClick={() => call(approveT0, "approveT0")}
                     style={{ width: "100%" }}
                   >
-                    Approve {token0?.symbol}
+                    {pendingTx.approveT0 ? (
+                      <Dots>Approving</Dots>
+                    ) : (
+                      `Approve ${token0?.symbol}`
+                    )}
                   </Button>
+                )}
+                {t0Balance && (
+                  <Text
+                    fontSize="0.75rem"
+                    color="white"
+                    textAlign="right"
+                    pr="1rem"
+                  >
+                    Balance:{" "}
+                    {formatNumber(
+                      ethers.utils.formatUnits(t0Balance, token0?.decimals)
+                    )}
+                  </Text>
                 )}
               </Box>
 
@@ -192,18 +238,40 @@ const TidePool = () => {
                   />
                 ) : (
                   <Button
-                    disabled={!account}
-                    onClick={() => approveT1()}
+                    disabled={!account || pendingTx.approveT1}
+                    onClick={() => call(approveT1, "approveT1")}
                     style={{ width: "100%" }}
                   >
-                    Approve {token1?.symbol}
+                    {pendingTx.approveT1 ? (
+                      <Dots>Approving</Dots>
+                    ) : (
+                      `Approve ${token1?.symbol}`
+                    )}
                   </Button>
+                )}
+                {t1Balance && (
+                  <Text
+                    fontSize="0.75rem"
+                    color="white"
+                    textAlign="right"
+                    pr="1rem"
+                  >
+                    Balance:{" "}
+                    {formatNumber(
+                      ethers.utils.formatUnits(t1Balance, token1?.decimals)
+                    )}
+                  </Text>
                 )}
               </Box>
               {t0State === ApprovalState.APPROVED ||
               t1State === ApprovalState.APPROVED ? (
                 <Flex justifyContent="center" width="100%">
-                  <Button onClick={() => doDeposit()}>Deposit</Button>
+                  <Button
+                    disabled={pendingTx.deposit}
+                    onClick={() => doDeposit()}
+                  >
+                    {pendingTx.deposit ? <Dots>Depositing</Dots> : "Deposit"}
+                  </Button>
                 </Flex>
               ) : null}
             </Flex>
@@ -221,7 +289,12 @@ const TidePool = () => {
               {t0State === ApprovalState.APPROVED ||
               t1State === ApprovalState.APPROVED ? (
                 <Flex justifyContent="center" width="100%">
-                  <Button onClick={() => doWithdraw()}>Withdraw</Button>
+                  <Button
+                    disabled={pendingTx.withdraw}
+                    onClick={() => call(withdraw, "withdraw")}
+                  >
+                    {pendingTx.withdraw ? <Dots>Withdrawing</Dots> : "Withdraw"}
+                  </Button>
                 </Flex>
               ) : null}
             </Flex>

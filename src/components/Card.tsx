@@ -13,6 +13,7 @@ import useTidePool from "../hooks/useTidePool"
 import { ethers } from "ethers"
 import { Global } from "../context/GlobalContext"
 import formatNumber from "../utils/formatNumber"
+import { CurrencyAmount, Token } from "@uniswap/sdk-core"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -80,18 +81,36 @@ const T = styled(Text)`
   color: white;
 `
 
+const Header = styled(Text)`
+  font-size: 1rem;
+  color: white;
+`
+
 export const Info = (props: {
   tidePool?: TidePool
   balance: ethers.BigNumber | undefined
   position: Position | undefined
   pool: Pool | undefined
+  lastRebalance: ethers.BigNumber | undefined
+  pendingRewards?: {
+    rewards0: CurrencyAmount<Token>
+    rewards1: CurrencyAmount<Token>
+  }
   hideEntryLink?: boolean
 }) => {
   const { network } = useContext(Global)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
-  const { tidePool, balance, position, pool, hideEntryLink } = props
+  const {
+    tidePool,
+    balance,
+    position,
+    pool,
+    hideEntryLink,
+    lastRebalance,
+    pendingRewards,
+  } = props
 
   const balanceFormatted = useMemo(() => {
     if (!balance) return "0"
@@ -120,6 +139,25 @@ export const Info = (props: {
       formatNumber(lower),
     ]
   }, [position])
+
+  const formattedLastRebalance = useMemo(() => {
+    if (!lastRebalance) return "N/A"
+    const date = new Date(lastRebalance.toNumber() * 1000)
+    return date.toLocaleString()
+  }, [lastRebalance])
+
+  const formattedPendingRewards = useMemo(() => {
+    if (!pendingRewards) return "0"
+    const { rewards0, rewards1 } = pendingRewards
+
+    const zero = ethers.BigNumber.from(rewards0.quotient.toString())
+    const one = ethers.BigNumber.from(rewards1.quotient.toString())
+    const rewards = [
+      `${rewards0.currency.symbol} ${formatNumber(ethers.utils.formatUnits(zero, rewards0.currency.decimals))}`,
+      `${rewards1.currency.symbol} ${formatNumber(ethers.utils.formatUnits(one, rewards1.currency.decimals))}`,
+    ]
+    return rewards
+  }, [pendingRewards])
 
   return (
     <Box>
@@ -183,17 +221,31 @@ export const Info = (props: {
             <Flex
               borderTop={`2px solid ${theme.colors.lightBlue}`}
               py="0.5rem"
-              flexDirection="row"
-              justifyContent="space-evenly"
+              flexDirection="column"
             >
-              <Flex flexDirection="column">
-                <T>{`Total ${position.pool.token0.symbol}: ${amount0}`}</T>
-                <T>{`Total ${position.pool.token1.symbol}: ${amount1}`}</T>
+              <Flex justifyContent="center">
+                <Header>Current TidePool Position</Header>
               </Flex>
-              <Flex flexDirection="column">
-                <T>Upper limit: {upper}</T>
-                <T>Lower limit: {lower}</T>
+              <Flex justifyContent="space-evenly" alignItems="center">
+                <Flex flexDirection="column">
+                  <T>{`Total ${position.pool.token0.symbol}: ${amount0}`}</T>
+                  <T>{`Total ${position.pool.token1.symbol}: ${amount1}`}</T>
+                </Flex>
+                <Flex flexDirection="column">
+                  <T>Upper limit: {upper}</T>
+                  <T>Lower limit: {lower}</T>
+                </Flex>
               </Flex>
+              {formattedLastRebalance && (
+                <Flex justifyContent="center">
+                  <T>{`Last rebalanced on: ${formattedLastRebalance}`}</T>
+                </Flex>
+              )}
+              {formattedPendingRewards && (
+                <Flex justifyContent="center">
+                  <T>{`Rewards earned since last rebalance: ${formattedPendingRewards[0]}, ${formattedPendingRewards[1]}`}</T>
+                </Flex>
+              )}
             </Flex>
           )}
           <Flex
@@ -263,6 +315,7 @@ export const Card = (props: {
   tidePool: TidePool
   balance: ethers.BigNumber | undefined
   position: Position | undefined
+  lastRebalance: ethers.BigNumber | undefined
   pool: Pool | undefined
   apr: number
   hideEntryLink?: boolean
