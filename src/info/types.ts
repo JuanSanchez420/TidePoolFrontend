@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers"
-import { Token } from "@uniswap/sdk-core"
+import { Pool } from "@uniswap/v3-sdk"
 
 export interface Chain {
   id: number
@@ -11,16 +11,10 @@ export interface TidePool {
   chainId: number
   address: string
   pool: Pool
-  APR?: number
+  poolAddress: string
+  APR: string
 }
 
-export interface Pool {
-  chainId: number
-  address: string
-  token0: Token
-  token1: Token
-  fee: number
-}
 
 export interface TheList {
   chainId: number

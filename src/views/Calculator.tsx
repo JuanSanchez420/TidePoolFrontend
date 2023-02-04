@@ -75,7 +75,7 @@ const Calculator = () => {
   const navigate = useNavigate()
   const { theList, setDefaultNetwork } = useContext(Global)
   const tidePool = theList.tidePools.find(
-    (tp) => tp.pool.address.toLowerCase() === poolAddress.toLowerCase()
+    (tp) => tp.poolAddress.toLowerCase() === poolAddress.toLowerCase()
   )
   const networkParam = getNetworkByName(params.network || "Ethereum")
   const { network } = useContext(Global)

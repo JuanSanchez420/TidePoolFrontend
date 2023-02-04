@@ -97,7 +97,7 @@ const TidePool = () => {
     lastRebalance,
     pendingRewards,
   } = useTidePool(tidePool?.address)
-  const { pool } = usePool(tidePool?.pool.address)
+  const { pool } = usePool(tidePool?.poolAddress)
   const [index, setIndex] = useState(0)
   const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
   const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))

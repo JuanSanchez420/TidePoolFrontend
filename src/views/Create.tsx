@@ -68,7 +68,7 @@ const CreateTidePool = () => {
   const createPool = async () => {
     if (!isAddress(selected)) return alert("Invalid address")
     const exists = theList.tidePools.find(
-      (p) => p.pool.address.toLowerCase() === selected.toLowerCase()
+      (p) => p.poolAddress.toLowerCase() === selected.toLowerCase()
     )
     if (exists) return alert("Pool already exists")
     const r = await deploy(selected)

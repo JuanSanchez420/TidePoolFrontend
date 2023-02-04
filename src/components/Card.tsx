@@ -199,9 +199,9 @@ export const Info = (props: {
           <Flex flex="2">
             <Text color="white" fontSize="0.85rem">
               <APRLink
-                to={`/uniswap-v3-calculator/${network.name}/${tidePool?.pool.address}`}
+                to={`/uniswap-v3-calculator/${network.name}/${tidePool?.poolAddress}`}
               >
-                {tidePool?.APR ? `${tidePool?.APR}% APR` : "Calculate APR"}
+                {tidePool?.APR ? `${formatNumber(tidePool?.APR)}% APR` : "Calculate APR"}
               </APRLink>
             </Text>
           </Flex>
@@ -261,7 +261,7 @@ export const Info = (props: {
                 TidePool <External height="1rem" width="1rem" />
               </ContractLink>
               <ContractLink
-                href={`${network.blockExplorer}address/${tidePool?.pool.address}`}
+                href={`${network.blockExplorer}address/${tidePool?.poolAddress}`}
                 target="_blank"
               >
                 Uniswap pool <External height="1rem" width="1rem" />
@@ -269,7 +269,7 @@ export const Info = (props: {
               <ContractLink
                 href={getUniswapInfoLink(
                   network.name || "",
-                  tidePool?.pool.address || "",
+                  tidePool?.poolAddress || "",
                   "pools"
                 )}
                 target="_blank"

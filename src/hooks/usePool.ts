@@ -46,7 +46,7 @@ const usePool = (address?: string) => {
       const liquidity = calls[1] as BigNumber
 
       const tidePool = theList.tidePools.find(
-        (tp) => tp.pool.address.toLowerCase() === address?.toLowerCase()
+        (tp) => tp.poolAddress.toLowerCase() === address?.toLowerCase()
       )
 
       const token0 = tokens.find(

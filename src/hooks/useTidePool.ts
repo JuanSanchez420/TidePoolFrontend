@@ -1,18 +1,13 @@
-import { useState, useEffect, useContext, useMemo, useRef } from "react"
+import { useState, useEffect, useContext, useRef } from "react"
 import { useTidePoolContract } from "./useContract"
 import { BigNumber, ethers } from "ethers"
 import {
-  tickToPrice,
   Position,
-  PositionLibrary,
-  TickLibrary,
 } from "@uniswap/v3-sdk"
 import usePool from "./usePool"
-import useToken from "./useToken"
 import { Global } from "../context/GlobalContext"
 import { useAccount } from "wagmi"
-import { CurrencyAmount, Price, Token } from "@uniswap/sdk-core"
-import JSBI from "jsbi"
+import { CurrencyAmount,  Token } from "@uniswap/sdk-core"
 import { multicall } from "@wagmi/core"
 import { TIDEPOOL_ABI } from "../info/abi"
 
@@ -32,7 +27,7 @@ const useTidePool = (address?: string) => {
   }>()
   const [totalSupply, setTotalSupply] = useState<BigNumber>(BigNumber.from(0))
   const { getPosition, pool, estimatePosition } = usePool(
-    tidePool?.pool.address
+    tidePool?.poolAddress
   )
   const balanceMounted = useRef(false)
   const positionMounted = useRef(false)
