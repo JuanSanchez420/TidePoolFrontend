@@ -6,10 +6,9 @@ import { imageUrls } from "../info/tokens"
 import { TidePool } from "../info/types"
 import theme from "../info/theme"
 import { Link, useNavigate } from "react-router-dom"
-import { Pool, Position, tickToPrice } from "@uniswap/v3-sdk"
+import { Position } from "@uniswap/v3-sdk"
 import getUniswapInfoLink from "../utils/getUniswapInfoLink"
 import { Arbitrum } from "../info/networks"
-import useTidePool from "../hooks/useTidePool"
 import { ethers } from "ethers"
 import { Global } from "../context/GlobalContext"
 import formatNumber from "../utils/formatNumber"
@@ -90,7 +89,6 @@ export const Info = (props: {
   tidePool?: TidePool
   balance: ethers.BigNumber | undefined
   position: Position | undefined
-  pool: Pool | undefined
   lastRebalance: ethers.BigNumber | undefined
   pendingRewards?: {
     rewards0: CurrencyAmount<Token>
@@ -106,7 +104,6 @@ export const Info = (props: {
     tidePool,
     balance,
     position,
-    pool,
     hideEntryLink,
     lastRebalance,
     pendingRewards,
@@ -316,7 +313,6 @@ export const Card = (props: {
   balance: ethers.BigNumber | undefined
   position: Position | undefined
   lastRebalance: ethers.BigNumber | undefined
-  pool: Pool | undefined
   apr: number
   hideEntryLink?: boolean
 }): JSX.Element => {

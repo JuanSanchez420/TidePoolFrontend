@@ -5,12 +5,26 @@ import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 import { arbitrum, optimism, polygon } from "@wagmi/chains"
 import { INFURA_KEY } from "../info/constants"
 // import { publicProvider } from 'wagmi/providers/public'
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 
 const useWagmi = () => {
   const { chains, provider, webSocketProvider } = configureChains(
     [mainnet, arbitrum, polygon, optimism],
-    [infuraProvider({ apiKey: INFURA_KEY })]
-    // [publicProvider()]
+    [
+      infuraProvider({ apiKey: INFURA_KEY }),
+      jsonRpcProvider({
+        rpc: (chain) => ({
+          http:
+            chain.id === 1
+              ? `https://mainnet.infura.io/v3/${INFURA_KEY}`
+              : chain.id === 137
+              ? `https://polygon-mainnet.infura.io/v3/${INFURA_KEY}`
+              : chain.id === 10
+              ? `https://optimism-mainnet.infura.io/v3/${INFURA_KEY}`
+              : `https://arbitrum-mainnet.infura.io/v3/${INFURA_KEY}`,
+        }),
+      }),
+    ]
   )
 
   const client = createClient({

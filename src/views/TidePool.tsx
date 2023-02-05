@@ -1,4 +1,4 @@
-import { useState, useContext, useMemo } from "react"
+import { useState, useContext } from "react"
 import { useParams } from "react-router-dom"
 import {
   Box,
@@ -18,7 +18,6 @@ import { TokenInput } from "../components/Input"
 import useToken from "../hooks/useToken"
 import useTidePool from "../hooks/useTidePool"
 import { ApprovalState } from "../info/types"
-import usePool from "../hooks/usePool"
 import { Link } from "react-router-dom"
 import theme from "../info/theme"
 import useModal from "../widgets/Modal/useModal"
@@ -97,7 +96,7 @@ const TidePool = () => {
     lastRebalance,
     pendingRewards,
   } = useTidePool(tidePool?.address)
-  const { pool } = usePool(tidePool?.poolAddress)
+
   const [index, setIndex] = useState(0)
   const [zeroIn, setZeroIn] = useState<BigNumber>(BigNumber.from(0))
   const [oneIn, setOneIn] = useState<BigNumber>(BigNumber.from(0))
@@ -156,7 +155,6 @@ const TidePool = () => {
       <Container mx="auto" my="1rem">
         <Info
           tidePool={tidePool}
-          pool={pool}
           balance={balance}
           position={position}
           lastRebalance={lastRebalance}

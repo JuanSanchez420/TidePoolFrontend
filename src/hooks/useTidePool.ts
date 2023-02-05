@@ -1,24 +1,20 @@
 import { useState, useEffect, useContext, useRef } from "react"
 import { useTidePoolContract } from "./useContract"
 import { BigNumber, ethers } from "ethers"
-import {
-  Position,
-} from "@uniswap/v3-sdk"
+import { Position } from "@uniswap/v3-sdk"
 import usePool from "./usePool"
 import { Global } from "../context/GlobalContext"
 import { useAccount } from "wagmi"
-import { CurrencyAmount,  Token } from "@uniswap/sdk-core"
+import { CurrencyAmount, Token } from "@uniswap/sdk-core"
 import { multicall } from "@wagmi/core"
 import { TIDEPOOL_ABI } from "../info/abi"
 
 const useTidePool = (address?: string) => {
   const { address: account } = useAccount()
-  const { theList } = useContext(Global)
+  const { theList, network } = useContext(Global)
   const tidePool = theList.tidePools.find((p) => p.address === address)
   const contract = useTidePoolContract(address)
   const [balance, setBalance] = useState<BigNumber | undefined>()
-  const [upper, setUpper] = useState<BigNumber>(BigNumber.from(0))
-  const [lower, setLower] = useState<BigNumber>(BigNumber.from(0))
   const [position, setPosition] = useState<Position>()
   const [lastRebalance, setLastRebalance] = useState<BigNumber>()
   const [pendingRewards, setPendingRewards] = useState<{
@@ -26,9 +22,7 @@ const useTidePool = (address?: string) => {
     rewards1: CurrencyAmount<Token>
   }>()
   const [totalSupply, setTotalSupply] = useState<BigNumber>(BigNumber.from(0))
-  const { getPosition, pool, estimatePosition } = usePool(
-    tidePool?.poolAddress
-  )
+  const { getPosition, pool } = usePool(tidePool?.poolAddress)
   const balanceMounted = useRef(false)
   const positionMounted = useRef(false)
 
@@ -49,6 +43,7 @@ const useTidePool = (address?: string) => {
         abi: TIDEPOOL_ABI,
       }
       const calls = await multicall({
+        chainId: network?.chainId,
         contracts: [
           {
             ...tp,
@@ -81,16 +76,22 @@ const useTidePool = (address?: string) => {
         )
 
         const pendingRewards = await contract?.callStatic.harvest()
-        
+
         setPendingRewards({
-          rewards0: CurrencyAmount.fromRawAmount(pool.token0, pendingRewards[0]),
-          rewards1: CurrencyAmount.fromRawAmount(pool.token1, pendingRewards[1]),
+          rewards0: CurrencyAmount.fromRawAmount(
+            pool.token0,
+            pendingRewards[0]
+          ),
+          rewards1: CurrencyAmount.fromRawAmount(
+            pool.token1,
+            pendingRewards[1]
+          ),
         })
       }
     }
     if (address && pool && contract && !positionMounted.current)
       f(address as `0x${string}`)
-  }, [address, pool, contract, getPosition, account])
+  }, [address, pool, contract, getPosition, account, network])
 
   const deposit = async (zero: BigNumber, one: BigNumber) => {
     try {
@@ -130,8 +131,6 @@ const useTidePool = (address?: string) => {
     withdraw,
     harvest,
     contract,
-    upper,
-    lower,
     totalSupply,
   }
 }

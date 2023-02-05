@@ -91,7 +91,7 @@ export const Optimism: Network = {
   chainId: 10,
   image: "/images/optimism.svg",
   blockExplorer: "https://optimistic.etherscan.io/",
-  factory: "0xA2D974Be6Aa43D38c087E9De221801BACCAB252B",
+  factory: "0x1e2F34ac2Aa5Ec7aF68921F937232b7fAAc9508f",
   subgraph:
     "https://api.thegraph.com/subgraphs/name/ianlapham/optimism-post-regenesis",
   nativeCurrency: {

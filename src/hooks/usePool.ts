@@ -29,7 +29,9 @@ const usePool = (address?: string) => {
         address: address as `0x${string}`,
         abi: UNISWAPPOOL_ABI,
       }
+
       const calls = await multicall({
+        chainId: network?.chainId,
         contracts: [
           {
             ...p,
@@ -62,7 +64,7 @@ const usePool = (address?: string) => {
       )
 
       const fee = tidePool?.pool.fee ?? FeeAmount.LOWEST
-
+      
       setPool(getPool(slot0, fee, liquidity?.toString(), token0, token1))
     }
     if (
@@ -138,6 +140,7 @@ const usePool = (address?: string) => {
     token1?: Token
   ) => {
     if (!slot0 || !fee || !liquidity || !token0 || !token1) return undefined
+
     return new Pool(
       token0,
       token1,
