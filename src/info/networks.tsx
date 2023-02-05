@@ -27,7 +27,7 @@ export const Ethereum: Network = {
   chainId: 1,
   image: "/images/ethereum.png",
   blockExplorer: "https://etherscan.io/",
-  factory: "0xA2D974Be6Aa43D38c087E9De221801BACCAB252B",
+  factory: "0x2e7537829d845D1A9B834398D5D97C2aCefD91AB",
   subgraph: "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
   nativeCurrency: {
     name: "Ether",
@@ -124,7 +124,7 @@ export const Polygon: Network = {
   chainId: 137,
   image: "/images/polygon.svg",
   blockExplorer: "https://polygonscan.com/",
-  factory: "0x59b81A9B35d94000F40C3e0e7894D7762A526a36",
+  factory: "0x5B63d2Ed03ce68889432c045Ce4fc095984D24ec",
   subgraph:
     "https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-polygon",
   nativeCurrency: {
