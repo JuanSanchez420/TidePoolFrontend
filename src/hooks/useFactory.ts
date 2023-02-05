@@ -17,6 +17,7 @@ const useFactory = () => {
         const receipt = await tx.wait()
 
         r = receipt.events[2].args.tidePool
+        setState(CreateState.UPDATING_API)
         await fetch(`/poolcreated?address=${r}&network=${network.name}`)
         setState(CreateState.DONE)
       } catch (e) {

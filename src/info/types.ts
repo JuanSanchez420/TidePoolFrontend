@@ -25,6 +25,7 @@ export interface TheList {
 export enum CreateState {
   DOESNT_EXIST,
   PENDING,
+  UPDATING_API,
   ERROR,
   DONE,
 }

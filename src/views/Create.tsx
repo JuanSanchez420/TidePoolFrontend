@@ -83,6 +83,12 @@ const CreateTidePool = () => {
             <Dots>Creating Pool</Dots>
           </Button>
         )
+        if (state === CreateState.UPDATING_API)
+        return (
+          <Button disabled>
+            <Dots>Updating API</Dots>
+          </Button>
+        )
       if (state === CreateState.DONE)
         return (
           <Button
@@ -90,7 +96,7 @@ const CreateTidePool = () => {
               (window.location.href = `/${network.name}/${address}`)
             }
           >
-            Click to go to your pool
+            Click to go to your pool!
           </Button>
         )
 
