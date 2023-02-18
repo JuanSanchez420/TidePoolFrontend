@@ -8,7 +8,8 @@ import { CreateState } from "../info/types"
 import WaveWrapper from "../components/Waves"
 import { isAddress } from "ethers/lib/utils"
 import { Global } from "../context/GlobalContext"
-import { Link } from "react-router-dom"
+import Link from "next/link"
+import { useRouter } from "next/router"
 
 const ActionsContainer = styled(Box)`
   width: 100%;
@@ -60,6 +61,7 @@ const Answer = styled(Text)`
 `
 
 const CreateTidePool = () => {
+  const router = useRouter()
   const { theList, network } = useContext(Global)
   const [selected, setSelected] = useState("")
   const [address, setAddress] = useState(null)
@@ -93,7 +95,7 @@ const CreateTidePool = () => {
         return (
           <Button
             onClick={() =>
-              (window.location.href = `/${network.name}/${address}`)
+              router.push(`/${network.name}/${address}`)
             }
           >
             Click to go to your pool!
@@ -130,7 +132,7 @@ const CreateTidePool = () => {
           <ol>
             <li>
               Choose your chain on the{" "}
-              <PoolsLink to="/pools">tidepools</PoolsLink> page
+              <PoolsLink href="/pools">tidepools</PoolsLink> page
             </li>
             <li>
               Find a{" "}

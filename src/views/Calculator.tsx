@@ -20,11 +20,11 @@ import {
 import usePool from "../hooks/usePool"
 import JSBI from "jsbi"
 import { Fraction } from "@uniswap/sdk-core"
-import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import { External } from "../components/Icons"
 import { Global } from "../context/GlobalContext"
 import { getNetworkByName } from "../info/networks"
+import { useRouter } from "next/router"
 
 interface Results {
   fee: number
@@ -70,14 +70,14 @@ const Loading = () => {
 }
 
 const Calculator = () => {
-  const params = useParams()
-  const poolAddress = params.address || ""
-  const navigate = useNavigate()
+  const router = useRouter()
+  const poolAddress =
+    (router.query.address || "").toString()
   const { theList, setDefaultNetwork } = useContext(Global)
   const tidePool = theList.tidePools.find(
     (tp) => tp.poolAddress.toLowerCase() === poolAddress.toLowerCase()
   )
-  const networkParam = getNetworkByName(params.network || "Ethereum")
+  const networkParam = getNetworkByName(router.query.network?.toString() || "Ethereum")
   const { network } = useContext(Global)
   const loaded = useRef(false)
   const { getETHUSD, getDerivedETHValue } = useSubgraph()
@@ -285,7 +285,7 @@ const Calculator = () => {
               <Flex justifyContent="center" mt="1rem">
                 <Button
                   onClick={() =>
-                    navigate(`/${network.name}/${tidePool?.address}`)
+                    router.push(`/${network.name}/${tidePool?.address}`)
                   }
                 >
                   Enter TidePool

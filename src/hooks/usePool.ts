@@ -14,17 +14,17 @@ import useToken from "./useToken"
 import { Global } from "../context/GlobalContext"
 import { UNISWAPPOOL_ABI } from "../info/abi"
 import { multicall } from "@wagmi/core"
+import { useIsMounted } from "./useIsMounted"
 
 const usePool = (address?: string) => {
   const { theList, network, loaded } = useContext(Global)
   const contract = useUniswapPoolContract(address)
   const [pool, setPool] = useState<Pool | undefined>()
   const { tokens } = useToken()
-  const didMount = useRef(false)
+  const isMounted = useIsMounted()
 
   useEffect(() => {
     const fetch = async () => {
-      didMount.current = true
       const p = {
         address: address as `0x${string}`,
         abi: UNISWAPPOOL_ABI,
@@ -68,7 +68,7 @@ const usePool = (address?: string) => {
       setPool(getPool(slot0, fee, liquidity?.toString(), token0, token1))
     }
     if (
-      !didMount.current &&
+      isMounted &&
       loaded &&
       address &&
       network &&
@@ -77,7 +77,7 @@ const usePool = (address?: string) => {
       contract
     )
       fetch()
-  }, [contract, address, network, loaded, tokens, theList])
+  }, [isMounted, contract, address, network, loaded, tokens, theList])
 
   const estimateRange = useCallback(() => {
     const tick = pool ? pool.tickCurrent : 0

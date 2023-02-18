@@ -13,7 +13,7 @@ interface IGlobalContext {
 
 export const Global = createContext<IGlobalContext>({} as IGlobalContext)
 
-export const GlobalContext: React.FC = ({
+export const GlobalContext: React.FC<React.PropsWithChildren<unknown>> = ({
   children,
 }: {
   children?: React.ReactNode

@@ -2,11 +2,12 @@ import styled from "styled-components"
 import { Flex, Connect } from "./index"
 import { Wallet } from "./Icons"
 import theme from "../info/theme"
-import { Link } from "react-router-dom"
+import Link from "next/link"
 import HamburgerMenu from "./HamburgerMenu"
 import useModal from "../widgets/Modal/useModal"
 import WalletSelectModal from "./WalletSelectModal"
 import { useAccount, useDisconnect } from "wagmi"
+import { useIsMounted } from "../hooks/useIsMounted"
 
 const TidePoolLogo = styled.img`
   height: 4rem;
@@ -14,6 +15,7 @@ const TidePoolLogo = styled.img`
 `
 
 export const Header = () => {
+  const isMounted = useIsMounted()
   const { address: account } = useAccount()
   const { disconnect } = useDisconnect()
 
@@ -23,12 +25,12 @@ export const Header = () => {
   return (
     <Flex py="1rem" px="0.5rem" alignItems="center" flexShrink="0">
       <Flex flex="1 1 auto">
-        <Link to="/">
+        <Link href="/">
           <TidePoolLogo src="/images/TidePoolsDarkLogo.svg" />
         </Link>
       </Flex>
       <Flex alignItems="center">
-        {account ? (
+        {isMounted && account ? (
           <Wallet
             height={"2rem"}
             color={theme.colors.yellow}

@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { imageUrls } from "../info/tokens"
 import { TidePool } from "../info/types"
 import theme from "../info/theme"
-import { Link, useNavigate } from "react-router-dom"
+import Link from "next/link"
 import { Position } from "@uniswap/v3-sdk"
 import getUniswapInfoLink from "../utils/getUniswapInfoLink"
 import { Arbitrum } from "../info/networks"
@@ -13,6 +13,7 @@ import { ethers } from "ethers"
 import { Global } from "../context/GlobalContext"
 import formatNumber from "../utils/formatNumber"
 import { CurrencyAmount, Token } from "@uniswap/sdk-core"
+import { useRouter } from "next/router"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -98,7 +99,7 @@ export const Info = (props: {
 }) => {
   const { network } = useContext(Global)
   const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const {
     tidePool,
@@ -196,7 +197,7 @@ export const Info = (props: {
           <Flex flex="2">
             <Text color="white" fontSize="0.85rem">
               <APRLink
-                to={`/uniswap-v3-calculator/${network.name}/${tidePool?.poolAddress}`}
+                href={`/uniswap-v3-calculator/${network.name}/${tidePool?.poolAddress}`}
               >
                 {tidePool?.APR ? `${formatNumber(tidePool?.APR)}% APR` : "Calculate APR"}
               </APRLink>
@@ -295,7 +296,7 @@ export const Info = (props: {
             <Flex justifyContent="center" mt="1rem">
               <Button
                 onClick={() =>
-                  navigate(`/${network.name}/${tidePool?.address}`)
+                  router.push(`/${network.name}/${tidePool?.address}`)
                 }
               >
                 Enter TidePool

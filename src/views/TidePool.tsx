@@ -1,5 +1,4 @@
 import { useState, useContext } from "react"
-import { useParams } from "react-router-dom"
 import {
   Box,
   Button,
@@ -18,12 +17,13 @@ import { TokenInput } from "../components/Input"
 import useToken from "../hooks/useToken"
 import useTidePool from "../hooks/useTidePool"
 import { ApprovalState } from "../info/types"
-import { Link } from "react-router-dom"
+import Link from "next/link"
 import theme from "../info/theme"
 import useModal from "../widgets/Modal/useModal"
 import WalletSelectModal from "../components/WalletSelectModal"
 import { useAccount } from "wagmi"
 import formatNumber from "../utils/formatNumber"
+import { useRouter } from 'next/router'
 
 const EthAmount = styled(TokenInput)`
   text-align: center;
@@ -68,7 +68,8 @@ const ActionBox = styled(Flex)<TabProps>`
 `
 
 const TidePool = () => {
-  const address = useParams().address
+  const router = useRouter()
+  const address = router.query.address
   const { address: account } = useAccount()
 
   const { theList } = useContext(Global)
@@ -146,7 +147,7 @@ const TidePool = () => {
         </OrderedList>
         <Text color="white" textAlign="center">
           For a more detailed explanation, visit{" "}
-          <ExternalLink to="/how-it-works" target="_blank">
+          <ExternalLink href="/how-it-works" target="_blank">
             How It Works
           </ExternalLink>
           .
@@ -300,7 +301,7 @@ const TidePool = () => {
         </ActionBox>
       </Container>
       <Flex justifyContent="center" my="1rem">
-        <BackLink to="/pools">Back to all pools</BackLink>
+        <BackLink href="/pools">Back to all pools</BackLink>
       </Flex>
     </Box>
   )

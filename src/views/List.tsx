@@ -6,7 +6,7 @@ import { Search } from "../components/Icons"
 import { TextInput } from "../components/Input"
 import { Card } from "../components/Card"
 import NetworkSelect from "../components/NetworkSelect"
-import { Link } from "react-router-dom"
+import Link from "next/link"
 import styled from "styled-components"
 
 const CreateLink = styled(Link)`
@@ -46,7 +46,7 @@ const List = () => {
       </Text>
       <Text mb="1rem" color={theme.colors.white}>
         Don't see your favorite pool?{" "}
-        <CreateLink to="/create" color={theme.colors.white}>
+        <CreateLink href="/create" color={theme.colors.white}>
           Create it!
         </CreateLink>
       </Text>

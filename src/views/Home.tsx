@@ -6,10 +6,10 @@ import {
   HollowButton,
   UnorderedList,
 } from "../components"
-import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import theme from "../info/theme"
 import WaveWrapper from "../components/Waves"
+import { useRouter } from "next/router"
 
 const CrabHeading = styled.img`
   height: 100%;
@@ -67,7 +67,7 @@ const ZFlex = styled(Flex)`
 `
 
 function Home() {
-  const navigate = useNavigate()
+  const router = useRouter()
 
   return (
     <Box mx="auto" width="100%">
@@ -93,7 +93,7 @@ function Home() {
             </Text>
             <Flex justifyContent="center">
               <Box width={"8rem"}>
-                <HollowButton onClick={() => navigate("/pools")}>
+                <HollowButton onClick={() => router.push("/pools")}>
                   View Pools
                 </HollowButton>
               </Box>

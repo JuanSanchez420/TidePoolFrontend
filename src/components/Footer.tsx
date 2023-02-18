@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Flex, UnorderedList, Box } from "./index"
-import { Link } from "react-router-dom"
+import Link from "next/link"
 
 const TidePoolLogo = styled.img`
   height: 4rem;
@@ -29,18 +29,18 @@ export const Footer = () => {
       <Flex justifyContent="center" flex="5">
         <UnorderedList>
           <li>
-            <MenuLink to="/">Home</MenuLink>
+            <MenuLink href="/">Home</MenuLink>
           </li>
           <li>
-            <MenuLink to="/pools">TidePools</MenuLink>
+            <MenuLink href="/pools">TidePools</MenuLink>
           </li>
         </UnorderedList>
         <UnorderedList>
           <li>
-            <MenuLink to="/create">Create</MenuLink>
+            <MenuLink href="/create">Create</MenuLink>
           </li>
           <li>
-            <MenuLink to="/faq">FAQ</MenuLink>
+            <MenuLink href="/faq">FAQ</MenuLink>
           </li>
         </UnorderedList>
       </Flex>

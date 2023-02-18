@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { Flex, Box, Text } from "./index"
 import { Hamburger } from "./Icons"
-import { Link } from "react-router-dom"
+import Link from "next/link"
 
 const Menu = styled(Box)`
   border-radius: 0.5rem;
@@ -83,7 +83,7 @@ const HamburgerMenu = () => {
       >
         {pages.map((p) => (
           <Highlight key={`highlight-${p.title}`}>
-            <MenuLink to={p.url}>
+            <MenuLink href={p.url}>
             <Flex
               key={p.title}
               alignItems="center"
