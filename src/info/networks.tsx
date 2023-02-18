@@ -163,3 +163,5 @@ export const getNetworkByName = (name: string) => {
     networks[1]
   )
 }
+
+export const DEFAULT_CHAIN_ID = 10

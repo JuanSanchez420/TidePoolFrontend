@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
-import { Network } from "../info/networks"
+import { DEFAULT_CHAIN_ID, Network, networks } from "../info/networks"
 import { TheList } from "../info/types"
 
 const useTheList = (network: Network) => {
   const INITIAL_LIST = {
-    chainId: network.chainId,
-    factory: network.factory,
+    chainId: network?.chainId || networks[DEFAULT_CHAIN_ID].chainId,
+    factory: network?.factory || networks[DEFAULT_CHAIN_ID].factory,
     tidePools: [],
   }
 

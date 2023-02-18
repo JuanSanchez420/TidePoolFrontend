@@ -1,7 +1,7 @@
 import { createContext, useState } from "react"
 import { useNetwork } from "wagmi"
 import useTheList from "../hooks/useTheList"
-import { networks, Network } from "../info/networks"
+import { networks, Network, DEFAULT_CHAIN_ID } from "../info/networks"
 import { TheList } from "../info/types"
 
 interface IGlobalContext {
@@ -15,10 +15,11 @@ export const Global = createContext<IGlobalContext>({} as IGlobalContext)
 
 export const GlobalContext: React.FC = ({ children }) => {
   const { chain } = useNetwork()
-  const [defaultNetwork, setDefaultNetwork] = useState<number>(1)
-  const network = networks[chain?.id || defaultNetwork]
+  const [defaultNetwork, setDefaultNetwork] = useState<number>(DEFAULT_CHAIN_ID)
+  const network =
+    networks[chain && !chain.unsupported ? chain.id : defaultNetwork]
   const theList = useTheList(network)
-  const loaded = theList.chainId === network.chainId
+  const loaded = theList.chainId === (network?.chainId || defaultNetwork)
 
   return (
     <Global.Provider
@@ -26,7 +27,7 @@ export const GlobalContext: React.FC = ({ children }) => {
         theList,
         network,
         setDefaultNetwork,
-        loaded
+        loaded,
       }}
     >
       {children}
