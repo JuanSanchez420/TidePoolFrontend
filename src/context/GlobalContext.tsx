@@ -13,7 +13,11 @@ interface IGlobalContext {
 
 export const Global = createContext<IGlobalContext>({} as IGlobalContext)
 
-export const GlobalContext: React.FC = ({ children }) => {
+export const GlobalContext: React.FC = ({
+  children,
+}: {
+  children?: React.ReactNode
+}) => {
   const { chain } = useNetwork()
   const [defaultNetwork, setDefaultNetwork] = useState<number>(DEFAULT_CHAIN_ID)
   const network =
