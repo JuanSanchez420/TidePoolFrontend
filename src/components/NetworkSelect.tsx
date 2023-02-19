@@ -1,4 +1,4 @@
-import React, { SetStateAction, useContext } from "react"
+import React, { SetStateAction, useContext, useMemo } from "react"
 import styled from "styled-components"
 import { Flex, Box, Text } from "../components"
 import theme from "../info/theme"
@@ -6,6 +6,7 @@ import { networks, Network } from "../info/networks"
 import { Chevron } from "../components/Icons"
 import { useSwitchNetwork } from "wagmi"
 import { Global } from "../context/GlobalContext"
+import { useIsMounted } from "../hooks/useIsMounted"
 
 const NetworkSelect = styled(Flex)`
   font-size: 1rem;
@@ -72,15 +73,39 @@ export interface NetworkSelectProps {
 }
 
 const NetworkSelectMenu = ({ open, setOpen }: NetworkSelectProps) => {
-  const { switchNetwork } = useSwitchNetwork()
+  const isMounted = useIsMounted()
+  const { switchNetworkAsync } = useSwitchNetwork()
   const { network, setDefaultNetwork } = useContext(Global)
 
-  const handleSwitchNetwork = (chainId: number) => {
-    if (switchNetwork) {
-      switchNetwork(chainId)
+  const handleSwitchNetwork = async (chainId: number) => {
+    try {
+      if (switchNetworkAsync) {
+        await switchNetworkAsync(chainId)
+        setDefaultNetwork(chainId)
+      } else {
+        setDefaultNetwork(chainId)
+      }
+    } catch (e) {
+      console.log(e)
     }
-    setDefaultNetwork(chainId)
   }
+
+  const options = Object.values(networks).map((n: Network) => (
+    <Highlight key={n.chainId}>
+      <Flex
+        alignItems="center"
+        justifyContent="space-around"
+        py="2px"
+        onClick={() => handleSwitchNetwork(n.chainId)}
+      >
+        <Logo src={n.image} />
+        <Text color={theme.colors.white}>{n.name}</Text>
+        <RedDot />
+      </Flex>
+    </Highlight>
+  ))
+
+  if (!isMounted) return null
 
   return (
     <NetworkSelect mr="1rem">
@@ -104,20 +129,7 @@ const NetworkSelectMenu = ({ open, setOpen }: NetworkSelectProps) => {
         >
           Select a Network
         </Text>
-        {Object.values(networks).map((n: Network) => (
-          <Highlight key={n.chainId}>
-            <Flex
-              alignItems="center"
-              justifyContent="space-around"
-              py="2px"
-              onClick={() => handleSwitchNetwork(n.chainId)}
-            >
-              <Logo src={n.image} />
-              <Text color={theme.colors.white}>{n.name}</Text>
-              <RedDot />
-            </Flex>
-          </Highlight>
-        ))}
+        {options}
       </NetworkSelectOptions>
     </NetworkSelect>
   )

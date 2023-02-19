@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useMemo, useState } from "react"
 import { useNetwork } from "wagmi"
 import useTheList from "../hooks/useTheList"
 import { networks, Network, DEFAULT_CHAIN_ID } from "../info/networks"
@@ -20,8 +20,10 @@ export const GlobalContext: React.FC<React.PropsWithChildren<unknown>> = ({
 }) => {
   const { chain } = useNetwork()
   const [defaultNetwork, setDefaultNetwork] = useState<number>(DEFAULT_CHAIN_ID)
-  const network =
-    networks[chain && !chain.unsupported ? chain.id : defaultNetwork]
+  const network = useMemo(() => {
+    return networks[chain && !chain.unsupported ? chain.id : defaultNetwork]
+  }, [chain, defaultNetwork])
+
   const theList = useTheList(network)
   const loaded = theList.chainId === (network?.chainId || defaultNetwork)
 

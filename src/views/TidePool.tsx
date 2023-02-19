@@ -24,6 +24,7 @@ import WalletSelectModal from "../components/WalletSelectModal"
 import { useAccount } from "wagmi"
 import formatNumber from "../utils/formatNumber"
 import { useRouter } from 'next/router'
+import { useIsMounted } from "../hooks/useIsMounted"
 
 const EthAmount = styled(TokenInput)`
   text-align: center;
@@ -68,6 +69,7 @@ const ActionBox = styled(Flex)<TabProps>`
 `
 
 const TidePool = () => {
+  const isMounted = useIsMounted()
   const router = useRouter()
   const address = router.query.address
   const { address: account } = useAccount()
@@ -132,6 +134,8 @@ const TidePool = () => {
       setPendingTx({ ...pendingTx, deposit: false })
     }
   }
+
+  if(!isMounted) return null
 
   return (
     <Box p="1rem" mx="auto" width="100%" maxWidth="600px">

@@ -14,6 +14,7 @@ import { Global } from "../context/GlobalContext"
 import formatNumber from "../utils/formatNumber"
 import { CurrencyAmount, Token } from "@uniswap/sdk-core"
 import { useRouter } from "next/router"
+import { useIsMounted } from "../hooks/useIsMounted"
 
 const Fee = styled(Box)`
   border-radius: 1rem;
@@ -97,6 +98,7 @@ export const Info = (props: {
   }
   hideEntryLink?: boolean
 }) => {
+  const isMounted = useIsMounted()
   const { network } = useContext(Global)
   const [open, setOpen] = useState(false)
   const router = useRouter()
@@ -156,6 +158,8 @@ export const Info = (props: {
     ]
     return rewards
   }, [pendingRewards])
+
+  if(!isMounted) return null
 
   return (
     <Box>

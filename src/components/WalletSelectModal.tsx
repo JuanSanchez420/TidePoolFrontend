@@ -1,6 +1,8 @@
+import { useContext } from "react"
 import styled from "styled-components"
-import { useConnect } from "wagmi"
+import { Connector, useConnect } from "wagmi"
 import { Flex } from "."
+import { Global } from "../context/GlobalContext"
 import { Handler } from "../widgets/Modal/useModal"
 import { Button } from "./"
 
@@ -17,18 +19,21 @@ const Container = styled(Flex)`
 `
 
 const WalletSelectModal = ({ onDismiss }: { onDismiss: Handler }) => {
-  const { connect, connectors } = useConnect()
+  const { setDefaultNetwork } = useContext(Global)
+  const { connectAsync, connectors } = useConnect()
+
+  const handleConnect = async (c: Connector<any, any, any>) => {
+    const r = await connectAsync({ connector: c })
+    if (r && !r.chain.unsupported) {
+      setDefaultNetwork(r.chain.id)
+    }
+    onDismiss()
+  }
 
   return (
     <Container flexDirection="column" justifyContent="space-evenly">
       {connectors.map((c) => (
-        <Button
-          key={c.name}
-          onClick={() => {
-            connect({ connector: c })
-            onDismiss()
-          }}
-        >
+        <Button key={c.name} onClick={() => handleConnect(c)}>
           {c.name}
         </Button>
       ))}

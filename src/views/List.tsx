@@ -37,6 +37,10 @@ const List = () => {
     )
   }, [search, theList.tidePools])
 
+  const pools = view.map((c) => (
+    <Card key={c.address} tidePool={c} apr={0} balance={undefined} lastRebalance={undefined} position={undefined} />
+  ))
+
   return (
     <Box p="1rem">
       <Heading>TidePools</Heading>
@@ -58,9 +62,7 @@ const List = () => {
           icon={<Search height="2rem" width="2rem" color="white" />}
         />
       </Flex>
-      {view.map((c) => (
-        <Card key={c.address} tidePool={c} apr={0} balance={undefined} lastRebalance={undefined} position={undefined} />
-      ))}
+      {pools}
     </Box>
   )
 }
